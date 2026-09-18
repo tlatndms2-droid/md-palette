@@ -4,7 +4,7 @@
 
 저장소: https://github.com/tlatndms2-droid/md-palette
 
-상태: 사용자 0.0.2 정상 작동 확인 완료. 2단계 0.0.3 Card 구현·Sandbox UI·재시작 검증 통과, 배포 절차 진행 중. 3~7단계는 미시작.
+상태: 사용자 0.0.2 정상 작동 확인 완료. 2단계 0.0.3 Card 구현·Sandbox UI·재시작·공개 Release·Sandbox BRAT 업데이트 확인 통과. 사용자 본인의 0.0.3 확인 대기. 3~7단계는 미시작.
 
 ## 1. 진행 원칙
 
@@ -102,7 +102,7 @@
 
 1단계 배포: [0.0.2 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.2). 실제 Sandbox UI, 프로세스 재시작, 공개 자산 및 BRAT 0.0.1 → 0.0.2 업데이트 후 데이터 보존 확인. manifest의 JSON 공백 차이만 제외하고 파일 일치. 세부 검증은 `STAGE1_VALIDATION.md` 참조. 사용자가 정상 작동을 확인했다.
 
-2단계: 0.0.3 최종 빌드의 Card UI·재시작·2,013개 파일/411개 연결 카드 시험 통과. 배포 절차 진행 중이며 다음 단계는 사용자 본인의 0.0.3 확인 뒤 시작한다. 세부 검증은 `STAGE2_VALIDATION.md` 참조.
+2단계 배포: [0.0.3 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.3). 최종 빌드의 Card UI·재시작·2,013개 파일/411개 연결 카드 시험, 공개 자산 일치, Sandbox BRAT 0.0.2 → 0.0.3 업데이트와 데이터 보존 확인 통과. 시험 자료를 보관하고 Sandbox 원래 설정 4개 해시 일치를 확인했다. 다음 단계는 사용자 본인의 0.0.3 확인 뒤 시작한다. 세부 검증은 `STAGE2_VALIDATION.md` 참조.
 
 - 공개 저장소: tlatndms2-droid/md-palette.
 - 초기 구간은 0.0.1부터 순차 증가, 최종 통합은 0.1.0. 공개 버전 덮어쓰기 금지.

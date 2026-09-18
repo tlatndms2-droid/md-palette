@@ -8,7 +8,8 @@
 - 사용자 `2단계 진행` → 이전 단계 확인 질문 → `정상 작동했어`로 0.0.2 사용자 확인 완료.
 - 연결 저장 위치의 문서·이미지 차이는 `문서방식으로 진행` 답변으로 확정했다. Main의 **`link note` 속성**에 저장하며 본문의 `## link` 목록을 만들지 않는다.
 - 2단계 Card 0.0.3 구현, TypeScript·테스트 8개·빌드, Sandbox 실제 UI·프로세스 재시작 검증 통과.
-- 현재 공개 Release·BRAT 업데이트 절차 진행 중이다. 사용자 본인의 0.0.3 확인은 아직 받지 않았다. 3~7단계는 미시작.
+- 공개 Release: https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.3 . 공개 자산 3개와 검증 빌드의 SHA-256 일치, Sandbox BRAT 0.0.2 → 0.0.3 업데이트·활성화·기존 데이터 보존 확인 통과.
+- 현재 **2단계 사용자 BRAT 확인 대기**다. 사용자 본인의 0.0.3 확인은 아직 받지 않았으므로 전체 단계 완료로 처리하지 않는다. 3~7단계는 미시작.
 - 전체 기준과 단계: IMPLEMENTATION_PLAN.md. 검증 상세: STAGE2_VALIDATION.md.
 
 ## 최신 확정 결정
@@ -49,8 +50,8 @@
 - Vault: C:\Users\tlatn\AppData\Local\Temp\MDPalette-Stage0-Sandbox-20260918
 - 전용 프로필: C:\Users\tlatn\AppData\Local\Temp\MDPalette-Stage0-Profile-20260918
 - CDP: 19273. 재사용할 때 새 대상 탐색 필수.
-- 현재 BRAT 업데이트 검증을 위해 0.0.2로 전환했고 BRAT 2.2.0을 활성화했다. Card 데이터와 Space를 유지한 상태로 0.0.3 업데이트를 확인할 예정이다.
-- 검증 완료 후 별도 프로세스를 중지하고 원래 .obsidian 설정 4개를 복원·해시 비교한다. 시험 자료·설치본은 .artifacts/stage2에 이동 보관하며 삭제하지 않는다.
+- BRAT 2.2.0 실제 업데이트 명령으로 0.0.2 → 0.0.3과 활성화·Card 데이터·Space 보존을 확인했다. main.js/styles.css는 배포 자산과 바이트 일치하며 manifest는 BRAT의 공백 재직렬화만 다르고 값은 동일하다.
+- 검증 후 별도 프로세스를 중지하고 원래 .obsidian 설정 4개를 복원해 SHA-256 일치를 확인했다. 시험 자료 2,013개와 설치본은 .artifacts/stage2/validated-fixtures 및 validated-obsidian에 이동 보관했다. 삭제하지 않았다.
 - 열기: obsidian-sandbox-open. 설치·검증: obsidian-sandbox-validation.
 
 ## 후속 범위와 제한

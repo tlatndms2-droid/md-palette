@@ -47,4 +47,10 @@ Connections·Folder·Metadata·Main 본문 카드 드롭은 2단계 범위에 �
 
 ## 배포 상태
 
-최종 Sandbox 기능·재시작 검증 통과. 공개 Release·BRAT 업데이트 확인과 검증 후 Sandbox 복원 결과는 배포 후 기록한다.
+- [0.0.3 공개 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.3), 구현 커밋 `63abd00`.
+- main.js·manifest.json·styles.css를 공개 다운로드하여 로컬 검증 빌드와 SHA-256 일치를 확인했다.
+- Sandbox BRAT 2.2.0의 실제 업데이트 명령으로 **0.0.2 → 0.0.3**, 활성화·기존 Space·Card 설정·알 수 없는 데이터 보존을 확인했다.
+- BRAT 설치 main.js/styles.css는 Release와 바이트 일치. manifest는 BRAT의 JSON 공백 재직렬화 차이만 있으며 모든 값이 동일하다.
+- 검증 후 Sandbox 프로세스를 중지했다. 시험 자료 2,013개와 설치본은 각각 `.artifacts/stage2/validated-fixtures`, `validated-obsidian`으로 이동 보관했으며 삭제하지 않았다.
+- 원래 Sandbox 설정 4개를 복원하고 SHA-256 일치를 확인했다. `restoration.json`에 기록했다.
+- 현재 상태는 **2단계 사용자 BRAT 확인 대기**다. 사용자 본인의 확인 전에는 단계 전체 완료로 처리하거나 3단계로 넘어가지 않는다.
