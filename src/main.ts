@@ -2,6 +2,7 @@ import { FuzzySuggestModal, Menu, Notice, Plugin, TFile, WorkspaceLeaf, setIcon 
 import { activeIn, arrange, fileIn, groupOf, groupsIn, isCentral, markdownIn, newTab, type Group } from './workspace-adapter';
 import { PaletteView, VIEW_TYPE } from './sidebar';
 import { readSpaces, type LinkView, type SavedSpaces, type TopView } from './state';
+import { readCards, pruneLabels, type CardState } from './cards-state';
 
 type Role = 'sub' | 'reference';
 class SpaceFilePicker extends FuzzySuggestModal<TFile> {
@@ -18,6 +19,8 @@ export default class MDPalettePlugin extends Plugin {
   private emptySub?: Group;
   topView: TopView = 'link';
   linkView: LinkView = 'card';
+  cards: CardState = readCards(null);
+  private cardTimer?: number;
   private data: Record<string, unknown> = {};
   private saveAllowed = true;
   private saveChain: Promise<void> = Promise.resolve();
@@ -44,6 +47,7 @@ export default class MDPalettePlugin extends Plugin {
     }
     if (this.data.topView === 'metadata') this.topView = 'metadata';
     if (this.data.linkView === 'connections' || this.data.linkView === 'folder') this.linkView = this.data.linkView;
+    this.cards = readCards(this.data.cards);
     this.registerView(VIEW_TYPE, leaf => new PaletteView(leaf, this));
     this.addRibbonIcon('panels-top-left', 'MD Palette 열기', () => this.run(() => this.openSidebar()));
     this.addCommand({ id: 'open-sidebar', name: '사이드바 열기', callback: () => this.run(() => this.openSidebar()) });
@@ -71,6 +75,22 @@ export default class MDPalettePlugin extends Plugin {
     this.registerEvent(this.app.workspace.on('file-open', schedule));
     this.registerEvent(this.app.vault.on('rename', schedule));
     this.registerEvent(this.app.vault.on('delete', schedule));
+    const refreshCards = () => {
+      window.clearTimeout(this.cardTimer);
+      this.cardTimer = window.setTimeout(() => { if (!this.stopped) this.render(); }, 200);
+    };
+    this.registerEvent(this.app.metadataCache.on('resolved', refreshCards));
+    this.registerEvent(this.app.vault.on('modify', file => { if (file instanceof TFile && (file === this.mainFile || this.connectedFiles().includes(file))) refreshCards(); }));
+    this.registerEvent(this.app.vault.on('rename', (file, oldPath) => {
+      const renamed = (p: string) => p === oldPath ? file.path : p.startsWith(oldPath + '/') ? file.path + p.slice(oldPath.length) : p;
+      this.cards.order = this.cards.order.map(renamed);
+      for (const path of Object.keys(this.cards.assignments)) { const next = renamed(path); if (next !== path) { this.cards.assignments[next] = this.cards.assignments[path]; delete this.cards.assignments[path]; } }
+      this.cardsChanged();
+    }));
+    this.registerEvent(this.app.vault.on('delete', file => {
+      if (!(file instanceof TFile)) return;
+      this.cards.order = this.cards.order.filter(p => p !== file.path); delete this.cards.assignments[file.path]; pruneLabels(this.cards); this.cardsChanged();
+    }));
     this.app.workspace.onLayoutReady(() => {
       if (this.stopped) return;
       this.restore(); this.ready = true; this.sync(false);
@@ -78,6 +98,7 @@ export default class MDPalettePlugin extends Plugin {
   }
 
   onunload(): void {
+    window.clearTimeout(this.cardTimer);
     window.clearTimeout(this.syncTimer);
     window.clearTimeout(this.saveTimer);
     this.flushState();
@@ -177,6 +198,43 @@ export default class MDPalettePlugin extends Plugin {
     this.render();
   }
   selectView(top: TopView, link = this.linkView): void { this.topView = top; this.linkView = link; this.render(); this.persist(); }
+  cardsChanged(): void { this.render(); this.persist(); }
+  connectedFiles(main = this.mainFile): TFile[] {
+    if (!main) return [];
+    const links = this.app.metadataCache.resolvedLinks;
+    const paths = new Set(Object.keys(links[main.path] ?? {}));
+    for (const [source, targets] of Object.entries(links)) if (targets[main.path]) paths.add(source);
+    paths.delete(main.path);
+    const files = [...paths].map(p => this.app.vault.getAbstractFileByPath(p)).filter((f): f is TFile => f instanceof TFile);
+    const known = new Set(this.cards.order);
+    let changed = false;
+    for (const f of files) if (!known.has(f.path)) { this.cards.order.push(f.path); known.add(f.path); changed = true; }
+    if (changed) this.persist();
+    const rank = new Map(this.cards.order.map((p, i) => [p, i]));
+    return files.sort((a, b) => rank.get(a.path)! - rank.get(b.path)!);
+  }
+  async addConnection(main: TFile, file: TFile): Promise<void> {
+    if (this.mainFile !== main || this.app.vault.getAbstractFileByPath(main.path) !== main || this.app.vault.getAbstractFileByPath(file.path) !== file) { new Notice('메인 또는 선택 파일이 변경되어 연결을 취소했습니다.'); return; }
+    if (main === file || this.connectedFiles(main).some(f => f.path === file.path)) { new Notice('이미 메인 스페이스와 연결된 파일입니다.'); return; }
+    // Properties resolve wikilinks independently of the editor's Markdown-link preference.
+    const link = `[[${file.path}]]`;
+    await this.app.fileManager.processFrontMatter(main, frontmatter => {
+      if (this.mainFile !== main) throw Error('Main changed before connection write');
+      const current: unknown = frontmatter['link note'];
+      if (current != null && typeof current !== 'string' && !Array.isArray(current)) throw Error('link note must be text or a list');
+      const values: unknown[] = current == null ? [] : Array.isArray(current) ? current : [current];
+      if (!values.every(v => typeof v === 'string')) throw Error('link note contains unsupported values');
+      const already = values.some(v => {
+        const text = v as string;
+        const path = text.match(/^!?\[\[([^\]|#]+)(?:[^\]]*)\]\]$/)?.[1] ?? text.match(/^\[[^\]]*\]\(([^)]+)\)$/)?.[1];
+        if (!path) return false;
+        let decoded = path; try { decoded = decodeURIComponent(path); } catch {}
+        return this.app.metadataCache.getFirstLinkpathDest(decoded, main.path)?.path === file.path;
+      });
+      if (!already) frontmatter['link note'] = [...values, link];
+    });
+    this.render();
+  }
   private render(): void {
     for (const leaf of this.app.workspace.getLeavesOfType(VIEW_TYPE)) if (leaf.view instanceof PaletteView) leaf.view.render();
   }
@@ -249,7 +307,7 @@ export default class MDPalettePlugin extends Plugin {
     if (!this.ready || !this.saveAllowed) return;
     const space = (g?: Group) => g ? { groupId: g.id, activeFile: fileIn(this.app, activeIn(g))?.path ?? null } : undefined;
     const spaces: SavedSpaces = { main: space(this.mainGroup), sub: space(this.subGroup), reference: space(this.referenceGroup), emptySubId: this.emptySub?.id };
-    const next = { ...this.data, spaces, topView: this.topView, linkView: this.linkView };
+    const next = { ...this.data, spaces, topView: this.topView, linkView: this.linkView, cards: structuredClone(this.cards) };
     const serialized = JSON.stringify(next);
     if (serialized === this.persistedJSON) return;
     this.data = next;

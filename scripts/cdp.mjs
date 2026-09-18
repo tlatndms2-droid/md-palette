@@ -12,9 +12,11 @@ export async function connect(port = 19273, surface = 'main') {
   let next = 0;
   const pending = new Map();
   const errors = [];
+  const dragEvents = [];
   socket.addEventListener('message', event => {
     const data = JSON.parse(event.data);
     if (data.method === 'Runtime.exceptionThrown') errors.push(data.params);
+    if (data.method === 'Input.dragIntercepted') dragEvents.push(data.params);
     const request = pending.get(data.id);
     if (request) {
       clearTimeout(request.timer);
@@ -31,7 +33,7 @@ export async function connect(port = 19273, surface = 'main') {
   await send('Runtime.discardConsoleEntries');
   await send('Runtime.enable');
   return {
-    target, errors, send,
+    target, errors, dragEvents, send,
     async evaluate(expression) {
       const result = await send('Runtime.evaluate', { expression, awaitPromise: true, returnByValue: true });
       if (result.exceptionDetails) throw new Error(JSON.stringify(result.exceptionDetails));

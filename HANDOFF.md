@@ -1,94 +1,62 @@
 # MD Palette 작업 인계
 
 갱신일: 2026-09-18
-
 저장소: https://github.com/tlatndms2-droid/md-palette
 
-## 현재 상태와 이번 요청 범위
+## 현재 요청과 상태
 
-- 사용자가 `1단계 진행`으로 다음 구간을 명시 승인하여 Space·사이드바를 구현하고 0.0.2를 배포했다.
-- TypeScript·빌드·검사 4개, 실제 메뉴·선택창·드래그·중첩 분할·취소·실패 복구·프로세스 재시작 검증을 통과했다.
-- 공개 Release: https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.2
-- BRAT 2.2.0의 실제 업데이트 명령으로 격리 Sandbox에서 **0.0.1 → 0.0.2**를 확인했다. 역할·탭·사이드바 선택 및 기존 데이터 보존, 업데이트 후 재시작도 확인했다.
-- 현재 상태는 **1단계 사용자 BRAT 확인 대기**다. 사용자 본인의 0.0.2 확인은 아직 받지 않았으므로 전체 단계 완료로 처리하지 않는다. 2~7단계는 미시작이다.
-- 0.0.2는 Main 지정, Sub·Reference 파일 열기, Main/Sub 활성 파일 교환, 역할 아이콘, 순서 보호·재시작 복원 및 사이드바 보기 전환을 제공한다. Card·Connections·Folder·Metadata 내용은 아직 없다.
-- 실행 계획의 기준 문서는 IMPLEMENTATION_PLAN.md다.
-
-## 우선 읽을 자료
-
-1. 현재 적용되는 사용자·프로젝트 AGENTS.md 지침.
-2. 이 HANDOFF.md와 IMPLEMENTATION_PLAN.md.
-3. 로컬 MD_Palette_Planning_Pack_Final의 00~15 문서 전체와 UI_Reference/00_INDEX.md 및 이미지.
-4. 로컬 md palette ui image의 해당 단계 참조 이미지.
-
-원본 자료와 ZIP은 로컬 작업 폴더에 있으며 이번 문서 업로드 범위에 자동 포함하지 않는다. 원격 저장소만 받은 작업자는 구현 전에 사용자 제공 원본 자료를 확보해야 한다. 원본을 보지 않고 두 문서만으로 전체 UI·세부 기능을 추정하지 않는다.
+- 사용자 `2단계 진행` → 이전 단계 확인 질문 → `정상 작동했어`로 0.0.2 사용자 확인 완료.
+- 연결 저장 위치의 문서·이미지 차이는 `문서방식으로 진행` 답변으로 확정했다. Main의 **`link note` 속성**에 저장하며 본문의 `## link` 목록을 만들지 않는다.
+- 2단계 Card 0.0.3 구현, TypeScript·테스트 8개·빌드, Sandbox 실제 UI·프로세스 재시작 검증 통과.
+- 현재 공개 Release·BRAT 업데이트 절차 진행 중이다. 사용자 본인의 0.0.3 확인은 아직 받지 않았다. 3~7단계는 미시작.
+- 전체 기준과 단계: IMPLEMENTATION_PLAN.md. 검증 상세: STAGE2_VALIDATION.md.
 
 ## 최신 확정 결정
 
-- 한 번에 전체 구현하지 않는다. 한 구간 구현·검증·릴리즈 후 사용자 BRAT 확인을 기다린다.
-- 각 구간마다 GitHub Release를 만든다. 마지막에만 배포하는 과거 계획은 폐기됐다.
-- Sandbox 실제 UI 검증은 obsidian-sandbox-validation의 백그라운드 CDP 경로가 기본이다. Sandbox 미준비 시 obsidian-sandbox-open을 먼저 사용한다.
-- Computer Use로 임의 전환하지 않는다. 실제 작업 Vault를 테스트 대상으로 사용하지 않는다.
-- UI는 제공 참조의 배치·비율·밀도를 따르되 색상은 Obsidian 시스템 테마·강조색을 따른다. 새 시안 이미지 생성 불필요.
-- Virtual Folder 구조와 파일 위치는 전역 Plugin Data다. Main별 구조·위치 사본을 만들지 않는다.
-- 파일 하나는 가상 위치 하나만 갖는다. Main 변경은 연결 파일 표시 기준만 바꾸며 가상 폴더를 재구성하지 않는다.
-- 사용자 확인 없는 병렬 에이전트 작업은 시작하지 않는다.
-- 원본 기획 문서·이미지·ZIP을 보존한다.
-- 1단계 자료 대조에서 Main 본문 링크 클릭 팝업의 문서·이미지 차이를 질문했다. 사용자가 **팝업을 보류하고 문서의 Space 기능만 구현**하도록 확정했다. 팝업은 구현하지 않는다.
+- 한 구간 구현 → 관련 검사·빌드 → Sandbox 실제 UI·재시작 → GitHub Release → Sandbox BRAT 확인 → 사용자 본인의 확인 순서.
+- 사용자 본인의 확인 전에는 다음 단계를 구현하지 않는다.
+- UI는 제공 참조 이미지의 배치·비율·밀도를 따르고 색은 Obsidian 테마·강조색을 사용한다. 새 시안 이미지 불필요.
+- Main 본문 링크 클릭 팝업은 사용자 결정으로 보류했다. 기존 Obsidian 동작을 유지한다.
+- Virtual Folder 구조와 파일 위치는 전역 Plugin Data이며 Main별 사본을 만들지 않는다.
+- 사용자 요청 없는 병렬 에이전트·다른 작업으로의 분산 금지.
+- 실제 작업 Vault를 테스트하지 않는다. Sandbox의 백그라운드 CDP를 사용하고 Computer Use로 임의 전환하지 않는다.
+- 원본 Planning Pack·참조 이미지·ZIP은 수정·이동·삭제하지 않는다.
 
-## 기능상 반드시 유지할 점
+## 2단계 구현
 
-- Space는 기존 Obsidian Tab Group의 역할이며 독자 편집기가 아니다.
-- Main → Sub → Reference 순서를 관리하되 일반 탭 그룹을 삭제하거나 닫지 않는다.
-- Main/Sub 전환은 활성 파일만 교환하고 비활성 탭은 보존한다.
-- 새 Main 지정 시 이전 Sub 위치는 Obsidian 기본 새 탭으로 남기며 전용 Empty View를 만들지 않는다.
-- 재시작 시 Obsidian이 복원한 그룹에 역할만 연결한다. 없는 Sub·Reference나 이전 파일을 강제 재생성하지 않는다.
-- Card·Folder는 현재 Main의 연결 파일 기준이며 같은 파일의 역링크·나가는 링크 중복을 제거한다.
-- 가상 폴더 삭제는 하위 항목을 한 단계 위로 이동하며 실제 파일 삭제가 아니다.
-- Folder에서 연결 추가는 link note 추가와 가상 배치가 함께 성공해야 한다. 다른 가상 위치에 이미 배치된 파일이면 둘 다 취소한다.
-- Metadata는 각주·강조·할 일·블록만 포함한다. 각주 충돌에서 최신 원문을 보호하고 할 일 저장 실패는 UI를 되돌린다.
-- 드래그는 정확한 위치 삽입, 취소 시 변경 없음, 원본 유지가 기준이다.
+- Card: Main의 역링크+나가는 링크, 중복 제거·Main 숨김, 기존 파일 연결 추가.
+- 문서 방식의 연결 저장: Main `link note` 속성에 wikilink. 일반 Markdown 링크 사용 설정과 무관하게 Properties에서 해석된다.
+- 썸네일: Properties 제외 Markdown 본문, 이미지, PDF 첫 페이지, 영상 첫 프레임, Canvas 축소 그림, 실패 시 아이콘·파일명.
+- 라벨: 파일당 하나·사용자 이름/색·일괄 적용/제거·마지막 사용 해제 시 소멸. Markdown 불변.
+- 파일 유형/복수 라벨 필터·접기, 보기 6종·글자 3종·Ctrl+휠, 단일/Ctrl/Shift/더블클릭, 단일/다중 순서 변경.
+- 순서·라벨·필터·보기 저장 및 재시작 복원. Main 변경 중 숨겨진 카드의 위치를 보존한다.
+- 미리보기 지연 처리·64개 캐시·화면 밖 카드 렌더링 지연. 본문 갱신 시 카드 스크롤을 보존한다.
+- 주요 파일: src/card-view.ts, src/cards-state.ts, src/thumbnails.ts. 기존 Space는 src/main.ts와 workspace-adapter.ts.
 
-## 다음 작업: 사용자 확인 후 2단계
+## 검증·증거
 
-사용자에게 BRAT으로 0.0.2 업데이트 후 Main 지정·Sub/Reference 열기·전환·재시작 상태를 확인받는다. 다음 단계 진행 의사가 확인되기 전에는 2단계를 구현하지 않는다.
+- 0.0.3 최종 main.js 55,930 bytes. Sandbox 설치본 3개 자산의 로컬 SHA-256 일치.
+- 실제 UI: 선택·라벨·필터·메뉴·6종 보기·열기·연결 추가·중복·취소·실패 원문 보존·단일/묶음 드래그·Main 전환·파일명 변경·썸네일 갱신.
+- 밝은/어두운 테마, 220px 사이드바 가로 넘침 없음, 참조 이미지 대조.
+- 2,013개 파일/411개 연결 카드 시험: 전체 다시 그리기 약 101ms. 입력 확인 약 52ms. 도구 왕복 시간 등이 포함된 제한된 시험이며 일반 사용자 지연이나 CPU 측정이 아니다.
+- 별도 프로세스 종료·재실행 후 0.0.3·역할·설정 복원 확인.
+- 기본 시험 파일 13개 비교: Main의 link note 외 본문·나머지 파일 불변. 기존 알 수 없는 설정 보존.
+- 원시 결과·화면·백업: .artifacts/stage2/. 검증 스크립트: scripts/stage2-*.mjs.
+- 0·1단계 기록과 증거는 STAGE0_VALIDATION.md, STAGE1_VALIDATION.md 및 기존 .artifacts 경로에 보존했다.
 
-2단계는 연결 파일 Card 표시·추가, 썸네일, 파일 유형·라벨 필터, 선택·다중 선택·순서·보기 방식·저장이다. 해당 단계 원본 문서·UI 이미지를 대조하고 기능 충돌이 있는 영역은 사용자에게 확인한다. 현재 1단계 Space 동작과 저장 데이터를 보존한다.
+## Sandbox
 
-## 1단계 구현 및 증거
+- Vault: C:\Users\tlatn\AppData\Local\Temp\MDPalette-Stage0-Sandbox-20260918
+- 전용 프로필: C:\Users\tlatn\AppData\Local\Temp\MDPalette-Stage0-Profile-20260918
+- CDP: 19273. 재사용할 때 새 대상 탐색 필수.
+- 현재 BRAT 업데이트 검증을 위해 0.0.2로 전환했고 BRAT 2.2.0을 활성화했다. Card 데이터와 Space를 유지한 상태로 0.0.3 업데이트를 확인할 예정이다.
+- 검증 완료 후 별도 프로세스를 중지하고 원래 .obsidian 설정 4개를 복원·해시 비교한다. 시험 자료·설치본은 .artifacts/stage2에 이동 보관하며 삭제하지 않는다.
+- 열기: obsidian-sandbox-open. 설치·검증: obsidian-sandbox-validation.
 
-- `src/main.ts`: Space 관리·명령·메뉴·저장. `src/workspace-adapter.ts`: 그룹 이동 내부 API 경계. `src/sidebar.ts`: 사이드바. `src/state.ts`: 저장 역할 검증.
-- 사용자 흐름과 제한: `README.md`. 상세 검증: `STAGE1_VALIDATION.md`.
-- 실행 및 스타일 자산은 Release와 BRAT 설치본 SHA-256 일치. BRAT의 manifest JSON 재직렬화 차이는 값 비교로 동일함을 확인.
-- 원시 결과·화면·백업은 `.artifacts/stage1/`에 보관. 최종 실행 파일은 23,466 bytes.
-- 같은 Sandbox를 사용했으며 검증 후 중지했다. `.artifacts/stage1/validated-obsidian`, `validated-fixtures`에 시험 상태를 보관하고 원래 설정 4개의 해시 일치를 확인했다.
-- Main 본문 링크 클릭은 기존 Obsidian 동작을 유지한다. 프로그램 파일 생성·본문 변경·Vault 경로 변경 기능은 1단계에 없다.
+## 후속 범위와 제한
 
-## 0단계 증거 및 Sandbox 정리
-
-- 상세 범위와 한계: `STAGE0_VALIDATION.md`.
-- 로컬 원시 자료·화면·백업: `.artifacts/`. 시험 결과물을 삭제하지 않았다.
-- Sandbox: `C:\Users\tlatn\AppData\Local\Temp\MDPalette-Stage0-Sandbox-20260918`.
-- 전용 프로필: `C:\Users\tlatn\AppData\Local\Temp\MDPalette-Stage0-Profile-20260918`.
-- 성공한 CDP 포트: 19273. 재사용 시 반드시 새 대상 탐색. Sandbox는 검증 종료 후 중지했다.
-- 시험 자료와 설치본은 `.artifacts/validated-fixtures`, `.artifacts/validated-obsidian`으로 보관했다. Sandbox 원래 설정 4개를 복원하고 SHA-256 일치를 확인했다.
-- 실제 작업 Vault는 설치·수정·재시작하지 않았다.
-
-## 아직 확인하지 않은 사항
-
-- 같은 창의 일반/중첩 분할에서 Space 재배치와 실제 탭 드래그 후 순서 보호를 검증했다. 별도 팝아웃 창 사이의 이동은 미검증이다. Canvas 드롭 좌표는 0단계 기술 시험이며 제품 드래그 기능은 후속 단계다.
-- 그래프 재사용·썸네일 기능 검증은 해당 단계에서 수행한다. 코어 플러그인 존재 및 공식 타입 확인만으로 기능 통과라고 보고하지 않는다.
-- 설치된 실행 파일 버전이 실제 실행 중 앱 버전과 같다고 가정하지 않는다.
-- 모든 참조 이미지의 문서 대비 기능 차이가 해소된 것은 아니다. 해당 영역 구현 전 비교하고 실제 충돌을 사용자에게 확인한다.
-- 계획의 시간은 실측이 아닌 작업량 추정이다. 총 최초 추정 435~700분에서 이미 수행한 준비를 중복 계산하지 않는다. 0·1단계 실제 시간으로 갱신한다.
-
-## 검증·보고·배포 기준
-
-- 코드·테스트·빌드 성공만으로 UI 완료라고 보고하지 않는다.
-- 관련 실제 UI·참조 비교·동작·재시작 확인 후만 해당 단계 통과로 보고한다.
-- 실패한 실행 방법과 실제 UI 실패, 미검증을 구분한다. 열기 스킬의 안전한 대체 경로를 소진하기 전 한 번의 실패로 중단하지 않는다.
-- GitHub Release에는 검증한 빌드와 같은 파일을 올리고 버전·파일 일치를 확인한다.
-- 최초 배포 0.0.1부터 순차 증가, 최종 통합 0.1.0. 이미 공개한 버전은 덮어쓰지 않는다.
-- 단계별 업데이트에서 저장 데이터 보존을 검증한다.
-- 사용자 본인의 BRAT 확인 여부를 자동 검증 결과로 대체하지 않는다.
-- 완료 보고 전에 요청·계획·실제 결과를 대조하고 미수행·실패·판정 불가 항목을 밝힌다.
+- 3단계 Connections: Markdown 역링크·나가는 링크·Main 중심 그래프, 개별 접기·높이 조절·저장.
+- Folder·Metadata·Main 본문 카드 드롭은 후속 단계다. 본 단계에서 제공한다고 설명하지 않는다.
+- 지원하지 않는 코덱·손상 파일은 fallback. 별도 팝아웃 창 간 Space 이동은 기존 단계에서도 미검증.
+- 다음 단계 착수 전에 원본 문서와 해당 UI 이미지를 다시 대조한다. 기능 충돌은 확인 후 구현한다.
+- Release는 검증한 동일 빌드의 main.js·manifest.json·styles.css를 배포하고 공개 버전은 덮어쓰지 않는다.

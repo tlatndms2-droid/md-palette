@@ -1,9 +1,9 @@
 {
   "id": "md-palette",
   "name": "MD Palette",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "minAppVersion": "1.13.7",
-  "description": "Main·Sub·Reference 작업 공간과 사이드바. 연결 자료 및 Metadata 보기는 후속 단계에서 제공됩니다.",
+  "description": "Main·Sub·Reference 작업 공간과 연결 파일 Card·썸네일·라벨 정리.",
   "author": "tlatndms2-droid",
   "authorUrl": "https://github.com/tlatndms2-droid",
   "isDesktopOnly": true

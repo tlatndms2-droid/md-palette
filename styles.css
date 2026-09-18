@@ -14,3 +14,57 @@
 .mdp-space-icon { display: flex; align-items: center; flex: 0 0 auto; color: var(--interactive-accent); margin-inline-end: 5px; }
 .mdp-space-icon svg { width: var(--icon-s); height: var(--icon-s); }
 .workspace-tab-header-inner:has(.mdp-space-icon) > .workspace-tab-header-inner-icon { display: none; }
+.mdp-sidebar { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+.mdp-sidebar > :not(.mdp-card-view) { flex-shrink: 0; }
+.mdp-card-view { display: flex; flex-direction: column; min-height: 0; gap: 8px; flex: 1; }
+.mdp-add-connection { width: 100%; flex-shrink: 0; }
+.mdp-filter-section { border: 1px solid var(--background-modifier-border); border-radius: 8px; padding: 6px 8px; flex-shrink: 0; }
+.mdp-filter-toggle { background: none !important; box-shadow: none !important; padding: 2px 0; height: auto; font-size: var(--font-ui-small); }
+.mdp-filter-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.mdp-filter-chips:has(.mdp-chip) { margin-top: 6px; }
+.mdp-chip { padding: 4px 8px; height: auto; font-size: var(--font-ui-smaller); max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.mdp-chip.is-selected, .mdp-label-list .is-selected { background: var(--background-modifier-active-hover); box-shadow: inset 0 0 0 1px var(--interactive-accent); }
+.mdp-card-controls { display: flex; flex-wrap: wrap; gap: 6px; flex-shrink: 0; }
+.mdp-card-controls label { display: flex; flex: 1 1 125px; min-width: 0; align-items: center; gap: 5px; font-size: var(--font-ui-smaller); }
+.mdp-card-controls select { width: 100%; min-width: 0; flex: 1; font-size: var(--font-ui-smaller); }
+.mdp-card-count { font-size: var(--font-ui-smaller); flex-shrink: 0; }
+.mdp-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(140px, 100%), 1fr)); gap: 9px; align-content: start; overflow-y: auto; min-height: 0; padding: 2px 4px 12px 2px; font-size: 13px; }
+.mdp-card { position: relative; border: 1px solid var(--background-modifier-border); border-radius: 9px; background: var(--background-secondary); padding: 8px; min-width: 0; cursor: default; user-select: none; content-visibility: auto; contain-intrinsic-size: auto 170px; }
+.mdp-card.is-selected { border-color: var(--interactive-accent); box-shadow: inset 0 0 0 1px var(--interactive-accent); background: var(--background-modifier-active-hover); }
+.mdp-card.is-active { outline: 1px solid var(--interactive-accent); outline-offset: 1px; }
+.mdp-card:focus-visible { outline: 2px solid var(--interactive-accent); }
+.mdp-preview { position: relative; height: 126px; overflow: hidden; border-radius: 5px; margin-bottom: 6px; pointer-events: none; }
+.mdp-preview img, .mdp-preview canvas, .mdp-preview > svg { width: 100%; height: 100%; object-fit: contain; }
+.mdp-preview-markdown { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .88em; line-height: 1.45; padding: 3px; }
+.mdp-preview-fallback { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted); }
+.mdp-preview-fallback svg { width: 42px; height: 42px; }
+.mdp-card-name { overflow-wrap: anywhere; padding-right: 16px; line-height: 1.4; }
+.mdp-card-info { min-width: 0; }
+.mdp-label-badge { display: inline-block; margin-top: 5px; font-size: .85em; border-radius: 12px; padding: 1px 7px; background: color-mix(in srgb, var(--mdp-label-color) 25%, var(--background-primary)); border: 1px solid var(--mdp-label-color); max-width: 100%; overflow-wrap: anywhere; }
+.mdp-card-more { position: absolute; right: 3px; top: 3px; width: 23px; height: 24px; padding: 3px; box-shadow: none; }
+.mdp-card-more svg { width: 16px; height: 16px; }
+.mdp-display-large { grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr)); }
+.mdp-display-large .mdp-preview { height: 185px; }
+.mdp-display-large .mdp-card { contain-intrinsic-size: auto 230px; }
+.mdp-display-small { grid-template-columns: repeat(auto-fill, minmax(min(95px, 100%), 1fr)); }
+.mdp-display-small .mdp-preview { height: 70px; }
+.mdp-display-small .mdp-card { contain-intrinsic-size: auto 110px; }
+.mdp-display-list, .mdp-display-details { grid-template-columns: minmax(0, 1fr); gap: 5px; }
+.mdp-display-list .mdp-card { contain-intrinsic-size: auto 40px; }.mdp-display-details .mdp-card { contain-intrinsic-size: auto 85px; }.mdp-display-tiles .mdp-card { contain-intrinsic-size: auto 100px; }
+.mdp-display-list .mdp-card, .mdp-display-details .mdp-card, .mdp-display-tiles .mdp-card { display: flex; gap: 8px; align-items: center; }
+.mdp-display-list .mdp-preview, .mdp-display-details .mdp-preview { height: 22px; width: 22px; flex-shrink: 0; margin: 0; }
+.mdp-display-list .mdp-card-info { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.mdp-display-list .mdp-label-badge { margin: 0; }
+.mdp-display-tiles { grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr)); }
+.mdp-display-tiles .mdp-preview { height: 80px; width: 85px; flex-shrink: 0; margin: 0; }
+.mdp-card-detail { color: var(--text-muted); font-size: .82em; overflow-wrap: anywhere; margin-top: 3px; }
+.mdp-text-small { font-size: 11px; }.mdp-text-large { font-size: 16px; }
+.mdp-video-badge { position: absolute; right: 4px; bottom: 4px; background: var(--background-primary); padding: 2px 5px; border-radius: 4px; }
+.mdp-drop-before { border-top: 4px solid var(--interactive-accent); }.mdp-drop-after { border-bottom: 4px solid var(--interactive-accent); }
+.mdp-card.is-dragging { opacity: .5; }.mdp-no-cards { grid-column: 1 / -1; padding: 20px 8px; }
+.mdp-label-editor { display: flex; flex-wrap: wrap; gap: 16px; min-width: 0; }
+.mdp-label-list { flex: 1 1 130px; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.mdp-label-list button { text-align: left; height: auto; white-space: normal; overflow-wrap: anywhere; }
+.mdp-label-form { flex: 2 1 190px; min-width: 0; }.mdp-label-form label { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.mdp-label-form input[type=text] { min-width: 0; width: 100%; }.mdp-modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
+@media (max-height: 650px) { .mdp-filter-section { padding: 3px 6px; }.mdp-card-view { gap: 5px; }.mdp-sidebar { overflow-y: auto; }.mdp-card-grid { min-height: 120px; } }

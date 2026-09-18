@@ -2,7 +2,7 @@
 
 Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 데스크톱 플러그인입니다.
 
-## 현재 버전: 0.0.2 — Space·사이드바
+## 현재 버전: 0.0.3 — 연결 파일 Card
 
 기존 Obsidian 탭 그룹에 Main·Sub·Reference 역할을 지정합니다. 역할 아이콘은 각 그룹에서 현재 활성화된 탭 이름 왼쪽에 표시됩니다. 색상은 Obsidian 테마와 강조색을 따릅니다. Obsidian 1.13.7 이상을 대상으로 합니다.
 
@@ -16,16 +16,30 @@ Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 �
 
 재시작하면 Obsidian이 복원한 기존 그룹에 역할만 다시 연결합니다. 없는 Sub·Reference나 이전 파일을 강제로 다시 열지 않습니다.
 
-**Card·Connections·Folder·Metadata의 실제 내용은 아직 미구현입니다.** 사이드바에는 보기 전환과 준비 중 안내가 표시됩니다. Main 본문 링크 클릭 팝업은 사용자 결정에 따라 보류했습니다.
+## 연결 파일 Card
+
+Main 지정 → 사이드바 `Link View → Card`에서 나가는 링크와 역링크의 파일을 함께 봅니다. 같은 파일은 한 번만 표시하며 Main 자체는 숨깁니다.
+
+- `연결 파일 추가` → 기존 Vault 파일 선택 → Main 상단 `link note` 속성에 링크를 추가합니다. 본문의 별도 링크 목록은 만들지 않으며, 이미 연결된 파일을 중복 추가하지 않습니다.
+- 한 번 클릭은 선택, Ctrl+클릭은 추가/해제, Shift+클릭은 범위 선택입니다. 더블클릭하면 단일 선택으로 바뀌고 Markdown은 Sub, 다른 파일은 Reference에서 열립니다. Markdown 우클릭 메뉴에서는 Reference로도 열 수 있습니다.
+- 카드 우클릭 → `새 Label 만들기` 또는 `Label 지정/교체`. 여러 카드를 선택하면 한꺼번에 적용하거나 제거합니다. 라벨 관리에서 이름·색을 바꾸면 사용 중인 카드에 함께 반영되며, 마지막 파일에서 제거된 라벨은 사라집니다.
+- 파일 유형과 여러 라벨로 필터링합니다. 라벨의 `All`은 개별 라벨 선택을 해제합니다. 필터를 접어도 선택 조건은 유지됩니다.
+- 선택한 카드를 다른 카드의 위/아래쪽으로 드래그하면 순서가 바뀝니다. 묶음 내부 순서는 유지되며 Esc로 취소할 수 있습니다.
+- 보기 형식 6종과 글자 크기 3종을 제공합니다. 카드 영역에서 Ctrl+마우스 휠로 보기 형식을 전환합니다.
+- Markdown 본문, 이미지, PDF 첫 페이지, Canvas 축소 그림, 영상 첫 프레임을 미리 봅니다. 지원하지 않거나 읽을 수 없는 자료는 파일 아이콘과 이름으로 표시합니다. 미리보기는 보이는 카드부터 처리하고 최근 결과를 재사용합니다.
+
+라벨·필터·보기 형식·글자 크기·카드 순서는 재시작 후 복원됩니다. 라벨과 순서 변경은 Markdown 내용이나 실제 파일 위치를 바꾸지 않습니다.
+
+**Connections·Folder·Metadata와 카드를 Main 본문에 드롭하는 기능은 후속 단계입니다.** Main 본문 링크 클릭 팝업은 사용자 결정에 따라 보류했습니다.
 
 ## BRAT 설치
 
 1. BRAT 설정에서 `Add beta plugin`을 선택합니다.
 2. `https://github.com/tlatndms2-droid/md-palette`를 입력해 설치합니다.
 3. Obsidian 설정 → 커뮤니티 플러그인에서 `MD Palette`를 활성화합니다.
-4. 표시 버전이 `0.0.2`인지 확인합니다. 기존 설치자는 BRAT 업데이트를 실행합니다.
+4. 표시 버전이 `0.0.3`인지 확인합니다. 기존 설치자는 BRAT 업데이트를 실행합니다.
 
-이번 단계의 사용자 확인 후에만 다음 단계인 Card 구현으로 진행합니다.
+이번 Card 단계의 사용자 확인 후에만 다음 Connections 단계로 진행합니다.
 
 ## 개발
 
@@ -41,9 +55,9 @@ npm test
 ```sh
 node node_modules/typescript/bin/tsc --noEmit
 node esbuild.config.mjs
-node --test tests/package.test.mjs
+node --test tests/*.test.mjs
 ```
 
 빌드 결과 `main.js`, `manifest.json`, `styles.css`가 Release 자산입니다. `scripts/`의 기술 시험은 전용 Sandbox에만 사용하며 일반 Vault에서 실행하지 않습니다.
 
-구현 범위와 단계는 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), 이번 검증 기록은 [STAGE1_VALIDATION.md](STAGE1_VALIDATION.md), 초기 기술 시험은 [STAGE0_VALIDATION.md](STAGE0_VALIDATION.md)를 참고하세요.
+구현 범위와 단계는 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), 이번 검증 기록은 [STAGE2_VALIDATION.md](STAGE2_VALIDATION.md), 이전 단계는 [STAGE1_VALIDATION.md](STAGE1_VALIDATION.md), 초기 기술 시험은 [STAGE0_VALIDATION.md](STAGE0_VALIDATION.md)를 참고하세요.

@@ -4,7 +4,7 @@
 
 저장소: https://github.com/tlatndms2-droid/md-palette
 
-상태: 1단계 0.0.2 구현·Sandbox UI/재시작 검증·Release·Sandbox BRAT 업데이트 확인 통과. 사용자 본인의 0.0.2 확인 대기. 2~7단계는 미시작.
+상태: 사용자 0.0.2 정상 작동 확인 완료. 2단계 0.0.3 Card 구현·Sandbox UI·재시작 검증 통과, 배포 절차 진행 중. 3~7단계는 미시작.
 
 ## 1. 진행 원칙
 
@@ -16,7 +16,7 @@
 - 문제가 발견되면 해당 구간부터 수정·재검증한다.
 - 미구현 기능은 릴리즈 설명에 명시한다. 부분 구현을 전체 완성으로 보고하지 않는다.
 - 기존 Planning Pack과 최신 사용자 확정 답변을 기능 기준으로 삼는다.
-- 2026-09-18 `0단계 진행`에 이어 `1단계 진행` 요청으로 1단계까지 실행했다. 2단계는 이번 버전의 사용자 확인과 진행 의사 확인 후 시작한다.
+- 2026-09-18 `2단계 진행` 및 `정상 작동했어` 답변으로 이전 단계 확인과 2단계 진행을 승인받았다. 연결 저장 위치는 `문서방식으로 진행` 답변에 따라 Main의 `link note` 속성으로 확정했다.
 
 ## 2. 구간별 결과물과 예상 시간
 
@@ -100,7 +100,9 @@
 
 0단계 배포: [0.0.1 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.1). 실행·스타일 파일은 Release 및 BRAT 설치본과 SHA-256 일치. BRAT이 manifest JSON을 한 줄로 다시 저장하여 바이트 해시는 다르지만 모든 값이 동일함을 확인했다. 세부 검증은 `STAGE0_VALIDATION.md` 참조.
 
-1단계 배포: [0.0.2 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.2). 실제 Sandbox UI, 프로세스 재시작, 공개 자산 및 BRAT 0.0.1 → 0.0.2 업데이트 후 데이터 보존 확인. manifest의 JSON 공백 차이만 제외하고 파일 일치. 세부 검증은 `STAGE1_VALIDATION.md` 참조. 사용자 확인 대기 중이다.
+1단계 배포: [0.0.2 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.2). 실제 Sandbox UI, 프로세스 재시작, 공개 자산 및 BRAT 0.0.1 → 0.0.2 업데이트 후 데이터 보존 확인. manifest의 JSON 공백 차이만 제외하고 파일 일치. 세부 검증은 `STAGE1_VALIDATION.md` 참조. 사용자가 정상 작동을 확인했다.
+
+2단계: 0.0.3 최종 빌드의 Card UI·재시작·2,013개 파일/411개 연결 카드 시험 통과. 배포 절차 진행 중이며 다음 단계는 사용자 본인의 0.0.3 확인 뒤 시작한다. 세부 검증은 `STAGE2_VALIDATION.md` 참조.
 
 - 공개 저장소: tlatndms2-droid/md-palette.
 - 초기 구간은 0.0.1부터 순차 증가, 최종 통합은 0.1.0. 공개 버전 덮어쓰기 금지.
