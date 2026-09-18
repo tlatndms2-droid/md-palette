@@ -4,7 +4,7 @@
 
 저장소: https://github.com/tlatndms2-droid/md-palette
 
-상태: 사용자 0.0.2 정상 작동 확인 완료. 2단계 0.0.3 Card 구현·Sandbox UI·재시작·공개 Release·Sandbox BRAT 업데이트 확인 통과. 사용자 본인의 0.0.3 확인 대기. 3~7단계는 미시작.
+상태: 사용자 0.0.2 정상 작동 확인 완료. 2단계 Card의 드래그 피드백을 반영한 0.0.4까지 Sandbox UI·재시작·공개 Release·Sandbox BRAT 업데이트 확인 통과. 사용자 본인의 0.0.4 확인 대기. 3~7단계는 미시작.
 
 ## 1. 진행 원칙
 
@@ -97,6 +97,8 @@
 ## 5. 배포·비용·중단 조건
 
 ### 단계별 배포
+
+2단계 후속 수정: [0.0.4 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.4). Canvas Palette 방식의 카드 삽입 안내선·드래그 반응성 개선. 411개 카드 비교·실제 단일/다중 드래그·취소·재시작·BRAT 0.0.3 → 0.0.4·원상 복원 통과. `STAGE2_DRAG_VALIDATION.md` 참조. 3단계는 사용자 확인 뒤 진행한다.
 
 0단계 배포: [0.0.1 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.1). 실행·스타일 파일은 Release 및 BRAT 설치본과 SHA-256 일치. BRAT이 manifest JSON을 한 줄로 다시 저장하여 바이트 해시는 다르지만 모든 값이 동일함을 확인했다. 세부 검증은 `STAGE0_VALIDATION.md` 참조.
 

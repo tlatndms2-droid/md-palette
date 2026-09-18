@@ -22,4 +22,7 @@
 
 ## 배포
 
-Sandbox 검증 통과. Release·BRAT·시험 후 복원 결과는 배포 후 기록한다. 사용자 본인의 확인 전에는 다음 단계로 넘어가지 않는다.
+- [0.0.4 공개 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.4), 구현 커밋 `7000bb0`. 공개 다운로드 3개 자산과 최종 빌드 SHA-256 일치.
+- BRAT 2.2.0 실제 업데이트 명령으로 **0.0.3 → 0.0.4**, 활성화·Card 순서/라벨·Space·기존 데이터 보존 확인. main.js/styles.css 바이트 일치, manifest는 JSON 공백 차이만 존재.
+- 검증 후 Sandbox 프로세스를 중지하고 원래 설정 4개를 복원·해시 비교했다. 시험 자료와 설치본은 `.artifacts/stage2-drag/validated-fixtures`, `validated-obsidian`에 보관했다.
+- 사용자 본인의 0.0.4 확인 대기. 3단계는 시작하지 않았다.

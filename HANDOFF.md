@@ -6,7 +6,8 @@
 ## 현재 요청과 상태
 
 - 최신 요청: 0.0.3 카드 드래그 렉·이동 위치 표시 개선. 같은 계정 Canvas Palette의 이동 방식을 참고하도록 요청받았다.
-- 0.0.4에서 카드 크기를 바꾸지 않는 밝은 안내선(다열 세로/단열 가로), 위치 캐시, 기존 카드 재배치로 수정했다. TypeScript·테스트 11개·411개 카드 Sandbox 드래그·재시작 통과. 현재 Release·BRAT 절차 진행 중이다.
+- 0.0.4에서 카드 크기를 바꾸지 않는 밝은 안내선(다열 세로/단열 가로), 위치 캐시, 기존 카드 재배치로 수정했다. TypeScript·테스트 11개·411개 카드 Sandbox 드래그·재시작 통과. [0.0.4 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.4) 자산 일치와 BRAT 0.0.3 → 0.0.4 업데이트·데이터 보존 확인 통과.
+- 최신 상태: **2단계 수정 버전 0.0.4 사용자 확인 대기**. Sandbox 종료·원래 설정 4개 해시 복원 완료. 시험 자료와 설치본은 `.artifacts/stage2-drag/validated-fixtures`, `validated-obsidian`에 보존했다. 아래 0.0.3 내용은 이전 구현 기록이다.
 - 이번 기록: STAGE2_DRAG_VALIDATION.md, 원시 증거 `.artifacts/stage2-drag/`. 2단계 수정이며 3단계는 시작하지 않는다.
 
 - 사용자 `2단계 진행` → 이전 단계 확인 질문 → `정상 작동했어`로 0.0.2 사용자 확인 완료.
