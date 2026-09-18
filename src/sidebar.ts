@@ -2,18 +2,21 @@ import { ItemView, WorkspaceLeaf, setIcon } from 'obsidian';
 import type MDPalettePlugin from './main';
 import type { LinkView, TopView } from './state';
 import { CardView } from './card-view';
+import { ConnectionsView } from './connections-view';
 
 export const VIEW_TYPE = 'md-palette-sidebar';
 export class PaletteView extends ItemView {
   private cards: CardView;
-  constructor(leaf: WorkspaceLeaf, private plugin: MDPalettePlugin) { super(leaf); this.cards = new CardView(plugin); }
+  private connections: ConnectionsView;
+  constructor(leaf: WorkspaceLeaf, private plugin: MDPalettePlugin) { super(leaf); this.cards = new CardView(plugin); this.connections = new ConnectionsView(plugin); }
   getViewType(): string { return VIEW_TYPE; }
   getDisplayText(): string { return 'MD Palette'; }
   getIcon(): string { return 'panels-top-left'; }
   async onOpen(): Promise<void> { this.render(); }
-  async onClose(): Promise<void> { this.cards.destroy(); }
+  async onClose(): Promise<void> { this.cards.destroy(); this.connections.destroy(); }
   render(): void {
     this.cards.destroy();
+    this.connections.destroy();
     const root = this.contentEl;
     root.empty(); root.addClass('mdp-sidebar');
     const heading = root.createDiv({ cls: 'mdp-heading' });
@@ -41,6 +44,8 @@ export class PaletteView extends ItemView {
       body.createEl('p', { text: '메인 스페이스에서는 Markdown 파일을 활성화해주세요.' });
     } else if (this.plugin.topView === 'link' && this.plugin.linkView === 'card') {
       this.cards.render(body);
+    } else if (this.plugin.topView === 'link' && this.plugin.linkView === 'connections') {
+      this.connections.render(body);
     } else {
       const label = this.plugin.topView === 'metadata' ? 'Metadata' : ({ card: 'Card', connections: 'Connections', folder: 'Folder' }[this.plugin.linkView]);
       body.createEl('p', { text: `${label} View는 다음 구현 단계에서 제공됩니다.` });

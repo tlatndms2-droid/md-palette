@@ -2,7 +2,7 @@
 
 Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 데스크톱 플러그인입니다.
 
-## 현재 버전: 0.0.4 — 카드 드래그 개선
+## 현재 버전: 0.0.5 — Connections 관계 탐색
 
 기존 Obsidian 탭 그룹에 Main·Sub·Reference 역할을 지정합니다. 역할 아이콘은 각 그룹에서 현재 활성화된 탭 이름 왼쪽에 표시됩니다. 색상은 Obsidian 테마와 강조색을 따릅니다. Obsidian 1.13.7 이상을 대상으로 합니다.
 
@@ -30,16 +30,25 @@ Main 지정 → 사이드바 `Link View → Card`에서 나가는 링크와 역�
 
 라벨·필터·보기 형식·글자 크기·카드 순서는 재시작 후 복원됩니다. 라벨과 순서 변경은 Markdown 내용이나 실제 파일 위치를 바꾸지 않습니다.
 
-**Connections·Folder·Metadata와 카드를 Main 본문에 드롭하는 기능은 후속 단계입니다.** Main 본문 링크 클릭 팝업은 사용자 결정에 따라 보류했습니다.
+## Connections
+
+`Link View → Connections`에서 Markdown 역링크·나가는 링크·Main 중심 그래프를 함께 봅니다. Outgoing은 본문과 `link note`의 링크입니다. 검색창과 필터는 제공하지 않습니다.
+
+- 한 번 클릭은 선택, 더블클릭은 Sub 열기, 우클릭은 Sub/Reference 선택입니다. 그래프 노드도 같습니다.
+- 각 제목으로 영역을 접고 펼칩니다. 구분선 드래그로 높이를 조절하며 Esc로 취소합니다. 구분선을 키보드로 선택한 뒤 위/아래 방향키로도 조절합니다. 높이와 접힘 상태는 재시작 후 복원됩니다.
+- 그래프에서 휠로 확대·축소하고 빈 공간을 드래그해 이동합니다. 빈 공간 더블클릭으로 전체 보기로 돌아옵니다. 연결이 많으면 마우스를 올리거나 선택한 노드의 이름을 표시합니다.
+- 상단 `연결 파일 추가`는 Card와 같은 `link note` 저장 방식을 사용합니다.
+
+**Folder·Metadata와 카드를 Main 본문에 드롭하는 기능은 후속 단계입니다.** Main 본문 링크 클릭 팝업은 사용자 결정에 따라 보류했습니다.
 
 ## BRAT 설치
 
 1. BRAT 설정에서 `Add beta plugin`을 선택합니다.
 2. `https://github.com/tlatndms2-droid/md-palette`를 입력해 설치합니다.
 3. Obsidian 설정 → 커뮤니티 플러그인에서 `MD Palette`를 활성화합니다.
-4. 표시 버전이 `0.0.4`인지 확인합니다. 기존 설치자는 BRAT 업데이트를 실행합니다.
+4. 표시 버전이 `0.0.5`인지 확인합니다. 기존 설치자는 BRAT 업데이트를 실행합니다.
 
-이번 Card 단계의 사용자 확인 후에만 다음 Connections 단계로 진행합니다.
+이번 Connections 단계의 사용자 확인 후에만 다음 Folder 단계로 진행합니다.
 
 ## 개발
 
@@ -60,4 +69,4 @@ node --test tests/*.test.mjs
 
 빌드 결과 `main.js`, `manifest.json`, `styles.css`가 Release 자산입니다. `scripts/`의 기술 시험은 전용 Sandbox에만 사용하며 일반 Vault에서 실행하지 않습니다.
 
-구현 범위와 단계는 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), 이번 검증 기록은 [STAGE2_VALIDATION.md](STAGE2_VALIDATION.md), 이전 단계는 [STAGE1_VALIDATION.md](STAGE1_VALIDATION.md), 초기 기술 시험은 [STAGE0_VALIDATION.md](STAGE0_VALIDATION.md)를 참고하세요.
+구현 범위와 단계는 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), 이번 검증 기록은 [STAGE3_VALIDATION.md](STAGE3_VALIDATION.md), Card 검증은 [STAGE2_VALIDATION.md](STAGE2_VALIDATION.md), 이전 단계는 [STAGE1_VALIDATION.md](STAGE1_VALIDATION.md), 초기 기술 시험은 [STAGE0_VALIDATION.md](STAGE0_VALIDATION.md)를 참고하세요.

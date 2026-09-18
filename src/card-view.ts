@@ -6,7 +6,7 @@ import { CardReorder } from './card-reorder';
 
 const typeNames = ['전체', 'MD', 'Canvas', 'PDF', '이미지', '영상', '기타'];
 const modeNames = ['큰 아이콘', '중간 아이콘', '작은 아이콘', '목록', '자세히', '타일'];
-class ConnectionPicker extends FuzzySuggestModal<TFile> {
+export class ConnectionPicker extends FuzzySuggestModal<TFile> {
   constructor(private plugin: MDPalettePlugin, private main: TFile) { super(plugin.app); this.setPlaceholder('연결할 기존 Vault 파일 선택'); }
   getItems(): TFile[] { return this.app.vault.getFiles().filter(f => f !== this.main); }
   getItemText(file: TFile): string { return file.path; }

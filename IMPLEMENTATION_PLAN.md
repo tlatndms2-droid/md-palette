@@ -4,7 +4,9 @@
 
 저장소: https://github.com/tlatndms2-droid/md-palette
 
-상태: 사용자 0.0.2 정상 작동 확인 완료. 2단계 Card의 드래그 피드백을 반영한 0.0.4까지 Sandbox UI·재시작·공개 Release·Sandbox BRAT 업데이트 확인 통과. 사용자 본인의 0.0.4 확인 대기. 3~7단계는 미시작.
+상태: 사용자 0.0.4 해결 확인 완료. 3단계 Connections 0.0.5 구현·Sandbox UI·재시작 검증 통과. 공개 Release·BRAT 검증 진행 중. 4~7단계 미시작.
+
+3단계 확정: 사용자의 `문서대로 진행해`에 따라 Connections 검색창·필터는 제외한다.
 
 ## 1. 진행 원칙
 

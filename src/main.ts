@@ -3,6 +3,7 @@ import { activeIn, arrange, fileIn, groupOf, groupsIn, isCentral, markdownIn, ne
 import { PaletteView, VIEW_TYPE } from './sidebar';
 import { readSpaces, type LinkView, type SavedSpaces, type TopView } from './state';
 import { readCards, pruneLabels, type CardState } from './cards-state';
+import { readConnections } from './connections-state';
 
 type Role = 'sub' | 'reference';
 class SpaceFilePicker extends FuzzySuggestModal<TFile> {
@@ -20,6 +21,7 @@ export default class MDPalettePlugin extends Plugin {
   topView: TopView = 'link';
   linkView: LinkView = 'card';
   cards: CardState = readCards(null);
+  connections = readConnections(null);
   private cardTimer?: number;
   private data: Record<string, unknown> = {};
   private saveAllowed = true;
@@ -48,6 +50,7 @@ export default class MDPalettePlugin extends Plugin {
     if (this.data.topView === 'metadata') this.topView = 'metadata';
     if (this.data.linkView === 'connections' || this.data.linkView === 'folder') this.linkView = this.data.linkView;
     this.cards = readCards(this.data.cards);
+    this.connections = readConnections(this.data.connections);
     this.registerView(VIEW_TYPE, leaf => new PaletteView(leaf, this));
     this.addRibbonIcon('panels-top-left', 'MD Palette 열기', () => this.run(() => this.openSidebar()));
     this.addCommand({ id: 'open-sidebar', name: '사이드바 열기', callback: () => this.run(() => this.openSidebar()) });
@@ -200,6 +203,7 @@ export default class MDPalettePlugin extends Plugin {
   selectView(top: TopView, link = this.linkView): void { this.topView = top; this.linkView = link; this.render(); this.persist(); }
   cardsChanged(): void { this.render(); this.persist(); }
   saveCardOrder(): void { this.persist(); }
+  saveConnections(): void { this.persist(); }
   connectedFiles(main = this.mainFile): TFile[] {
     if (!main) return [];
     const links = this.app.metadataCache.resolvedLinks;
@@ -308,7 +312,7 @@ export default class MDPalettePlugin extends Plugin {
     if (!this.ready || !this.saveAllowed) return;
     const space = (g?: Group) => g ? { groupId: g.id, activeFile: fileIn(this.app, activeIn(g))?.path ?? null } : undefined;
     const spaces: SavedSpaces = { main: space(this.mainGroup), sub: space(this.subGroup), reference: space(this.referenceGroup), emptySubId: this.emptySub?.id };
-    const next = { ...this.data, spaces, topView: this.topView, linkView: this.linkView, cards: structuredClone(this.cards) };
+    const next = { ...this.data, spaces, topView: this.topView, linkView: this.linkView, cards: structuredClone(this.cards), connections: structuredClone(this.connections) };
     const serialized = JSON.stringify(next);
     if (serialized === this.persistedJSON) return;
     this.data = next;

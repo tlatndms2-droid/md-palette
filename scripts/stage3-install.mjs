@@ -1,0 +1,2 @@
+import {connect} from './cdp.mjs';import {cp} from 'node:fs/promises';
+const c=await connect();try{const v=await c.evaluate('app.vault.adapter.getBasePath()');await c.evaluate(`app.plugins.disablePlugin('md-palette').then(()=>true)`);for(const n of ['main.js','manifest.json','styles.css'])await cp(n,v+'/.obsidian/plugins/md-palette/'+n);await c.evaluate(`app.plugins.enablePlugin('md-palette').then(()=>true)`);}finally{c.close()}
