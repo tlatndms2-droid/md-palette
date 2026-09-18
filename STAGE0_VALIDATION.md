@@ -35,4 +35,12 @@
 
 ## 배포 및 사용자 확인
 
-Release와 Sandbox BRAT 결과는 배포 검증 후 갱신한다. 사용자 본인의 BRAT 확인은 별도이며, 그 확인 전에는 1단계를 시작하지 않는다.
+- [0.0.1 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.1)의 세 자산을 인증 없이 공개 URL에서 다시 내려받아 로컬 빌드와 SHA-256 일치를 확인했다.
+- BRAT 2.2.0의 Add beta plugin 화면에 공개 저장소를 입력하고 Latest version을 선택해 실제 설치했다. 수동 설치본은 먼저 별도 보관하여 새 설치 경로를 확인했다.
+- BRAT 설치 후 MD Palette 0.0.1 로드·활성 상태 및 BRAT 추적 목록을 확인했다. 설정 토글 및 프로세스 재시작 후 상태도 재확인했다.
+- `main.js`: `dd3fc02d2667e31ae7327c9eeeed83c5cb72d1fb744f49ea18f76869f5e963d8`.
+- `styles.css`: `050ad5d1504563b54225e50ebba9eb761e1eab5ae09922a8f536f791151eef02`.
+- Release `manifest.json`: `f6de260369cb0bfb97d82c2eb057d2a3a04b1e5ffe34aa4b990997ef3a289901`.
+- BRAT 설치 `manifest.json`: `ae89e14edca44f63deaf9ed05da26e489f89fd9661255f59712b6f0ffd2ce061`. BRAT의 JSON 재직렬화로 공백·줄바꿈만 다르며 파싱한 모든 값이 동일하다.
+- 검증 후 Sandbox 프로세스를 중지했다. 시험용 설치 상태·자료는 `.artifacts/validated-obsidian`, `.artifacts/validated-fixtures`에 보관하고 원래 설정을 복원했다. `app.json`, `appearance.json`, `core-plugins.json`, `workspace.json` 모두 백업과 SHA-256 일치.
+- 사용자 본인의 BRAT 확인은 아직 미수행이다. 현재는 **사용자 확인 대기**이며, 그 확인과 다음 단계 진행 의사 확인 전에는 1단계를 시작하지 않는다.

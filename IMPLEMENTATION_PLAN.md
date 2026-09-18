@@ -4,7 +4,7 @@
 
 저장소: https://github.com/tlatndms2-droid/md-palette
 
-상태: 계획 확정 및 문서화. 플러그인 구현은 아직 시작하지 않았다.
+상태: 0단계 0.0.1 구현·Sandbox 검증·Release·Sandbox BRAT 확인 통과. 사용자 본인의 BRAT 확인 대기. 1~7단계는 미시작.
 
 ## 1. 진행 원칙
 
@@ -16,7 +16,7 @@
 - 문제가 발견되면 해당 구간부터 수정·재검증한다.
 - 미구현 기능은 릴리즈 설명에 명시한다. 부분 구현을 전체 완성으로 보고하지 않는다.
 - 기존 Planning Pack과 최신 사용자 확정 답변을 기능 기준으로 삼는다.
-- 이 문서 저장 요청은 구현 시작 승인이 아니다.
+- 2026-09-18 사용자의 `0단계 진행` 요청으로 0단계만 실행했다. 다음 단계는 사용자 BRAT 확인과 진행 의사 확인 후 시작한다.
 
 ## 2. 구간별 결과물과 예상 시간
 
@@ -97,6 +97,8 @@
 
 ### 단계별 배포
 
+0단계 배포: [0.0.1 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.1). 실행·스타일 파일은 Release 및 BRAT 설치본과 SHA-256 일치. BRAT이 manifest JSON을 한 줄로 다시 저장하여 바이트 해시는 다르지만 모든 값이 동일함을 확인했다. 세부 검증은 `STAGE0_VALIDATION.md` 참조.
+
 - 공개 저장소: tlatndms2-droid/md-palette.
 - 초기 구간은 0.0.1부터 순차 증가, 최종 통합은 0.1.0. 공개 버전 덮어쓰기 금지.
 - main.js, manifest.json, styles.css와 변경 설명 제공.
@@ -104,7 +106,7 @@
 - 배포 파일과 검증 빌드 일치 확인, 격리 Sandbox에서 BRAT 설치·업데이트 경로 확인.
 - 사용자에게 릴리즈 링크·버전·이번 기능의 클릭 순서와 기대 결과 체크리스트 제공.
 - 사용자 본인의 BRAT 확인은 Sandbox 검증과 구분하고 다음 구간 진행 전 기다린다.
-- 문서만 저장하는 현재 작업에는 Release·BRAT·Sandbox를 추가하지 않는다.
+- 문서만 변경하는 작업에는 Release·BRAT·Sandbox를 추가하지 않는다.
 
 ### 예상 비용
 
