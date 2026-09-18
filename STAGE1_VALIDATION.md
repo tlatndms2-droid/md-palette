@@ -37,4 +37,13 @@ Space 및 사이드바 뼈대만 구현했다. Card·Connections·Folder·Metada
 
 ## 배포 및 사용자 확인
 
-Release 자산 및 BRAT 업데이트 결과는 확인 후 이 문서와 HANDOFF에 기록한다. 사용자 본인의 BRAT 확인은 자동 검증과 별도이며, 확인 전 2단계를 시작하지 않는다.
+- [0.0.2 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.2) 공개 자산 세 파일을 인증 없는 URL로 내려받아 최종 로컬 빌드와 SHA-256 일치를 확인했다.
+- BRAT 2.2.0의 실제 명령어 팔레트에서 업데이트를 실행하여 **0.0.1 → 0.0.2** 안내 및 로드 버전을 확인했다. 기존 역할·탭·보기 선택·알 수 없는 저장 필드가 유지됐다.
+- 업데이트 후 같은 Sandbox 프로세스를 재시작하고 역할과 저장 상태를 다시 확인했다.
+- `main.js`: `5c5521e60e520344fd0732015bcaa21c875e5246485d161b3a1b3f8a81b91d41` (23,466 bytes).
+- `styles.css`: `c8791f003c204600e9c862e78e8db4c550ab321fa56887c77ea096db97c5ade5`.
+- Release `manifest.json`: `65d8ca263f0e0e19fe4252615bf65d17cb523898fe52e43be78550a04184c492`.
+- BRAT 설치 manifest: `d4e4f618607bcc6bf42c81da70853ba9945b2c0dbeed4fa3ec9cbd8688ffbe87`. JSON 재직렬화로 공백·줄바꿈만 다르고 파싱한 값은 모두 동일.
+- Markdown 7개와 이미지 원문은 그대로이며 Canvas 노드·연결 데이터도 불변. Canvas는 Obsidian 저장 과정의 JSON 서식 차이만 있었다.
+- Sandbox 프로세스를 중지한 뒤 시험 자료·설치 상태를 `.artifacts/stage1/validated-fixtures`, `validated-obsidian`으로 보관했다. 원래 `app.json`, `appearance.json`, `core-plugins.json`, `workspace.json`을 복원하고 백업과 해시 일치를 확인했다.
+- 사용자 본인의 0.0.2 확인은 아직 미수행이다. **1단계 사용자 확인 대기**이며 확인 전 2단계를 시작하지 않는다.
