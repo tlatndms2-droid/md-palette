@@ -28,7 +28,7 @@ try{
     let live;for(let i=0;i<150;i++){live=await c.evaluate(`(()=>{const p=app.plugins.plugins['md-palette'];return {version:p?.manifest.version,enabled:app.plugins.enabledPlugins.has('md-palette'),spaces:p?.data.spaces,cards:p?.cards,connections:p?.connections,unknown:p?.data.preservedFixture}})()`);if(live.version==='0.0.6'&&live.spaces?.main)break;await pause(200);}
     assert.equal(live.version,'0.0.6');assert.ok(live.enabled);
     const saved=JSON.parse(await readFile(`${dir}/data-before-brat.json`,'utf8'));
-    assert.deepEqual(live.spaces,saved.spaces);assert.deepEqual(live.cards,saved.cards);assert.deepEqual(live.connections,saved.connections);assert.deepEqual(live.unknown,saved.preservedFixture);
+    assert.deepEqual(live.spaces,saved.spaces);assert.deepEqual(live.cards,saved.cards);assert.deepEqual(live.connections.heights,saved.connections.heights);assert.deepEqual(live.connections.collapsed,saved.connections.collapsed);assert.deepEqual(live.unknown,saved.preservedFixture);
     const assets=[];
     for(const name of ['main.js','manifest.json','styles.css']){
       const local=await readFile(name),installed=await readFile(`${vault}/.obsidian/plugins/md-palette/${name}`);

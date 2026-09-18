@@ -4,7 +4,7 @@
 
 저장소: https://github.com/tlatndms2-droid/md-palette
 
-상태: 3단계 0.0.6 속성 연결 누락·기본 Local Graph 수정 검증 통과. 공개 Release·BRAT 검증 진행 중. 사용자 확인용 Sandbox 유지. 4~7단계 미시작.
+상태: 3단계 0.0.6 속성 연결 누락·기본 Local Graph 수정 검증 통과. 공개 Release·Sandbox BRAT 0.0.5 → 0.0.6 검증 통과. 사용자 본인 확인 대기, 확인용 Sandbox 유지. 4~7단계 미시작.
 
 3단계 후속 확정: 모든 속성의 Markdown 연결을 표시하고 Obsidian 기본 Local Graph를 재사용한다. 기본 그래프 안의 설정 UI는 유지한다. 사용자 직접 확인을 위해 Sandbox와 시험 자료를 남기며 자동 종료·원상 복원하지 않는다.
 
@@ -80,7 +80,7 @@
 - 실제 작업 Vault와 사용자 마우스를 조작하지 않는다.
 - 버튼·메뉴·선택·드래그를 실제 Sandbox에서 실행하고 화면 결과를 확인한다.
 - 설치 빌드·버전을 확인하고 필요한 저장 상태는 같은 Sandbox 재시작 후 확인한다.
-- 테스트 자료는 스킬에 따라 백업·복원하고 결과를 확인한다.
+- 테스트 자료는 스킬에 따라 백업하고 검증 결과와 함께 유지한다. 사용자 최신 요청에 따라 Sandbox를 열어두며, 종료·정리·복원은 사용자 요청 시에만 수행한다.
 - 기존 기능은 변경 영향 부분과 핵심 흐름만 재검증한다. 매 구간 전체 검증을 반복하지 않는다.
 - Computer Use로 임의 전환하지 않는다.
 - 실행 방법 한 번의 실패를 UI 미검증으로 처리하지 않는다. 스킬의 안전한 대체 경로를 수행한다.
@@ -101,6 +101,8 @@
 ## 5. 배포·비용·중단 조건
 
 ### 단계별 배포
+
+3단계 수정: [0.0.6 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.6). 모든 속성의 Markdown 연결과 Obsidian 기본 Local Graph, 실제 UI·재시작·공개 자산·BRAT 업데이트 검증 통과. 사용자 확인용 Sandbox 유지. STAGE3_FIX_VALIDATION.md 참조.
 
 3단계 배포: [0.0.5 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.5). Connections 역링크·Outgoing·그래프, 열기·접기·높이·저장·재시작·BRAT·원상 복원 확인 통과. 검색·필터는 사용자 결정으로 제외. `STAGE3_VALIDATION.md` 참조. 다음 단계는 사용자 본인 확인 뒤 진행한다.
 

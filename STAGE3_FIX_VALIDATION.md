@@ -30,4 +30,8 @@
 - 기존 설정 백업과 해시: .artifacts/stage3-fix/backup-obsidian, backup-hashes.json. 실제 Vault 미접근.
 - 시험 화면·보고서: .artifacts/stage3-fix. scripts/stage3-fix-*.mjs.
 
-공개 Release·BRAT 검증 후 결과를 갱신한다. 사용자 확인은 대기하며 4단계 미시작.
+공개 [0.0.6 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.6), 구현 커밋 500e11d. 공개 main.js/manifest.json/styles.css가 검증 빌드와 SHA-256 일치. 실제 Sandbox BRAT 2.2.0 업데이트 명령으로 0.0.5 → 0.0.6 활성화·Card/Space/영역 높이/접힘 및 알 수 없는 설정 보존 확인. main.js/styles.css 바이트 일치, manifest는 BRAT 공백 재직렬화만 다르고 값 일치.
+
+BRAT 검사의 최초 비교는 시험용 0.0.6 그래프 옵션까지 포함한 뒤 0.0.5로 내려 검증해 실패했다. 0.0.5에서 지원하는 높이·접힘을 비교하도록 수정해 통과했다. 네이티브 그래프 옵션의 보존은 별도 0.0.6 프로세스 재시작에서 통과했고, BRAT 후 사용자 확인 화면에도 이를 다시 적용·확인했다.
+
+마지막 확인: 0.0.6, Connections-Review/Main.md, 목록 7행, native graph 8노드. Sandbox·자료·설정은 그대로 열어두었다. 사용자 확인은 대기하며 4단계 미시작.
