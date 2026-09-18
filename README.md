@@ -2,7 +2,7 @@
 
 Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 데스크톱 플러그인입니다.
 
-## 현재 버전: 0.0.5 — Connections 관계 탐색
+## 현재 버전: 0.0.6 — 속성 연결 누락 수정·Obsidian 기본 로컬 그래프
 
 기존 Obsidian 탭 그룹에 Main·Sub·Reference 역할을 지정합니다. 역할 아이콘은 각 그룹에서 현재 활성화된 탭 이름 왼쪽에 표시됩니다. 색상은 Obsidian 테마와 강조색을 따릅니다. Obsidian 1.13.7 이상을 대상으로 합니다.
 
@@ -32,11 +32,11 @@ Main 지정 → 사이드바 `Link View → Card`에서 나가는 링크와 역�
 
 ## Connections
 
-`Link View → Connections`에서 Markdown 역링크·나가는 링크·Main 중심 그래프를 함께 봅니다. Outgoing은 본문과 `link note`의 링크입니다. 검색창과 필터는 제공하지 않습니다.
+`Link View → Connections`에서 Markdown 역링크·나가는 링크·Main 중심 그래프를 함께 봅니다. Outgoing은 본문과 모든 속성의 Markdown 링크입니다. `child note`, `parent note`, `link note`도 포함합니다. Connections 목록의 별도 검색창·필터는 추가하지 않습니다.
 
-- 한 번 클릭은 선택, 더블클릭은 Sub 열기, 우클릭은 Sub/Reference 선택입니다. 그래프 노드도 같습니다.
+- 목록은 한 번 클릭으로 선택, 더블클릭으로 Sub 열기, 우클릭으로 Sub/Reference를 선택합니다. 기본 그래프 노드는 클릭하면 Markdown은 Sub, 다른 파일은 Reference에서 열립니다. 우클릭으로 열 위치를 선택할 수 있습니다.
 - 각 제목으로 영역을 접고 펼칩니다. 구분선 드래그로 높이를 조절하며 Esc로 취소합니다. 구분선을 키보드로 선택한 뒤 위/아래 방향키로도 조절합니다. 높이와 접힘 상태는 재시작 후 복원됩니다.
-- 그래프에서 휠로 확대·축소하고 빈 공간을 드래그해 이동합니다. 빈 공간 더블클릭으로 전체 보기로 돌아옵니다. 연결이 많으면 마우스를 올리거나 선택한 노드의 이름을 표시합니다.
+- 그래프는 Obsidian 기본 Local Graph 화면을 그대로 사용합니다. 기본 확대·이동·노드 배치와 설정 버튼의 필터·그룹·표시·장력 조절을 사용할 수 있고 설정을 저장합니다. 목록은 Markdown만 표시하고, 그래프의 표시 대상은 Obsidian 기본 동작과 그래프 설정을 따릅니다. Main을 중심으로 유지하며 다른 Obsidian 그래프의 설정은 바꾸지 않습니다. 코어 플러그인의 그래프 보기가 꺼져 있으면 켜는 위치를 안내합니다.
 - 상단 `연결 파일 추가`는 Card와 같은 `link note` 저장 방식을 사용합니다.
 
 **Folder·Metadata와 카드를 Main 본문에 드롭하는 기능은 후속 단계입니다.** Main 본문 링크 클릭 팝업은 사용자 결정에 따라 보류했습니다.
@@ -46,7 +46,7 @@ Main 지정 → 사이드바 `Link View → Card`에서 나가는 링크와 역�
 1. BRAT 설정에서 `Add beta plugin`을 선택합니다.
 2. `https://github.com/tlatndms2-droid/md-palette`를 입력해 설치합니다.
 3. Obsidian 설정 → 커뮤니티 플러그인에서 `MD Palette`를 활성화합니다.
-4. 표시 버전이 `0.0.5`인지 확인합니다. 기존 설치자는 BRAT 업데이트를 실행합니다.
+4. 표시 버전이 `0.0.6`인지 확인합니다. 기존 설치자는 BRAT 업데이트를 실행합니다.
 
 이번 Connections 단계의 사용자 확인 후에만 다음 Folder 단계로 진행합니다.
 
@@ -69,4 +69,4 @@ node --test tests/*.test.mjs
 
 빌드 결과 `main.js`, `manifest.json`, `styles.css`가 Release 자산입니다. `scripts/`의 기술 시험은 전용 Sandbox에만 사용하며 일반 Vault에서 실행하지 않습니다.
 
-구현 범위와 단계는 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), 이번 검증 기록은 [STAGE3_VALIDATION.md](STAGE3_VALIDATION.md), Card 검증은 [STAGE2_VALIDATION.md](STAGE2_VALIDATION.md), 이전 단계는 [STAGE1_VALIDATION.md](STAGE1_VALIDATION.md), 초기 기술 시험은 [STAGE0_VALIDATION.md](STAGE0_VALIDATION.md)를 참고하세요.
+구현 범위와 단계는 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), 이번 수정 검증은 [STAGE3_FIX_VALIDATION.md](STAGE3_FIX_VALIDATION.md), 최초 Connections 검증은 [STAGE3_VALIDATION.md](STAGE3_VALIDATION.md), Card 검증은 [STAGE2_VALIDATION.md](STAGE2_VALIDATION.md), 이전 단계는 [STAGE1_VALIDATION.md](STAGE1_VALIDATION.md), 초기 기술 시험은 [STAGE0_VALIDATION.md](STAGE0_VALIDATION.md)를 참고하세요.

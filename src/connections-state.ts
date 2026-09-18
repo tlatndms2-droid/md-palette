@@ -1,10 +1,11 @@
 export const sectionKeys = ['backlinks', 'outgoing', 'graph'] as const;
 export type SectionKey = typeof sectionKeys[number];
-export interface ConnectionsState { heights: Record<SectionKey, number>; collapsed: Record<SectionKey, boolean> }
+export interface ConnectionsState { graphOptions?: Record<string, unknown>; heights: Record<SectionKey, number>; collapsed: Record<SectionKey, boolean> }
 export function readConnections(value: unknown): ConnectionsState {
   const state: ConnectionsState = { heights: { backlinks: 25, outgoing: 25, graph: 50 }, collapsed: { backlinks: false, outgoing: false, graph: false } };
   if (!value || typeof value !== 'object') return state;
   const raw = value as Partial<ConnectionsState>;
+  if (raw.graphOptions && typeof raw.graphOptions === 'object' && !Array.isArray(raw.graphOptions)) state.graphOptions = structuredClone(raw.graphOptions);
   for (const key of sectionKeys) {
     const n = raw.heights?.[key];
     if (typeof n === 'number' && Number.isFinite(n) && n > 0) state.heights[key] = Math.max(1, Math.min(1000, n));

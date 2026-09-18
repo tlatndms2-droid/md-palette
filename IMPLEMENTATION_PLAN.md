@@ -4,9 +4,11 @@
 
 저장소: https://github.com/tlatndms2-droid/md-palette
 
-상태: 사용자 0.0.4 해결 확인 완료. 3단계 Connections 0.0.5 구현·Sandbox UI·재시작 검증 통과. 공개 Release·Sandbox BRAT 0.0.4 → 0.0.5 검증 및 원상 복원 통과. 사용자 본인의 0.0.5 확인 대기. 4~7단계 미시작.
+상태: 3단계 0.0.6 속성 연결 누락·기본 Local Graph 수정 검증 통과. 공개 Release·BRAT 검증 진행 중. 사용자 확인용 Sandbox 유지. 4~7단계 미시작.
 
-3단계 확정: 사용자의 `문서대로 진행해`에 따라 Connections 검색창·필터는 제외한다.
+3단계 후속 확정: 모든 속성의 Markdown 연결을 표시하고 Obsidian 기본 Local Graph를 재사용한다. 기본 그래프 안의 설정 UI는 유지한다. 사용자 직접 확인을 위해 Sandbox와 시험 자료를 남기며 자동 종료·원상 복원하지 않는다.
+
+3단계 최초 확정: 사용자의 `문서대로 진행해`에 따라 Connections 검색창·필터는 제외한다.
 
 ## 1. 진행 원칙
 

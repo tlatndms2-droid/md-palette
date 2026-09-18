@@ -3,7 +3,17 @@
 갱신일: 2026-09-18
 저장소: https://github.com/tlatndms2-droid/md-palette
 
-## 현재 요청과 상태 — 3단계
+## 최신 요청과 상태 — 3단계 수정 0.0.6
+
+- 사용자 이미지에서 child note 연결이 Card에는 보이고 Connections에는 누락됨, 자체 그래프 대신 Obsidian 기본 로컬 그래프를 요청. 사용자 진행해로 수정 승인.
+- Outgoing의 본문/link note 제한을 없애 모든 속성의 Markdown 링크를 포함했다. 연결 추가 저장은 기존 link note 그대로다.
+- 자체 SVG 그래프를 제거하고 Obsidian 등록 localgraph View·renderer·engine·기본 설정 UI를 재사용한다. Main에 고정하며 파일 열기만 Sub/Reference로 연결한다.
+- 공개 임베드 API가 없어 native-local-graph.ts에 내부 API 접근과 기능 검사를 격리했다. Obsidian 1.13.7에서 기본 그래프와 생성자 동일성, 실제 설정·마우스 동작·다른 그래프 독립성·정리·재시작 확인.
+- 타입 검사·13개 테스트·실제 Sandbox UI·대량 자료·프로세스 재시작·최종 자산·이전 Card 상태·원문 불변 확인 통과. 배포와 BRAT 검증을 이어서 진행한다.
+- **사용자 최신 요청에 따라 검증 후 Sandbox를 종료/원상 복원하지 않는다.** 검증 전 백업은 .artifacts/stage3-fix/backup-obsidian에 보관한다. 종료·정리는 사용자 요청 시에만, 사용자 변경 내용 보존 후 처리한다.
+- 사용자 확인 화면: Connections-Review/Main.md, MD Palette → Connections. 4단계 미시작.
+
+## 이전 0.0.5 기록 (당시 상태)
 
 - 사용자가 2단계 해결 사실을 재확인하고 3단계 진행을 요청했다. 과거 0.0.4 확인 대기 기록으로 재질문하지 않는다.
 - 검색·필터의 문서/이미지 차이를 재대조한 뒤 사용자 **문서대로 진행해**로 확정: Connections 검색창·필터 제외. 기존 이미지의 3영역 구조와 파일 열기 동작을 따른다.

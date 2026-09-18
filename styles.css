@@ -91,13 +91,9 @@
 .mdp-connection-divider > span { z-index: 1; background: var(--background-primary); padding: 0 5px; }
 .mdp-connection-divider:hover::before, .mdp-connection-divider:focus-visible::before { background: var(--interactive-accent); }
 .mdp-connection-divider.is-disabled { cursor: default; opacity: .35; }
-.mdp-local-graph { overflow: hidden; border: 1px solid var(--background-modifier-border); border-radius: 4px; }
-.mdp-local-graph > svg { width: 100%; height: 100%; display: block; touch-action: none; user-select: none; }
-.mdp-graph-edge { stroke: var(--text-faint); stroke-width: 1; opacity: .5; }
-.mdp-graph-node { cursor: pointer; outline: none; }
-.mdp-graph-node circle { fill: var(--text-muted); stroke: var(--background-primary); stroke-width: 2; }
-.mdp-graph-node.is-main circle, .mdp-graph-node:hover circle, .mdp-graph-node.is-selected circle, .mdp-graph-node:focus circle { fill: var(--interactive-accent); }
-.mdp-graph-node text { fill: var(--text-normal); font-size: 12px; paint-order: stroke; stroke: var(--background-primary); stroke-width: 3px; stroke-linejoin: round; }
-.mdp-graph-node.is-dense text { visibility: hidden; }
-.mdp-graph-node.is-dense:hover text, .mdp-graph-node.is-dense:focus text, .mdp-graph-node.is-dense.is-selected text { visibility: visible; }
 .mdp-sidebar .mdp-connection-header { justify-content: flex-start; border: 0; box-shadow: none; background: transparent; }
+
+.mdp-native-graph { position: relative; overflow: hidden; min-height: 0; }
+.mdp-native-graph-view { height: 100%; width: 100%; position: relative; }
+.mdp-native-graph-view > .view-header { display: none; }
+.mdp-native-graph-view > .view-content { height: 100%; padding: 0; }

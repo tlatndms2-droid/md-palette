@@ -8,15 +8,17 @@ export const VIEW_TYPE = 'md-palette-sidebar';
 export class PaletteView extends ItemView {
   private cards: CardView;
   private connections: ConnectionsView;
-  constructor(leaf: WorkspaceLeaf, private plugin: MDPalettePlugin) { super(leaf); this.cards = new CardView(plugin); this.connections = new ConnectionsView(plugin); }
+  constructor(leaf: WorkspaceLeaf, private plugin: MDPalettePlugin) { super(leaf); this.cards = new CardView(plugin); this.connections = new ConnectionsView(plugin, leaf); }
   getViewType(): string { return VIEW_TYPE; }
   getDisplayText(): string { return 'MD Palette'; }
   getIcon(): string { return 'panels-top-left'; }
   async onOpen(): Promise<void> { this.render(); }
   async onClose(): Promise<void> { this.cards.destroy(); this.connections.destroy(); }
   render(): void {
+    if (this.plugin.topView === 'link' && this.plugin.linkView === 'connections' && this.connections.isCurrent()) return;
     this.cards.destroy();
-    this.connections.destroy();
+    this.connections.prepareRender();
+    if (!(this.plugin.mainFile && this.plugin.topView === 'link' && this.plugin.linkView === 'connections')) this.connections.destroy();
     const root = this.contentEl;
     root.empty(); root.addClass('mdp-sidebar');
     const heading = root.createDiv({ cls: 'mdp-heading' });
