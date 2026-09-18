@@ -199,6 +199,7 @@ export default class MDPalettePlugin extends Plugin {
   }
   selectView(top: TopView, link = this.linkView): void { this.topView = top; this.linkView = link; this.render(); this.persist(); }
   cardsChanged(): void { this.render(); this.persist(); }
+  saveCardOrder(): void { this.persist(); }
   connectedFiles(main = this.mainFile): TFile[] {
     if (!main) return [];
     const links = this.app.metadataCache.resolvedLinks;

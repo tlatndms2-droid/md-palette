@@ -2,6 +2,7 @@ import { FuzzySuggestModal, Menu, Modal, Notice, TFile, setIcon } from 'obsidian
 import type MDPalettePlugin from './main';
 import { classify, displayModes, fileTypes, pruneLabels, reorder, type Label } from './cards-state';
 import { Thumbnails } from './thumbnails';
+import { CardReorder } from './card-reorder';
 
 const typeNames = ['전체', 'MD', 'Canvas', 'PDF', '이미지', '영상', '기타'];
 const modeNames = ['큰 아이콘', '중간 아이콘', '작은 아이콘', '목록', '자세히', '타일'];
@@ -63,12 +64,12 @@ export class CardView {
   private anchor?: string;
   private active?: string;
   private mainPath?: string;
-  private dragPaths?: string[];
+  private reorderDrag?: CardReorder;
   private root?: HTMLElement;
   private visible: TFile[] = [];
   private scrollTop = 0;
   constructor(private plugin: MDPalettePlugin) {}
-  destroy(): void { if (this.root?.isConnected) this.scrollTop = this.root.querySelector('.mdp-card-grid')?.scrollTop ?? this.scrollTop; this.thumbnails?.destroy(); this.thumbnails = undefined; this.dragPaths = undefined; }
+  destroy(): void { if (this.root?.isConnected) this.scrollTop = this.root.querySelector('.mdp-card-grid')?.scrollTop ?? this.scrollTop; this.thumbnails?.destroy(); this.thumbnails = undefined; this.reorderDrag?.destroy(); this.reorderDrag = undefined; }
   render(root: HTMLElement): void {
     this.destroy(); this.root = root;
     const main = this.plugin.mainFile; if (!main) return;
@@ -99,6 +100,19 @@ export class CardView {
     const grid = root.createDiv({ cls: `mdp-card-grid mdp-display-${state.display} mdp-text-${state.textSize}`, attr: { role: 'listbox', 'aria-label': '연결 파일 카드', 'aria-multiselectable': 'true' } });
     if (!this.visible.length) grid.createDiv({ cls: 'mdp-muted mdp-no-cards', text: connected.length ? '필터에 맞는 파일이 없습니다.' : '연결된 파일이 없습니다. 위 버튼으로 기존 파일을 연결하세요.' });
     this.thumbnails = new Thumbnails(this.plugin.app, grid);
+    this.reorderDrag = new CardReorder(grid, (paths, target, after) => {
+      const next = reorder(state.order, paths, target, after);
+      if (next.every((p, i) => p === state.order[i])) return;
+      const elements = Array.from(grid.querySelectorAll<HTMLElement>('.mdp-card'));
+      const anchor = elements.find(el => el.dataset.path === target); if (!anchor) return;
+      const moved = new Set(paths), fragment = grid.ownerDocument.createDocumentFragment();
+      for (const el of elements) if (moved.has(el.dataset.path!)) fragment.append(el);
+      grid.insertBefore(fragment, after ? anchor.nextSibling : anchor);
+      state.order = next;
+      const rank = new Map(next.map((path, index) => [path, index]));
+      this.visible.sort((a, b) => rank.get(a.path)! - rank.get(b.path)!);
+      this.plugin.saveCardOrder();
+    });
     grid.addEventListener('wheel', e => {
       if (!e.ctrlKey) return; e.preventDefault();
       const index = displayModes.indexOf(state.display), next = Math.max(0, Math.min(displayModes.length - 1, index + (e.deltaY > 0 ? 1 : -1)));
@@ -128,17 +142,12 @@ export class CardView {
       };
       card.ondragstart = e => {
         if (!this.selected.has(file.path)) { this.selected = new Set([file.path]); this.active = this.anchor = file.path; this.paint(); }
-        this.dragPaths = this.visible.map(f => f.path).filter(p => this.selected.has(p));
+        const paths = this.visible.map(f => f.path).filter(p => this.selected.has(p));
         e.dataTransfer?.setData('application/x-md-palette-reorder', this.mainPath!);
         if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
-        card.classList.add('is-dragging');
+        this.reorderDrag?.start(paths);
       };
-      card.ondragover = e => { if (!this.dragPaths) return; e.preventDefault(); this.clearDrop(); const r = card.getBoundingClientRect(); card.classList.add(e.clientY > r.y + r.height / 2 ? 'mdp-drop-after' : 'mdp-drop-before'); };
-      card.ondrop = e => { if (!this.dragPaths) return; e.preventDefault(); e.stopPropagation(); const r = card.getBoundingClientRect(); state.order = reorder(state.order, this.dragPaths, file.path, e.clientY > r.y + r.height / 2); this.dragPaths = undefined; this.plugin.cardsChanged(); };
-      card.ondragend = () => { this.dragPaths = undefined; this.clearDrop(); card.classList.remove('is-dragging'); };
     }
-    grid.ondragover = e => { if (this.dragPaths) e.preventDefault(); };
-    grid.ondrop = e => { if (!this.dragPaths || e.target !== grid) return; e.preventDefault(); state.order = reorder(state.order, this.dragPaths, null, false); this.dragPaths = undefined; this.plugin.cardsChanged(); };
     grid.scrollTop = this.scrollTop;
     this.paint();
   }
@@ -176,7 +185,6 @@ export class CardView {
     menu.addItem(item => item.setTitle('Label 관리…').setIcon('settings').onClick(() => new LabelEditor(this.plugin).open()));
     menu.showAtMouseEvent(event);
   }
-  private clearDrop(): void { this.root?.querySelectorAll('.mdp-drop-before,.mdp-drop-after').forEach(e => e.classList.remove('mdp-drop-before', 'mdp-drop-after')); }
   private section(root: HTMLElement, title: string, collapsed: boolean, toggle: () => void): HTMLElement {
     const section = root.createDiv({ cls: 'mdp-filter-section' });
     const button = section.createEl('button', { text: `${title} ${collapsed ? '▸' : '▾'}`, cls: 'mdp-filter-toggle', attr: { 'aria-expanded': String(!collapsed) } }); button.onclick = toggle;
