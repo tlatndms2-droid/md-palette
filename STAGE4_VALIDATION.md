@@ -7,7 +7,8 @@
 - 사용자 `4단계 진행` 및 정렬 전체 옵션 구현 승인.
 - 기능은 기획 문서, 정렬 위치·화면 구조는 참조 이미지 기준. 메뉴 안에 전체 옵션을 넣어 기존 구조를 유지했다.
 - Main별 연결 파일 표시, 전역 Virtual Folder/파일당 한 위치, 실제 파일 경로·내용 보호.
-- 현재 상태: 코드·Sandbox·재시작 검사 통과. 공개 Release·BRAT 확인 대기.
+- 현재 상태: 코드·Sandbox·재시작·공개 Release·BRAT 업데이트 검사 통과. 사용자 본인의 4단계 확인 대기.
+- Release: https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.7 (구현 커밋 f5cef8a).
 
 ## 실행 결과
 
@@ -32,3 +33,11 @@
 - 전용 프로필: `C:\Users\tlatn\AppData\Local\Temp\MDPalette-Stage0-Profile-20260918`, CDP 19273, Obsidian 1.13.7.
 - 기존 설정·설치 자산: `.artifacts/stage4/backup-obsidian`. 원본 파일 해시: originals.json.
 - 사용자 요청대로 Sandbox와 시험 자료를 남긴다. 사용자 본인의 BRAT 확인은 자동 검사로 대신하지 않는다.
+
+## 공개 Release와 BRAT
+
+- main.js·manifest.json·styles.css 공개 다운로드 바이트가 검증 빌드 SHA-256과 일치.
+- Sandbox BRAT 2.2.0의 실제 업데이트 명령으로 0.0.6 → 0.0.7 설치·활성화 확인.
+- 가상 폴더 구조·위치·정렬·보기, 기존 Card·Connections·Space와 알 수 없는 저장 필드 보존 확인.
+- 설치 main.js/styles.css는 공개 자산과 바이트 일치. manifest는 BRAT의 공백 재직렬화만 다르고 전체 JSON 값이 일치.
+- release-verification.json, brat-verification.json과 brat-updated.png에 증거 보관. 자동 검사 미수행 항목 없음. 사용자 본인의 확인은 아직 받지 않았으며 5단계는 시작하지 않았다.

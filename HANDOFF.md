@@ -8,7 +8,8 @@
 - 사용자 4단계 진행 승인. 정렬은 문서의 전체 옵션, 정렬 컨트롤 위치와 화면 구조는 참조 이미지로 확정했다.
 - 전역 가상 폴더, 세 가지 보기·6가지 표시, 생성·이름 변경·이동·삭제·자식 승격, 검색·탐색·정렬, 공유 파일 유형 필터, 원자적 연결 추가를 구현했다.
 - 코드·18개 테스트·빌드·Sandbox 실제 UI·2,000개 자료·프로세스 재시작·이전 Card/Connections 보존·원본 해시 확인 통과. STAGE4_VALIDATION.md 참조.
-- 현재 공개 Release·BRAT 확인 대기. 사용자 본인의 4단계 확인 전 5단계를 시작하지 않는다.
+- [0.0.7 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.7) 공개 자산 3개가 검증 빌드 SHA-256과 일치. BRAT 2.2.0에서 0.0.6 → 0.0.7 업데이트·활성화·가상 폴더/Card/Connections/Space/알 수 없는 데이터 보존 확인 통과. 구현 커밋 f5cef8a.
+- 현재 **4단계 0.0.7 사용자 본인 확인 대기**. 자동 검증으로 사용자 확인을 대신하지 않는다. 사용자 확인과 다음 단계 요청 전 5단계를 시작하지 않는다.
 - Sandbox와 시험 자료 유지. 사전 백업은 .artifacts/stage4/backup-obsidian. 확인 화면은 Folder-Review/Main.md → Link View → Folder.
 
 ## 이전 요청과 상태 — 3단계 수정 0.0.6
