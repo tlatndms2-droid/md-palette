@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';import {writeFile} from 'node:fs/promises';import {c,p,dir,js,pause,wait,point,click,type} from './stage4-helpers.mjs';
+try{
+await c.send('Emulation.setFocusEmulationEnabled',{enabled:true});await c.send('Emulation.setDeviceMetricsOverride',{width:1500,height:1100,deviceScaleFactor:1,mobile:false});
+const before=await js(`${p}.folders.current`);await js(`(async()=>{const p=${p};await p.mainGroup.children[p.mainGroup.currentTab].openFile(app.vault.getAbstractFileByPath('Folder-Review/Performance.md'));await p.changeFolders(s=>{s.current='';s.display='list'});return true})()`);await wait(`${p}.connectedFiles().length===2000`);
+const expected=await js(`${p}.connectedFiles().map(f=>'f:'+f.path)`);assert.ok(await js(`document.querySelectorAll('.mdp-folder-item').length<2000`));
+let count=0;for(let i=0;i<40;i++){count=await js(`document.querySelectorAll('.mdp-folder-item').length`);if(count>=2002)break;const pt=await point('.mdp-folder-grid');await c.send('Input.dispatchMouseEvent',{type:'mouseWheel',...pt,deltaY:50000,deltaX:0});await pause(100);}
+const actual=await js(`[...document.querySelectorAll('.mdp-folder-item')].map(e=>e.dataset.key).filter(k=>k.startsWith('f:'))`);assert.equal(actual.length,2000);assert.deepEqual([...actual].sort(),[...expected].sort());
+await click('[aria-label="현재 폴더에서 검색"]');await type('Note999');await wait(`document.querySelectorAll('.mdp-folder-item').length>0&&document.querySelectorAll('.mdp-folder-item').length<10`);assert.ok((await js(`document.querySelector('.mdp-folder-grid').innerText`)).includes('Note999'));
+await js(`(async()=>{const p=${p};await p.mainGroup.children[p.mainGroup.currentTab].openFile(app.vault.getAbstractFileByPath('Folder-Review/Main.md'));await p.changeFolders(s=>{s.current=${JSON.stringify(before)};s.display='medium'});return true})()`);await wait(`document.querySelector('[type=search]').value===''`);
+assert.deepEqual(c.errors,[]);await writeFile(dir+'/scroll-result.json',JSON.stringify({passed:true,all2000Reached:true,searchWholeDataset:true,queryClearedOnMainChange:true,errors:c.errors},null,2));console.log('PASS all 2000 files reachable through native wheel scrolling and full-data search');
+}finally{c.close()}

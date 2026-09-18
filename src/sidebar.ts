@@ -3,20 +3,23 @@ import type MDPalettePlugin from './main';
 import type { LinkView, TopView } from './state';
 import { CardView } from './card-view';
 import { ConnectionsView } from './connections-view';
+import { FolderView } from './folder-view';
 
 export const VIEW_TYPE = 'md-palette-sidebar';
 export class PaletteView extends ItemView {
   private cards: CardView;
   private connections: ConnectionsView;
-  constructor(leaf: WorkspaceLeaf, private plugin: MDPalettePlugin) { super(leaf); this.cards = new CardView(plugin); this.connections = new ConnectionsView(plugin, leaf); }
+  private folders: FolderView;
+  constructor(leaf: WorkspaceLeaf, private plugin: MDPalettePlugin) { super(leaf); this.cards = new CardView(plugin); this.connections = new ConnectionsView(plugin, leaf); this.folders = new FolderView(plugin); }
   getViewType(): string { return VIEW_TYPE; }
   getDisplayText(): string { return 'MD Palette'; }
   getIcon(): string { return 'panels-top-left'; }
   async onOpen(): Promise<void> { this.render(); }
-  async onClose(): Promise<void> { this.cards.destroy(); this.connections.destroy(); }
+  async onClose(): Promise<void> { this.cards.destroy(); this.connections.destroy(); this.folders.destroy(); }
   render(): void {
     if (this.plugin.topView === 'link' && this.plugin.linkView === 'connections' && this.connections.isCurrent()) return;
     this.cards.destroy();
+    this.folders.destroy();
     this.connections.prepareRender();
     if (!(this.plugin.mainFile && this.plugin.topView === 'link' && this.plugin.linkView === 'connections')) this.connections.destroy();
     const root = this.contentEl;
@@ -48,6 +51,8 @@ export class PaletteView extends ItemView {
       this.cards.render(body);
     } else if (this.plugin.topView === 'link' && this.plugin.linkView === 'connections') {
       this.connections.render(body);
+    } else if (this.plugin.topView === 'link' && this.plugin.linkView === 'folder') {
+      this.folders.render(body);
     } else {
       const label = this.plugin.topView === 'metadata' ? 'Metadata' : ({ card: 'Card', connections: 'Connections', folder: 'Folder' }[this.plugin.linkView]);
       body.createEl('p', { text: `${label} View는 다음 구현 단계에서 제공됩니다.` });

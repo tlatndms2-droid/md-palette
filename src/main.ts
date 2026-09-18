@@ -4,6 +4,7 @@ import { PaletteView, VIEW_TYPE } from './sidebar';
 import { readSpaces, type LinkView, type SavedSpaces, type TopView } from './state';
 import { readCards, pruneLabels, type CardState } from './cards-state';
 import { readConnections } from './connections-state';
+import { readFolders, fileKey, type FolderState } from './folders-state';
 
 type Role = 'sub' | 'reference';
 class SpaceFilePicker extends FuzzySuggestModal<TFile> {
@@ -22,6 +23,8 @@ export default class MDPalettePlugin extends Plugin {
   linkView: LinkView = 'card';
   cards: CardState = readCards(null);
   connections = readConnections(null);
+  folders = readFolders(null);
+  private folderSaving = false;
   private cardTimer?: number;
   private data: Record<string, unknown> = {};
   private saveAllowed = true;
@@ -51,6 +54,7 @@ export default class MDPalettePlugin extends Plugin {
     if (this.data.linkView === 'connections' || this.data.linkView === 'folder') this.linkView = this.data.linkView;
     this.cards = readCards(this.data.cards);
     this.connections = readConnections(this.data.connections);
+    this.folders = readFolders(this.data.folders);
     this.registerView(VIEW_TYPE, leaf => new PaletteView(leaf, this));
     this.addRibbonIcon('panels-top-left', 'MD Palette 열기', () => this.run(() => this.openSidebar()));
     this.addCommand({ id: 'open-sidebar', name: '사이드바 열기', callback: () => this.run(() => this.openSidebar()) });
@@ -87,11 +91,14 @@ export default class MDPalettePlugin extends Plugin {
     this.registerEvent(this.app.vault.on('rename', (file, oldPath) => {
       const renamed = (p: string) => p === oldPath ? file.path : p.startsWith(oldPath + '/') ? file.path + p.slice(oldPath.length) : p;
       this.cards.order = this.cards.order.map(renamed);
+      this.folders.order = this.folders.order.map(k => k.startsWith('f:') ? fileKey(renamed(k.slice(2))) : k);
+      for (const path of Object.keys(this.folders.positions)) { const next = renamed(path); if (next !== path) { this.folders.positions[next] = this.folders.positions[path]; delete this.folders.positions[path]; } }
       for (const path of Object.keys(this.cards.assignments)) { const next = renamed(path); if (next !== path) { this.cards.assignments[next] = this.cards.assignments[path]; delete this.cards.assignments[path]; } }
       this.cardsChanged();
     }));
     this.registerEvent(this.app.vault.on('delete', file => {
       if (!(file instanceof TFile)) return;
+      delete this.folders.positions[file.path]; this.folders.order = this.folders.order.filter(k => k !== fileKey(file.path));
       this.cards.order = this.cards.order.filter(p => p !== file.path); delete this.cards.assignments[file.path]; pruneLabels(this.cards); this.cardsChanged();
     }));
     this.app.workspace.onLayoutReady(() => {
@@ -204,6 +211,32 @@ export default class MDPalettePlugin extends Plugin {
   cardsChanged(): void { this.render(); this.persist(); }
   saveCardOrder(): void { this.persist(); }
   saveConnections(): void { this.persist(); }
+  async commitFolders(next: FolderState): Promise<void> {
+    if (!this.saveAllowed) throw Error('저장 상태를 읽지 못해 가상 폴더를 변경할 수 없습니다.');
+    window.clearTimeout(this.saveTimer);
+    this.flushState(); this.folderSaving = true;
+    try {
+      await this.saveChain;
+      const data = { ...this.data, folders: structuredClone(next) };
+      await this.saveData(data);
+      this.data = data; this.persistedJSON = JSON.stringify(data); this.folders = next;
+    } finally { this.folderSaving = false; this.persist(); }
+  }
+  async changeFolders(change: (next: FolderState) => void): Promise<void> {
+    const next = structuredClone(this.folders); change(next); await this.commitFolders(next); this.render();
+  }
+  async addFolderConnection(main: TFile, file: TFile, folder: string): Promise<void> {
+    if (this.mainFile !== main || main === file || this.app.vault.getAbstractFileByPath(file.path) !== file || (folder && !this.folders.folders.some(f => f.id === folder))) throw Error('Main 또는 대상이 변경되었습니다.');
+    if (Object.prototype.hasOwnProperty.call(this.folders.positions, file.path) && this.folders.positions[file.path] !== folder) { new Notice('이미 다른 가상 폴더에 배치된 파일입니다.'); return; }
+    const previous = structuredClone(this.folders), next = structuredClone(previous);
+    next.positions[file.path] = folder; if (!next.order.includes(fileKey(file.path))) next.order.push(fileKey(file.path));
+    await this.commitFolders(next);
+    try {
+      if (this.mainFile !== main) throw Error('Main이 변경되어 연결을 취소했습니다.');
+      if (!this.connectedFiles(main).includes(file)) await this.addConnection(main, file, true);
+    } catch (error) { await this.commitFolders(previous); this.render(); throw error; }
+    this.render();
+  }
   connectedFiles(main = this.mainFile): TFile[] {
     if (!main) return [];
     const links = this.app.metadataCache.resolvedLinks;
@@ -218,8 +251,8 @@ export default class MDPalettePlugin extends Plugin {
     const rank = new Map(this.cards.order.map((p, i) => [p, i]));
     return files.sort((a, b) => rank.get(a.path)! - rank.get(b.path)!);
   }
-  async addConnection(main: TFile, file: TFile): Promise<void> {
-    if (this.mainFile !== main || this.app.vault.getAbstractFileByPath(main.path) !== main || this.app.vault.getAbstractFileByPath(file.path) !== file) { new Notice('메인 또는 선택 파일이 변경되어 연결을 취소했습니다.'); return; }
+  async addConnection(main: TFile, file: TFile, strict = false): Promise<void> {
+    if (this.mainFile !== main || this.app.vault.getAbstractFileByPath(main.path) !== main || this.app.vault.getAbstractFileByPath(file.path) !== file) { if (strict) throw Error('메인 또는 선택 파일이 변경되었습니다.'); new Notice('메인 또는 선택 파일이 변경되어 연결을 취소했습니다.'); return; }
     if (main === file || this.connectedFiles(main).some(f => f.path === file.path)) { new Notice('이미 메인 스페이스와 연결된 파일입니다.'); return; }
     // Properties resolve wikilinks independently of the editor's Markdown-link preference.
     const link = `[[${file.path}]]`;
@@ -309,10 +342,10 @@ export default class MDPalettePlugin extends Plugin {
     this.saveTimer = window.setTimeout(() => this.flushState(), 250);
   }
   private flushState(): void {
-    if (!this.ready || !this.saveAllowed) return;
+    if (!this.ready || !this.saveAllowed || this.folderSaving) return;
     const space = (g?: Group) => g ? { groupId: g.id, activeFile: fileIn(this.app, activeIn(g))?.path ?? null } : undefined;
     const spaces: SavedSpaces = { main: space(this.mainGroup), sub: space(this.subGroup), reference: space(this.referenceGroup), emptySubId: this.emptySub?.id };
-    const next = { ...this.data, spaces, topView: this.topView, linkView: this.linkView, cards: structuredClone(this.cards), connections: structuredClone(this.connections) };
+    const next = { ...this.data, spaces, topView: this.topView, linkView: this.linkView, cards: structuredClone(this.cards), connections: structuredClone(this.connections), folders: structuredClone(this.folders) };
     const serialized = JSON.stringify(next);
     if (serialized === this.persistedJSON) return;
     this.data = next;
