@@ -1,1 +1,16 @@
-/* MD Palette 0.0.1: no product UI in stage 0. Theme styles arrive with stage 1. */
+.mdp-sidebar { padding: 12px; min-width: 0; overflow-x: hidden; }
+.mdp-heading { display: flex; align-items: center; gap: 8px; font-size: var(--font-ui-medium); font-weight: var(--font-semibold); margin-bottom: 14px; }
+.mdp-heading-icon { color: var(--interactive-accent); display: flex; }
+.mdp-main-context { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: var(--font-ui-small); }
+.mdp-main-context > span:last-child { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mdp-main-context > span:first-child { display: flex; flex: 0 0 auto; }
+.mdp-tabs { display: flex; gap: 4px; margin-bottom: 10px; min-width: 0; }
+.mdp-tabs .mdp-tab { flex: 1 1 0; min-width: 0; padding: 6px 3px; height: auto; font-size: var(--font-ui-small); box-shadow: none; border: 1px solid var(--background-modifier-border); white-space: normal; overflow-wrap: anywhere; }
+.mdp-tabs .mdp-tab.is-selected { background: var(--interactive-accent); color: var(--text-on-accent); border-color: var(--interactive-accent); }
+.mdp-link-tabs .mdp-tab { font-size: var(--font-ui-smaller); }
+.mdp-empty { padding: 22px 8px; text-align: center; overflow-wrap: anywhere; font-size: var(--font-ui-small); }
+.mdp-empty-icon { display: flex; justify-content: center; color: var(--text-muted); }
+.mdp-muted { color: var(--text-muted); line-height: 1.6; }
+.mdp-space-icon { display: flex; align-items: center; flex: 0 0 auto; color: var(--interactive-accent); margin-inline-end: 5px; }
+.mdp-space-icon svg { width: var(--icon-s); height: var(--icon-s); }
+.workspace-tab-header-inner:has(.mdp-space-icon) > .workspace-tab-header-inner-icon { display: none; }

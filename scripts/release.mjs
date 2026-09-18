@@ -6,6 +6,7 @@ import assert from 'node:assert/strict';
 const repository = 'tlatndms2-droid/md-palette';
 const manifest = JSON.parse(await readFile('manifest.json', 'utf8'));
 const tag = manifest.version;
+const reportDir = tag === '0.0.1' ? '.artifacts' : '.artifacts/stage1';
 const mode = process.argv[2] || 'inspect';
 const credential = execFileSync('git', ['credential', 'fill'], { input: 'protocol=https\nhost=github.com\n\n', encoding: 'utf8', stdio: ['pipe','pipe','pipe'] });
 const token = credential.split(/\r?\n/).find(line => line.startsWith('password='))?.slice(9);
@@ -25,14 +26,21 @@ if (mode === 'inspect') {
 if (mode === 'publish') {
   assert.equal(repo.private, false);
   assert.equal(release, null, 'Existing published release must not be overwritten');
-  const restart = JSON.parse(await readFile('.artifacts/restart-result.json', 'utf8'));
-  const ui = JSON.parse(await readFile('.artifacts/install-ui.json', 'utf8'));
-  assert.equal(restart.version, tag);
-  assert.ok(restart.enabled && ui.workspaceUnchanged);
+  if (tag === '0.0.1') {
+    const restart = JSON.parse(await readFile('.artifacts/restart-result.json', 'utf8'));
+    const ui = JSON.parse(await readFile('.artifacts/install-ui.json', 'utf8'));
+    assert.equal(restart.version, tag);
+    assert.ok(restart.enabled && ui.workspaceUnchanged);
+  } else {
+    const ready = JSON.parse(await readFile(`${reportDir}/release-ready.json`, 'utf8'));
+    assert.equal(ready.version,tag);
+    assert.equal(ready.passed,true);
+    for (const asset of ready.assets) assert.equal(createHash('sha256').update(await readFile(asset.name)).digest('hex'),asset.sha256);
+  }
   const commit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
   release = await api('/releases', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tag_name: tag, target_commitish: commit, name: 'MD Palette 0.0.1 — 0단계 설치 기반', body: await readFile('RELEASE_NOTES.md', 'utf8'), draft: false, prerelease: false })
+    body: JSON.stringify({ tag_name: tag, target_commitish: commit, name: `MD Palette ${tag}`, body: await readFile('RELEASE_NOTES.md', 'utf8'), draft: false, prerelease: false })
   });
   for (const name of ['main.js', 'manifest.json', 'styles.css']) {
     const current = await api(`/releases/${release.id}`);
@@ -56,7 +64,7 @@ if (mode === 'publish' || mode === 'verify') {
     assert.equal(hash(bytes), hash(await readFile(name)), `Release hash: ${name}`);
     results.push({ name, sha256: hash(bytes), url: asset.browser_download_url });
   }
-  await mkdir('.artifacts', { recursive: true });
-  await writeFile('.artifacts/release-verification.json', JSON.stringify({ url: release.html_url, assets: results }, null, 2));
+  await mkdir(reportDir, { recursive: true });
+  await writeFile(`${reportDir}/release-verification.json`, JSON.stringify({ url: release.html_url, assets: results }, null, 2));
   console.log({ url: release.html_url, assets: results });
 }

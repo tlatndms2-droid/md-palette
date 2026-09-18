@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import vm from 'node:vm';
 
 test('release version and desktop manifest agree', async () => {
   const read = async path => JSON.parse(await readFile(path, 'utf8'));
@@ -14,17 +13,9 @@ test('release version and desktop manifest agree', async () => {
   assert.equal(manifest.isDesktopOnly, true);
 });
 
-test('release loads without file writes, UI registration, or background tasks', async () => {
-  const exports = {};
-  const context = {
-    module: { exports }, exports,
-    require: id => {
-      assert.equal(id, 'obsidian');
-      return { Plugin: class {} };
-    }
-  };
-  vm.runInNewContext(await readFile('main.js', 'utf8'), context);
-  const plugin = new context.module.exports.default();
-  await plugin.onload();
-  assert.deepEqual(Object.keys(plugin), []);
+test('release excludes development probes and filesystem writes', async () => {
+  const bundle = await readFile('main.js', 'utf8');
+  assert.ok(!bundle.includes('Stage0-Fixtures'));
+  assert.ok(!bundle.includes('19273'));
+  assert.ok(!bundle.includes('writeFileSync'));
 });

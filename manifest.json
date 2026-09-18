@@ -1,9 +1,9 @@
 {
   "id": "md-palette",
   "name": "MD Palette",
-  "version": "0.0.1",
-  "minAppVersion": "1.8.7",
-  "description": "Main 노트를 중심으로 연결 자료를 다루는 플러그인. 현재 0단계: 설치 기반만 제공하며 Space와 사이드바는 아직 미구현입니다.",
+  "version": "0.0.2",
+  "minAppVersion": "1.13.7",
+  "description": "Main·Sub·Reference 작업 공간과 사이드바. 연결 자료 및 Metadata 보기는 후속 단계에서 제공됩니다.",
   "author": "tlatndms2-droid",
   "authorUrl": "https://github.com/tlatndms2-droid",
   "isDesktopOnly": true

@@ -1,4 +1,6 @@
 import { build } from 'esbuild';
+import { readFile } from 'node:fs/promises';
+const { version } = JSON.parse(await readFile('manifest.json', 'utf8'));
 
 await build({
   entryPoints: ['src/main.ts'],
@@ -8,5 +10,5 @@ await build({
   target: 'es2022',
   outfile: 'main.js',
   logLevel: 'info',
-  banner: { js: '/* MD Palette 0.0.1 — stage 0 installation foundation */' }
+  banner: { js: `/* MD Palette ${version} */` }
 });
