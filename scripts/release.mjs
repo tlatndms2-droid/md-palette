@@ -1,0 +1,62 @@
+import { execFileSync } from 'node:child_process';
+import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
+import assert from 'node:assert/strict';
+
+const repository = 'tlatndms2-droid/md-palette';
+const manifest = JSON.parse(await readFile('manifest.json', 'utf8'));
+const tag = manifest.version;
+const mode = process.argv[2] || 'inspect';
+const credential = execFileSync('git', ['credential', 'fill'], { input: 'protocol=https\nhost=github.com\n\n', encoding: 'utf8', stdio: ['pipe','pipe','pipe'] });
+const token = credential.split(/\r?\n/).find(line => line.startsWith('password='))?.slice(9);
+if (!token) throw new Error('GitHub credential unavailable');
+const headers = { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json', 'X-GitHub-Api-Version': '2022-11-28' };
+async function api(path, options = {}) {
+  const response = await fetch(`https://api.github.com/repos/${repository}${path}`, { ...options, headers: { ...headers, ...options.headers } });
+  if (response.status === 404) return null;
+  if (!response.ok) throw new Error(`GitHub ${response.status}: ${path}`);
+  return response.json();
+}
+const repo = await api('');
+let release = await api(`/releases/tags/${tag}`);
+if (mode === 'inspect') {
+  console.log({ repository, defaultBranch: repo.default_branch, public: !repo.private, existingRelease: release?.html_url || null });
+}
+if (mode === 'publish') {
+  assert.equal(repo.private, false);
+  assert.equal(release, null, 'Existing published release must not be overwritten');
+  const restart = JSON.parse(await readFile('.artifacts/restart-result.json', 'utf8'));
+  const ui = JSON.parse(await readFile('.artifacts/install-ui.json', 'utf8'));
+  assert.equal(restart.version, tag);
+  assert.ok(restart.enabled && ui.workspaceUnchanged);
+  const commit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
+  release = await api('/releases', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tag_name: tag, target_commitish: commit, name: 'MD Palette 0.0.1 — 0단계 설치 기반', body: await readFile('RELEASE_NOTES.md', 'utf8'), draft: false, prerelease: false })
+  });
+  for (const name of ['main.js', 'manifest.json', 'styles.css']) {
+    const current = await api(`/releases/${release.id}`);
+    const url = current.upload_url.replace(/\{.*$/, '') + `?name=${encodeURIComponent(name)}`;
+    const response = await fetch(url, { method: 'POST', headers: { ...headers, 'Content-Type': 'application/octet-stream' }, body: await readFile(name) });
+    if (!response.ok) throw new Error(`Asset upload failed: ${name}, HTTP ${response.status}`);
+  }
+}
+if (mode === 'publish' || mode === 'verify') {
+  release = await api(`/releases/tags/${tag}`);
+  assert.ok(release && !release.draft);
+  assert.deepEqual(release.assets.map(a=>a.name).sort(), ['main.js','manifest.json','styles.css'].sort());
+  const results = [];
+  for (const name of ['main.js', 'manifest.json', 'styles.css']) {
+    const asset = release.assets.find(a => a.name === name);
+    // Deliberately no authorization header: verify the public download path.
+    const response = await fetch(asset.browser_download_url);
+    assert.equal(response.ok, true, `Public download: ${name}`);
+    const bytes = Buffer.from(await response.arrayBuffer());
+    const hash = data => createHash('sha256').update(data).digest('hex');
+    assert.equal(hash(bytes), hash(await readFile(name)), `Release hash: ${name}`);
+    results.push({ name, sha256: hash(bytes), url: asset.browser_download_url });
+  }
+  await mkdir('.artifacts', { recursive: true });
+  await writeFile('.artifacts/release-verification.json', JSON.stringify({ url: release.html_url, assets: results }, null, 2));
+  console.log({ url: release.html_url, assets: results });
+}

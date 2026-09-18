@@ -1,0 +1,16 @@
+{
+  "name": "md-palette",
+  "version": "0.0.1",
+  "private": true,
+  "description": "MD Palette for Obsidian — stage 0 installation foundation",
+  "scripts": {
+    "build": "tsc --noEmit && node esbuild.config.mjs",
+    "test": "node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.25.0",
+    "obsidian": "^1.8.7",
+    "typescript": "^5.8.0"
+  }
+}
