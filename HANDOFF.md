@@ -10,7 +10,7 @@
 - 자체 SVG 그래프를 제거하고 Obsidian 등록 localgraph View·renderer·engine·기본 설정 UI를 재사용한다. Main에 고정하며 파일 열기만 Sub/Reference로 연결한다.
 - 공개 임베드 API가 없어 native-local-graph.ts에 내부 API 접근과 기능 검사를 격리했다. Obsidian 1.13.7에서 기본 그래프와 생성자 동일성, 실제 설정·마우스 동작·다른 그래프 독립성·정리·재시작 확인.
 - 타입 검사·13개 테스트·실제 Sandbox UI·대량 자료·프로세스 재시작·최종 자산·이전 Card 상태·원문 불변 확인 통과. [0.0.6 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.6) 공개 자산 일치 및 BRAT 0.0.5 → 0.0.6 업데이트·활성화·기존 Card/Space/높이/접힘 보존 확인 통과. 구현 커밋 500e11d.
-- 최신 상태: **3단계 수정 0.0.6 사용자 확인 대기**. 사용자 확인용 Sandbox를 열어두었다. 상세 STAGE3_FIX_VALIDATION.md, 원시 증거 .artifacts/stage3-fix. 원래 0.0.5의 사용자 확인은 통과로 간주하지 않는다.
+- 최신 상태: **3단계 수정 0.0.6 사용자 확인 완료**. 사용자가 `확인했어`라고 답했다. 다음 단계 요청 시 3단계 확인을 다시 묻지 않는다. Sandbox와 시험 자료는 유지하며, 4단계는 별도 진행 요청 전까지 시작하지 않는다. 상세 STAGE3_FIX_VALIDATION.md, 원시 증거 .artifacts/stage3-fix.
 - **사용자 최신 요청에 따라 검증 후 Sandbox를 종료/원상 복원하지 않는다.** 검증 전 백업은 .artifacts/stage3-fix/backup-obsidian에 보관한다. 종료·정리는 사용자 요청 시에만, 사용자 변경 내용 보존 후 처리한다.
 - 사용자 확인 화면: Connections-Review/Main.md, MD Palette → Connections. 4단계 미시작.
 
