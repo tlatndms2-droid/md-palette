@@ -8,7 +8,9 @@
 - 사용자가 2단계 해결 사실을 재확인하고 3단계 진행을 요청했다. 과거 0.0.4 확인 대기 기록으로 재질문하지 않는다.
 - 검색·필터의 문서/이미지 차이를 재대조한 뒤 사용자 **문서대로 진행해**로 확정: Connections 검색창·필터 제외. 기존 이미지의 3영역 구조와 파일 열기 동작을 따른다.
 - 0.0.5 구현과 타입 검사·13개 테스트·실제 Sandbox UI·프로세스 재시작·최종 자산 일치 확인 통과. 상세 STAGE3_VALIDATION.md.
-- 공개 Release 및 BRAT 업데이트 검증을 진행할 준비 상태다. 배포 전 상태이며 이후 결과로 갱신한다.
+- [0.0.5 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.5) 공개 자산 3개와 검증 빌드 SHA-256 일치. Sandbox BRAT 0.0.4 → 0.0.5 업데이트·활성화·Card/Connections/Space/알 수 없는 데이터 보존 통과.
+- Sandbox 종료 및 원래 설정 4개 해시 복원 완료. 시험 파일 2,008개와 검증 설치본은 `.artifacts/stage3/validated-fixtures`, `validated-obsidian`에 보관했다.
+- 최신 상태: **3단계 0.0.5 사용자 본인 확인 대기**. 구현 커밋 `24e3e7a`, 검증 STAGE3_VALIDATION.md, 원시 증거 `.artifacts/stage3/`.
 - 4단계는 시작하지 않는다. 0.0.5에 대한 사용자 본인의 확인이 필요하다.
 
 ## 이전 2단계 기록 (아래 사용자 확인 대기 표기는 당시 상태)

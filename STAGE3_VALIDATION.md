@@ -16,4 +16,6 @@
 
 증거: `.artifacts/stage3/`의 `ui-result.json`, `advanced-result.json`, `performance-result.json`, `restart-result.json`, `release-ready.json` 및 PNG. 실행 스크립트: `scripts/stage3-*.mjs`.
 
-공개 Release·BRAT·Sandbox 원상 복원은 이어서 진행 후 기록한다. 사용자 본인의 0.0.5 확인은 대기하며 4단계 미시작.
+공개 [0.0.5 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.5), 구현 커밋 `24e3e7a`. 공개 자산 3개와 검증 빌드의 SHA-256 일치. Sandbox에서 BRAT 2.2.0의 실제 업데이트 명령으로 0.0.4 → 0.0.5 설치·활성화·Card/Connections/Space/알 수 없는 데이터 보존을 확인했다. main.js/styles.css는 바이트 일치, manifest는 BRAT 재직렬화에 따른 공백만 다르고 모든 값 일치.
+
+Sandbox 별도 프로세스 종료 후 원래 설정 4개를 복원해 SHA-256 일치를 확인했다. 시험 파일 2,008개와 검증 설치본은 `.artifacts/stage3/validated-fixtures`, `validated-obsidian`에 이동 보관했다. 사용자 본인의 0.0.5 확인은 대기하며 4단계 미시작.
