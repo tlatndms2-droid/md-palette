@@ -37,5 +37,7 @@
 - `.artifacts/revision/`: 사전 백업, 원본 해시, migration/ui/checks/performance/cards/restart 결과, 화면, 최종 자산 해시.
 - `scripts/revision-*.mjs`: 해당 Sandbox 전용 재현 스크립트.
 - 검증 과정의 필터 입력값·좁은 탭 좌표·지연 로딩 탭 판독 문제는 검증 스크립트에서 바로잡고 해당 확인을 다시 수행했다.
-- 공개 Release 및 BRAT 업데이트 검증은 진행 중이며 결과를 확인한 후 갱신한다.
+- [0.0.8 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.8)의 공개 자산 세 개를 다시 내려받아 검증 빌드와 SHA-256 일치를 확인했다.
+- Sandbox BRAT 2.2.0의 실제 업데이트 명령으로 0.0.7 → 0.0.8 설치·활성화를 확인했다. 새 문서별 가상 폴더가 반복 초기화되지 않고 Main/Sub 역할·라벨·설정이 유지됐다.
+- BRAT 설치본의 main.js·styles.css는 바이트 일치, manifest.json은 공백만 다르고 JSON 값이 모두 일치한다. 증거: release-verification.json, brat-verification.json.
 - Sandbox와 시험 자료·설정을 유지한다. 사용자 본인 확인은 자동 검증과 별도로 기다린다. 5~7단계는 미시작이다.

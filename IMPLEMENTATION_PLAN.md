@@ -4,7 +4,7 @@
 
 저장소: https://github.com/tlatndms2-droid/md-palette
 
-상태: 4단계 0.0.7 사용자 확인 완료. 2026-09-20 확정 수정(0.0.8) 구현·검증 진행. 5~7단계 미시작.
+상태: 4단계 0.0.7 사용자 확인 완료. 2026-09-20 확정 수정(0.0.8) 실제 UI·재시작·공개 Release·BRAT 업데이트 검증 완료, 사용자 본인 확인 대기. 5~7단계 미시작.
 
 4단계 확정: 정렬 전체 옵션은 문서를 따르고 메뉴 위치·크기·스타일과 전체 화면 구조는 참조 이미지를 따른다. 이미지의 일부 옵션 표시는 기능 제한이 아니다.
 
@@ -109,6 +109,8 @@
 ## 5. 배포·비용·중단 조건
 
 ### 단계별 배포
+
+4단계 후속 수정: [0.0.8 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.8). Main/Sub 단순화·탭 보존·카드 제목 및 Markdown 미리보기·Main별 가상 폴더. 19개 테스트, 실제 UI·재시작·기존 파일 2,020개 보존, 공개 자산 일치, BRAT 0.0.7 → 0.0.8과 문서별 정리 유지 통과. 사용자 본인 확인 대기. REVISION_VALIDATION.md 참조.
 
 4단계: [0.0.7 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.7). 전역 Folder 기능·실제 UI·2,000개 자료·재시작·원본 파일 해시·공개 자산 일치·BRAT 0.0.6 → 0.0.7 업데이트와 기존 상태 보존 확인 통과. 사용자 정상 작동 확인 완료. Sandbox 유지. STAGE4_VALIDATION.md는 당시 검증 기록이다.
 

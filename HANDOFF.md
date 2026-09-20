@@ -4,15 +4,23 @@
 저장소: https://github.com/tlatndms2-droid/md-palette
 작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
 
-## 현재 상태 — 0.0.8 확정 수정 검증 완료, 배포 진행
+## 현재 상태 — 0.0.8 배포·BRAT 검증 완료, 사용자 확인 대기
 
 - 4단계 0.0.7은 사용자가 정상 작동을 확인했다. 5~7단계는 아직 시작하지 않았다.
 - 최신 요청은 HTML로 확인한 수정 내용을 구현하는 `수정 진행해줘`다.
 - 0.0.8: Main/Sub만 사용, 모든 지원 파일 Sub 새 탭·동일 파일 재사용, Main 변경·해제 시 탭 보존, Card/Folder 파일 제목 상단 확대, Markdown 미리보기 렌더링, Main 문서별 가상 폴더 저장을 구현했다.
 - 기존 테스트용 전역 가상 폴더·배치만 초기화한다. 사용자가 `그냥 지워줘 어차피 테스트 중이여서 지워도 상관없어`로 승인했다. 실제 파일·본문·연결·라벨은 보존한다.
-- 최종 0.0.8 빌드의 실제 Sandbox UI·프로세스 재시작·기존 파일 2,020개 해시 검증을 통과했다. 공개 Release와 BRAT 업데이트는 아직 진행 중이다.
+- 최종 0.0.8 빌드의 실제 Sandbox UI·프로세스 재시작·기존 파일 2,020개 해시 검증을 통과했다. 공개 Release 자산 일치 및 Sandbox BRAT 0.0.7 → 0.0.8 업데이트도 통과했다.
 - 원본 Planning Pack과 AGENTS에 남아 있는 Reference·교환·전역 가상 폴더 규칙은 최신 사용자 결정으로 대체됐다. 원본 자료나 지침 파일은 수정하지 않았다.
 - 다음 5단계 Metadata는 이번 수정에 포함하지 않는다. 사용자 본인의 0.0.8 확인 및 별도 진행 요청을 기다린다.
+
+## 0.0.8 배포 결과
+
+- [0.0.8 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.8).
+- 구현 커밋: `3750ec7`. 최종 자산 세 개를 공개 다운로드해 검증 빌드와 SHA-256 일치를 확인했다.
+- Sandbox BRAT 2.2.0의 실제 업데이트 명령으로 0.0.7 → 0.0.8 설치·활성화 확인. 문서별 가상 폴더·Main/Sub 역할·Card·Connections·기타 데이터가 유지됐다.
+- BRAT 설치본의 main.js·styles.css 바이트 일치, manifest.json은 공백 재직렬화만 다르고 모든 JSON 값이 동일하다.
+- 실제 UI·재시작·원본 보존 및 성능 검증 세부는 `REVISION_VALIDATION.md`에 기록했다. Sandbox는 열린 상태로 남긴다.
 
 ## 이번 수정의 확정 동작
 
