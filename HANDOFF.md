@@ -4,7 +4,16 @@
 저장소: https://github.com/tlatndms2-droid/md-palette
 작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
 
-## 현재 상태 — 0.0.8 배포·BRAT 검증 완료, 사용자 확인 대기
+## 현재 상태 — 0.0.9 5단계 검증 통과, Release 준비
+
+- 사용자는 0.0.8 정상 동작을 확인하고 5단계 진행을 승인했다. HTML 계획 확인 후 `진행해`로 구현을 요청했다.
+- 각주·Highlights·Tasks·Block Reference·Links, 검색·접힘·원문 이동·각주 편집·Task 체크, Main 탭 고정과 Main 옆 링크 열기를 구현했다.
+- 25개 테스트·빌드·Sandbox 실제 UI·프로세스 재시작·기존 파일 2,028개 보존 검증 통과. STAGE5_VALIDATION.md 참조.
+- 최신 사용자 확정: Codex는 GitHub Release까지 진행하고 BRAT 확인은 사용자가 담당한다. BRAT 설치·업데이트를 자동 실행하지 않는다.
+- 최신 예상 28~45분은 실측 전 잠정 계획이며 이전 시간 추정을 대체한다.
+- 6~7단계 미시작. 사용자 0.0.9 확인과 별도 다음 단계 요청을 기다린다.
+
+## 0.0.8 당시 기록 — 사용자 확인 완료
 
 - 4단계 0.0.7은 사용자가 정상 작동을 확인했다. 5~7단계는 아직 시작하지 않았다.
 - 최신 요청은 HTML로 확인한 수정 내용을 구현하는 `수정 진행해줘`다.

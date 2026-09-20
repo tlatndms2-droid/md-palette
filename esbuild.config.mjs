@@ -5,7 +5,7 @@ const { version } = JSON.parse(await readFile('manifest.json', 'utf8'));
 await build({
   entryPoints: ['src/main.ts'],
   bundle: true,
-  external: ['obsidian'],
+  external: ['obsidian', 'electron'],
   format: 'cjs',
   target: 'es2022',
   outfile: 'main.js',

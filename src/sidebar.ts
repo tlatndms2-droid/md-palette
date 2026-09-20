@@ -4,19 +4,27 @@ import type { LinkView, TopView } from './state';
 import { CardView } from './card-view';
 import { ConnectionsView } from './connections-view';
 import { FolderView } from './folder-view';
+import { MetadataView } from './metadata-view';
 
 export const VIEW_TYPE = 'md-palette-sidebar';
 export class PaletteView extends ItemView {
   private cards: CardView;
   private connections: ConnectionsView;
   private folders: FolderView;
-  constructor(leaf: WorkspaceLeaf, private plugin: MDPalettePlugin) { super(leaf); this.cards = new CardView(plugin); this.connections = new ConnectionsView(plugin, leaf); this.folders = new FolderView(plugin); }
+  private metadata: MetadataView;
+  constructor(leaf: WorkspaceLeaf, private plugin: MDPalettePlugin) { super(leaf); this.cards = new CardView(plugin); this.connections = new ConnectionsView(plugin, leaf); this.folders = new FolderView(plugin); this.metadata = new MetadataView(plugin); }
   getViewType(): string { return VIEW_TYPE; }
   getDisplayText(): string { return 'MD Palette'; }
   getIcon(): string { return 'panels-top-left'; }
   async onOpen(): Promise<void> { this.render(); }
-  async onClose(): Promise<void> { this.cards.destroy(); this.connections.destroy(); this.folders.destroy(); }
+  async onClose(): Promise<void> { this.cards.destroy(); this.connections.destroy(); this.folders.destroy(); this.metadata.destroy(); }
   render(): void {
+    if (this.plugin.topView === 'metadata' && this.plugin.mainFile && this.metadata.isMounted()) {
+      const context = this.contentEl.querySelector('.mdp-main-context span:last-child');
+      if (context) context.textContent = `Main · ${this.plugin.mainFile.name}`;
+      void this.metadata.refresh(); return;
+    }
+    this.metadata.destroy();
     if (this.plugin.topView === 'link' && this.plugin.linkView === 'connections' && this.connections.isCurrent()) return;
     this.cards.destroy();
     this.folders.destroy();
@@ -54,9 +62,7 @@ export class PaletteView extends ItemView {
     } else if (this.plugin.topView === 'link' && this.plugin.linkView === 'folder') {
       this.folders.render(body);
     } else {
-      const label = this.plugin.topView === 'metadata' ? 'Metadata' : ({ card: 'Card', connections: 'Connections', folder: 'Folder' }[this.plugin.linkView]);
-      body.createEl('p', { text: `${label} View는 다음 구현 단계에서 제공됩니다.` });
-      body.createEl('p', { text: '현재는 Main 지정·해제와 Sub에서 파일 열기을 사용할 수 있습니다.', cls: 'mdp-muted' });
+      this.metadata.render(body);
     }
   }
   private tab(root: HTMLElement, title: string, selected: boolean, onClick: () => void): void {
