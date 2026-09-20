@@ -42,3 +42,9 @@
 - `.artifacts/stage5`: ui-result.json, advanced-result.json, before-restart.json, restart-result.json, release-ready.json 및 스크린샷.
 - Sandbox·시험 자료는 사용자 확인용으로 유지. BRAT 확인은 최신 사용자 요청으로 제외.
 - 6단계는 수행하지 않았다. 다음 단계는 사용자 확인·별도 요청 후 진행한다.
+
+## 배포
+
+- 구현 커밋 cef8cf7, GitHub Release 0.0.9 생성.
+- 공개 다운로드 main.js·manifest.json·styles.css SHA-256이 로컬·Sandbox 검증 빌드와 모두 일치.
+- `.artifacts/stage5/release-verification.json`에 URL·해시 기록. BRAT 자동 확인은 수행하지 않았다.

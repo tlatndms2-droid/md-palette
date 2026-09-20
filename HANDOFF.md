@@ -4,7 +4,9 @@
 저장소: https://github.com/tlatndms2-droid/md-palette
 작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
 
-## 현재 상태 — 0.0.9 5단계 검증 통과, Release 준비
+## 현재 상태 — 0.0.9 Release 완료, 사용자 BRAT 확인 대기
+
+- [0.0.9 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.9), 구현 커밋 `cef8cf7`. 공개 자산 main.js·manifest.json·styles.css를 다시 내려받아 검증 빌드와 SHA-256 일치를 확인했다.
 
 - 사용자는 0.0.8 정상 동작을 확인하고 5단계 진행을 승인했다. HTML 계획 확인 후 `진행해`로 구현을 요청했다.
 - 각주·Highlights·Tasks·Block Reference·Links, 검색·접힘·원문 이동·각주 편집·Task 체크, Main 탭 고정과 Main 옆 링크 열기를 구현했다.
@@ -52,7 +54,7 @@
 | 2 | Card·썸네일·라벨·필터·선택·순서 변경 | 0.0.3, 드래그 개선 0.0.4 | 사용자 확인 후 3단계 진행 |
 | 3 | Connections·역링크·Outgoing·기본 Local Graph | 0.0.5, 속성 연결·그래프 수정 0.0.6 | 사용자 확인 완료 |
 | 4 | 전역 가상 폴더·세 가지 보기·탐색·검색·정렬 | 0.0.7 | **사용자 정상 작동 확인 완료** |
-| 5 | Metadata: 각주·강조·Task·Block Reference | 미배포 | 미시작, 별도 진행 요청 대기 |
+| 5 | Metadata 5개 구역·Main 고정·링크 옆 탭 열기 | 0.0.9 | 검증·Release 완료, 사용자 BRAT 확인 대기 |
 | 6 | Card·Metadata를 Markdown·Canvas에 드래그해 재사용 | 미배포 | 미시작 |
 | 7 | 최종 통합 검증 | 최종 목표 0.1.0 | 미시작 |
 
@@ -129,12 +131,12 @@
 - 사용자 요청 없는 병렬 에이전트·별도 작업 분산 금지. Sandbox 검증은 백그라운드 CDP가 기본이다.
 - 원본 `MD_Palette_Planning_Pack_Final`, `md palette ui image`, ZIP은 수정·이동·삭제하지 않는다.
 
-## 다음 작업 — 요청 시 5단계 Metadata
+## 다음 작업 — 사용자 확인 후 별도 요청 시 6단계
 
 1. 현재 사용자 요청, 프로젝트 AGENTS, 이 HANDOFF, IMPLEMENTATION_PLAN, Git 상태·버전을 다시 확인한다.
-2. `MD_Palette_Planning_Pack_Final/08_Metadata_View.md`, 관련 허용 수정·드래그·저장·완료 기준과 Metadata 참조 이미지를 대조한다. 기능 충돌은 해당 구현 전에 확인한다.
-3. 5단계 범위는 각주·강조·Task·Block Reference 표시, 검색·원문 이동, 각주 내용 편집·Task 체크, 빈 상태·중복 블록 표시다. 6단계 재사용 드래그를 임의로 합치지 않는다.
-4. 4단계까지의 상태를 보존하며 구현하고, 해당 단계의 실제 Sandbox UI·재시작 검증 후 새 버전 Release·BRAT 확인을 진행한다. 기존 공개 버전을 덮어쓰지 않는다.
+2. 먼저 사용자의 0.0.9 BRAT 확인을 기다린다. Codex가 BRAT을 대신 설치·업데이트하지 않는다.
+3. 6단계의 재사용 드래그 문서와 최신 Main/Sub 결정을 대조한다. 기존 Reference·교환 규칙을 되살리지 않는다.
+4. 별도 6단계 요청이 있을 때만 계획·구현한다. 실제 Sandbox UI·재시작 검증 후 새 버전 Release까지 진행하고 기존 공개 버전을 덮어쓰지 않는다.
 5. 사용자 본인의 다음 단계 확인을 받기 전에는 그다음 단계로 넘어가지 않는다.
 
-현재 5~7단계는 미구현이다. 지원하지 않는 미디어의 썸네일은 아이콘·파일명으로 대체하며, 별도 팝아웃 창 간 Space 이동은 기존 검증 범위에 포함되지 않았다.
+현재 6~7단계는 미구현이다. 지원하지 않는 미디어의 썸네일은 아이콘·파일명으로 대체하며, 별도 팝아웃 창 간 Space 이동은 기존 검증 범위에 포함되지 않았다.

@@ -4,7 +4,7 @@
 
 저장소: https://github.com/tlatndms2-droid/md-palette
 
-상태: 0.0.8 사용자 확인 완료. 5단계 0.0.9 구현·테스트·Sandbox UI·재시작 검증 통과, Release 준비. 6~7단계 미시작.
+상태: 0.0.8 사용자 확인 완료. 5단계 0.0.9 구현·테스트·Sandbox UI·재시작·Release 자산 확인 통과, 사용자 BRAT 확인 대기. 6~7단계 미시작.
 
 최신 확정: BRAT 확인은 사용자가 담당한다. Codex는 필수 검증 후 Release와 자산 확인까지만 수행한다. 5단계 최신 잠정 예상은 구현 12~20분 + 테스트·빌드 4~6분 + Sandbox·재시작 10~15분 + 기록·Release 2~4분 = 28~45분이다. 과거 단계 추정은 현재 실행 시간 근거로 사용하지 않는다.
 
@@ -113,6 +113,8 @@
 ## 5. 배포·비용·중단 조건
 
 ### 단계별 배포
+
+5단계: [0.0.9 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.9). Metadata 5개 구역·Main 고정·옆 탭 링크 열기. 25개 테스트, 실제 UI·재시작·기존 파일 2,028개 보존, 공개 자산 해시 일치 통과. BRAT은 사용자가 확인한다. STAGE5_VALIDATION.md 참조.
 
 4단계 후속 수정: [0.0.8 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.8). Main/Sub 단순화·탭 보존·카드 제목 및 Markdown 미리보기·Main별 가상 폴더. 19개 테스트, 실제 UI·재시작·기존 파일 2,020개 보존, 공개 자산 일치, BRAT 0.0.7 → 0.0.8과 문서별 정리 유지 통과. 사용자 본인 확인 대기. REVISION_VALIDATION.md 참조.
 
