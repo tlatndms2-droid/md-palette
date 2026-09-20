@@ -13,7 +13,7 @@ test('bad saved roles do not become workspace targets',()=>{
 test('valid role metadata survives without inventing missing groups or changing input',()=>{
   const input={main:{groupId:'main-id',activeFile:'A.md'},emptySubId:'reserved-id',future:'leave alone'};
   const copy=structuredClone(input);
-  assert.deepEqual(readSpaces(input),{main:{groupId:'main-id',activeFile:'A.md'},emptySubId:'reserved-id'});
+  assert.deepEqual(readSpaces(input),{main:{groupId:'main-id',activeFile:'A.md'}});
   assert.deepEqual(input,copy);
-  assert.deepEqual(readSpaces({reference:{groupId:'ref-id',activeFile:null}}),{reference:{groupId:'ref-id',activeFile:null}});
+  assert.deepEqual(readSpaces({reference:{groupId:'ref-id',activeFile:null}}),{});
 });

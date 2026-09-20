@@ -56,7 +56,7 @@ export class PaletteView extends ItemView {
     } else {
       const label = this.plugin.topView === 'metadata' ? 'Metadata' : ({ card: 'Card', connections: 'Connections', folder: 'Folder' }[this.plugin.linkView]);
       body.createEl('p', { text: `${label} View는 다음 구현 단계에서 제공됩니다.` });
-      body.createEl('p', { text: '현재는 Space 지정·파일 열기·메인/서브 전환을 사용할 수 있습니다.', cls: 'mdp-muted' });
+      body.createEl('p', { text: '현재는 Main 지정·해제와 Sub에서 파일 열기을 사용할 수 있습니다.', cls: 'mdp-muted' });
     }
   }
   private tab(root: HTMLElement, title: string, selected: boolean, onClick: () => void): void {

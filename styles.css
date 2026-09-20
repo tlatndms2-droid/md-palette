@@ -35,7 +35,7 @@
 .mdp-card:focus-visible { outline: 2px solid var(--interactive-accent); }
 .mdp-preview { position: relative; height: 126px; overflow: hidden; border-radius: 5px; margin-bottom: 6px; pointer-events: none; }
 .mdp-preview img, .mdp-preview canvas, .mdp-preview > svg { width: 100%; height: 100%; object-fit: contain; }
-.mdp-preview-markdown { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .88em; line-height: 1.45; padding: 3px; }
+.mdp-preview-markdown { white-space: normal; overflow-wrap: anywhere; font-size: .88em; line-height: 1.45; padding: 3px; }
 .mdp-preview-fallback { display: flex; align-items: center; justify-content: center; height: 100%; color: var(--text-muted); }
 .mdp-preview-fallback svg { width: 42px; height: 42px; }
 .mdp-card-name { overflow-wrap: anywhere; padding-right: 16px; line-height: 1.4; }
@@ -134,3 +134,18 @@
 .mdp-folder-before { box-shadow:inset 0 3px 0 var(--interactive-accent) !important; }
 .mdp-folder-row { content-visibility:auto; contain-intrinsic-size:auto 28px; }
 .mdp-folder-sentinel { height:1px; grid-column:1 / -1; }
+
+/* File titles lead both Card and Folder previews; folder/tree labels stay unchanged. */
+.mdp-file-title { font-size: 1.2em; font-weight: 650; line-height: 1.35; margin-bottom: 8px; padding-right: 20px; }
+.mdp-preview-markdown > :first-child { margin-top: 0; }
+.mdp-preview-markdown p, .mdp-preview-markdown ul, .mdp-preview-markdown ol { margin: 0 0 .5em; }
+.mdp-preview-markdown ul, .mdp-preview-markdown ol { padding-left: 1.5em; }
+.mdp-preview-markdown h1, .mdp-preview-markdown h2, .mdp-preview-markdown h3, .mdp-preview-markdown h4 { font-size: 1.05em; margin: .5em 0; }
+.mdp-preview-markdown a { color: var(--text-accent); text-decoration: none; }
+.mdp-preview-markdown pre { white-space: pre-wrap; margin: .4em 0; }
+.mdp-display-list .mdp-file-card, .mdp-display-details .mdp-file-card { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 3px 8px; }
+.mdp-display-list .mdp-file-title, .mdp-display-details .mdp-file-title { grid-column: 2; grid-row: 1; margin: 0; }
+.mdp-display-list .mdp-file-card > .mdp-preview, .mdp-display-details .mdp-file-card > .mdp-preview { grid-column: 1; grid-row: 1; }
+.mdp-display-list .mdp-file-card > .mdp-card-info, .mdp-display-details .mdp-file-card > .mdp-card-info { grid-column: 2; }
+.mdp-display-tiles .mdp-file-card { display: grid; grid-template-columns: 85px minmax(0, 1fr); gap: 6px 8px; }
+.mdp-display-tiles .mdp-file-title { grid-column: 1 / -1; margin-bottom: 0; }

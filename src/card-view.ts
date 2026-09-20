@@ -68,11 +68,14 @@ export class CardView {
   private root?: HTMLElement;
   private visible: TFile[] = [];
   private scrollTop = 0;
+  private restoreFrame?: number;
   constructor(private plugin: MDPalettePlugin) {}
-  destroy(): void { if (this.root?.isConnected) this.scrollTop = this.root.querySelector('.mdp-card-grid')?.scrollTop ?? this.scrollTop; this.thumbnails?.destroy(); this.thumbnails = undefined; this.reorderDrag?.destroy(); this.reorderDrag = undefined; }
+  destroy(): void { if (this.restoreFrame !== undefined) cancelAnimationFrame(this.restoreFrame); this.thumbnails?.destroy(); this.thumbnails = undefined; this.reorderDrag?.destroy(); this.reorderDrag = undefined; }
   render(root: HTMLElement): void {
     this.destroy(); this.root = root;
     const main = this.plugin.mainFile; if (!main) return;
+    const parent = root.parentNode, nextSibling = root.nextSibling;
+    root.remove();
     if (main.path !== this.mainPath) { this.selected.clear(); this.anchor = this.active = undefined; this.mainPath = main.path; this.scrollTop = 0; }
     const state = this.plugin.cards;
     root.className = 'mdp-card-view';
@@ -98,6 +101,7 @@ export class CardView {
     if (this.active && !visiblePaths.has(this.active)) this.active = undefined;
     root.createDiv({ cls: 'mdp-card-count mdp-muted', text: `${this.visible.length}개 파일` });
     const grid = root.createDiv({ cls: `mdp-card-grid mdp-display-${state.display} mdp-text-${state.textSize}`, attr: { role: 'listbox', 'aria-label': '연결 파일 카드', 'aria-multiselectable': 'true' } });
+    grid.addEventListener('scroll', () => { this.scrollTop = grid.scrollTop; }, { passive: true });
     if (!this.visible.length) grid.createDiv({ cls: 'mdp-muted mdp-no-cards', text: connected.length ? '필터에 맞는 파일이 없습니다.' : '연결된 파일이 없습니다. 위 버튼으로 기존 파일을 연결하세요.' });
     this.thumbnails = new Thumbnails(this.plugin.app, grid);
     this.reorderDrag = new CardReorder(grid, (paths, target, after) => {
@@ -120,11 +124,12 @@ export class CardView {
     }, { passive: false });
     for (const file of this.visible) {
       const card = grid.createDiv({ cls: 'mdp-card', attr: { 'data-path': file.path, role: 'option', tabindex: '0', draggable: 'true', title: file.path } });
+      card.classList.add('mdp-file-card');
+      card.createDiv({ cls: 'mdp-card-name mdp-file-title', text: file.name });
       const preview = card.createDiv({ cls: 'mdp-preview', attr: { 'aria-hidden': 'true' } });
       if (state.display !== 'list' && state.display !== 'details') this.thumbnails.observe(preview, file);
       else setIcon(preview, classify(file.extension) === 'image' ? 'image' : 'file-text');
       const info = card.createDiv({ cls: 'mdp-card-info' });
-      info.createDiv({ cls: 'mdp-card-name', text: file.name });
       const label = state.labels.find(l => l.id === state.assignments[file.path]);
       if (label) { const badge = info.createSpan({ cls: 'mdp-label-badge', text: label.name }); badge.style.setProperty('--mdp-label-color', label.color); }
       if (state.display === 'details' || state.display === 'tiles') {
@@ -148,8 +153,10 @@ export class CardView {
         this.reorderDrag?.start(paths);
       };
     }
-    grid.scrollTop = this.scrollTop;
     this.paint();
+    parent?.insertBefore(root, nextSibling);
+    const savedScroll = this.scrollTop;
+    if (savedScroll) this.restoreFrame = requestAnimationFrame(() => { grid.scrollTop = savedScroll; this.restoreFrame = undefined; });
   }
   private selection(e: MouseEvent | KeyboardEvent, file: TFile): void {
     if (e.shiftKey && this.anchor && this.visible.some(f => f.path === this.anchor)) {
@@ -165,14 +172,13 @@ export class CardView {
       const selected = this.selected.has(el.dataset.path!); el.classList.toggle('is-selected', selected); el.classList.toggle('is-active', el.dataset.path === this.active); el.setAttribute('aria-selected', String(selected));
     });
   }
-  private open(file: TFile): void { this.plugin.run(() => this.plugin.openIn(file.extension === 'md' ? 'sub' : 'reference', file)); }
+  private open(file: TFile): void { this.plugin.run(() => this.plugin.openIn('sub', file)); }
   private context(event: MouseEvent, file: TFile): void {
     if (!this.selected.has(file.path)) { this.selected = new Set([file.path]); this.active = this.anchor = file.path; this.paint(); }
     const paths = [...this.selected], multi = paths.length > 1, state = this.plugin.cards;
     const menu = new Menu();
     if (!multi) {
-      if (file.extension === 'md') menu.addItem(item => item.setTitle('Sub Space에서 열기').setIcon('link').onClick(() => this.open(file)));
-      menu.addItem(item => item.setTitle('Reference Space에서 열기').setIcon('file-search').onClick(() => this.plugin.run(() => this.plugin.openIn('reference', file)))); menu.addSeparator();
+      menu.addItem(item => item.setTitle('Sub Space에서 열기').setIcon('link').onClick(() => this.open(file)));
     }
     menu.addItem(item => {
       item.setTitle(multi ? 'Label 일괄 적용' : 'Label 지정/교체').setIcon('tag').setDisabled(!state.labels.length);

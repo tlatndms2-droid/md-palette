@@ -9,7 +9,8 @@ const displayNames = ['큰 아이콘', '중간 아이콘', '작은 아이콘', '
 const nameCollator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
 type Entry = { key: string; name: string; parent: string; folder?: string; file?: TFile };
 class NameModal extends Modal {
-  constructor(private plugin: MDPalettePlugin, private parent: string, private id?: string) { super(plugin.app); }
+  private main: TFile | null;
+  constructor(private plugin: MDPalettePlugin, private parent: string, private id?: string) { super(plugin.app); this.main = plugin.mainFile; }
   onOpen(): void {
     this.titleEl.setText(this.id ? '가상 폴더 이름 변경' : '새 가상 폴더 만들기');
     const input = this.contentEl.createEl('input', { type: 'text', value: this.plugin.folders.folders.find(f => f.id === this.id)?.name ?? '', attr: { 'aria-label': '가상 폴더 이름', maxlength: '120' } });
@@ -23,7 +24,7 @@ class NameModal extends Modal {
         if (s.folders.some(f => f.parent === parent && f.name === name && f.id !== this.id)) throw Error('같은 이름의 가상 폴더가 있습니다.');
         if (this.id) { if (!existing) throw Error('폴더가 없습니다.'); existing.name = name; }
         else { const id = crypto.randomUUID(); s.folders.push({ id, name, parent }); s.order.push(folderKey(id)); }
-      }); this.close(); });
+      }, this.main); this.close(); });
     };
     actions.createEl('button', { text: '저장', cls: 'mod-cta' }).onclick = apply;
     input.onkeydown = e => { if (e.key === 'Enter') apply(); }; input.focus(); input.select();
@@ -63,7 +64,7 @@ export class FolderView {
     root.remove();
     const s = this.plugin.folders;
     if (!this.initialized) { this.history = [s.current]; this.initialized = true; }
-    if (this.main !== this.plugin.mainFile?.path) { this.main = this.plugin.mainFile?.path; this.selections.tree.clear(); this.selections.folder.clear(); this.drag = undefined; this.query = ''; this.scroll = { tree: 0, folder: 0 }; }
+    if (this.main !== this.plugin.mainFile?.path) { this.main = this.plugin.mainFile?.path; this.history = [s.current]; this.historyIndex = 0; this.selections.tree.clear(); this.selections.folder.clear(); this.drag = undefined; this.query = ''; this.scroll = { tree: 0, folder: 0 }; }
     const connected = this.plugin.connectedFiles(), known = new Set(s.order);
     let added = false;
     for (const key of [...s.folders.map(f => folderKey(f.id)), ...connected.map(f => fileKey(f.path))]) if (!known.has(key)) { s.order.push(key); known.add(key); added = true; }
@@ -168,11 +169,12 @@ export class FolderView {
   private row(root: HTMLElement, item: Entry, surface: 'tree' | 'folder', visible: Entry[], depth = 0): void {
     const tree = surface === 'tree', s = this.plugin.folders;
     const el = root.createDiv({ cls: tree ? 'mdp-folder-row' : 'mdp-card mdp-folder-item', attr: { 'data-key': item.key, 'data-surface': surface, role: tree ? 'treeitem' : 'option', tabindex: '0', draggable: 'true', title: item.file?.path ?? this.virtualPath(item.folder!) } });
+    if (!tree && item.file) { el.classList.add('mdp-file-card'); el.createDiv({ cls: 'mdp-card-name mdp-file-title', text: item.name }); }
     if (tree) { el.style.paddingLeft = `${6 + depth * 16}px`; el.setAttribute('aria-level', String(depth + 1)); }
     if (tree && item.folder) { el.setAttribute('aria-expanded', String(!s.collapsed.includes(item.folder))); this.iconButton(el, `${item.name} 접기/펼치기`, s.collapsed.includes(item.folder) ? 'chevron-right' : 'chevron-down', () => this.change(n => { n.collapsed = n.collapsed.includes(item.folder!) ? n.collapsed.filter(id => id !== item.folder) : [...n.collapsed, item.folder!]; })); }
     const preview = el.createDiv({ cls: tree ? 'mdp-folder-icon' : 'mdp-preview' });
     if (item.folder) setIcon(preview, 'folder'); else if (!tree && !['list','details'].includes(s.display)) this.thumbnails?.observe(preview, item.file!); else setIcon(preview, classify(item.file!.extension) === 'image' ? 'image' : 'file-text');
-    const info = el.createDiv({ cls: 'mdp-card-info' }); info.createDiv({ cls: 'mdp-card-name', text: item.name });
+    const info = el.createDiv({ cls: 'mdp-card-info' }); if (tree || item.folder) info.createDiv({ cls: 'mdp-card-name', text: item.name });
     if (!tree) {
       const label = this.plugin.cards.labels.find(l => l.id === this.plugin.cards.assignments[item.file?.path ?? '']);
       if (label) { const badge = info.createSpan({ cls: 'mdp-label-badge', text: label.name }); badge.style.setProperty('--mdp-label-color', label.color); }
@@ -180,7 +182,7 @@ export class FolderView {
       if (['details','tiles'].includes(s.display)) info.createDiv({ cls: 'mdp-card-detail', text: item.folder ? '가상 폴더' : `${item.file!.extension.toUpperCase()} · ${new Date(item.file!.stat.mtime).toLocaleString()} · ${item.file!.stat.size} B` });
     }
     el.onclick = e => { if ((e.target as HTMLElement).closest('button')) return; this.select(item.key, surface, visible, e); };
-    const open = () => item.folder ? this.navigate(item.folder) : this.plugin.run(() => this.plugin.openIn(item.file!.extension === 'md' ? 'sub' : 'reference', item.file!));
+    const open = () => item.folder ? this.navigate(item.folder) : this.plugin.run(() => this.plugin.openIn('sub', item.file!));
     el.ondblclick = e => { if (!(e.target as HTMLElement).closest('button')) open(); };
     el.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); open(); } else if (e.key === ' ') { e.preventDefault(); this.select(item.key, surface, visible, e); } };
     el.oncontextmenu = e => { e.preventDefault(); e.stopPropagation(); if (!this.selections[surface].has(item.key)) this.select(item.key, surface, visible, e); const menu = new Menu();
@@ -190,8 +192,7 @@ export class FolderView {
         menu.addItem(i => i.setTitle('이름 변경').onClick(() => new NameModal(this.plugin, item.parent, item.folder).open()));
         menu.addItem(i => i.setTitle('가상 폴더 삭제 (내용은 한 단계 위로)').setIcon('folder-minus').onClick(() => this.change(n => deleteFolder(n, item.folder!))));
       } else {
-        if (item.file!.extension === 'md') menu.addItem(i => i.setTitle('Sub Space에서 열기').onClick(open));
-        menu.addItem(i => i.setTitle('Reference Space에서 열기').onClick(() => this.plugin.run(() => this.plugin.openIn('reference', item.file!))));
+        menu.addItem(i => i.setTitle('Sub Space에서 열기').onClick(open));
       } menu.showAtMouseEvent(e);
     };
     el.ondragstart = e => { if (!this.selections[surface].has(item.key)) this.select(item.key, surface, visible, e); this.drag = { keys: visible.filter(x => this.selections[surface].has(x.key)).map(x => x.key), main: this.main!, surface }; e.dataTransfer?.setData('application/x-md-palette-folder', this.main!); if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move'; };

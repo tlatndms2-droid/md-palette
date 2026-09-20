@@ -1,4 +1,4 @@
-import { App, TFile, loadPdfJs, setIcon } from 'obsidian';
+import { App, Component, MarkdownRenderer, TFile, loadPdfJs, setIcon } from 'obsidian';
 import { bodyOnly, classify } from './cards-state';
 
 const icons = { md: 'file-text', canvas: 'layout-dashboard', pdf: 'file-text', image: 'image', video: 'film', other: 'file' };
@@ -53,7 +53,16 @@ export class Thumbnails {
     if (type === 'md') {
       const text = bodyOnly(await this.app.vault.cachedRead(file));
       if (this.stopped) return;
-      el.empty(); el.createDiv({ cls: 'mdp-preview-markdown', text: text.slice(0, 1800) || '(본문 없음)' }); el.dataset.preview = 'md';
+      el.empty();
+      const body = el.createDiv({ cls: 'mdp-preview-markdown' });
+      const component = new Component(); component.load();
+      const dispose = () => component.unload(); this.disposers.add(dispose);
+      // Preview formatting only: embeds become links, avoiding recursive note/media loading.
+      const preview = (text.slice(0, 1800) || '(본문 없음)').replace(/!\[\[/g, '[[').replace(/!\[([^\]]*)\]\(/g, '[$1](');
+      await MarkdownRenderer.render(this.app, preview, body, file.path, component);
+      if (this.stopped) { dispose(); this.disposers.delete(dispose); return; }
+      body.querySelectorAll('input').forEach(input => { input.disabled = true; });
+      el.dataset.preview = 'md';
     } else if (type === 'image') {
       el.empty(); const img = el.createEl('img', { attr: { src: this.app.vault.getResourcePath(file), alt: file.name, draggable: 'false' } });
       img.onerror = () => { if (!this.stopped) this.fallback(el, file); }; el.dataset.preview = 'image';

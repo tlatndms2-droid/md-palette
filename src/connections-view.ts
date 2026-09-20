@@ -139,7 +139,7 @@ export class ConnectionsView {
     element.addEventListener('contextmenu', event => {
       event.preventDefault(); event.stopPropagation();
       const menu = new Menu();
-      for (const role of ['sub', 'reference'] as const) menu.addItem(item => item.setTitle(`${role === 'sub' ? 'Sub' : 'Reference'} Space에서 열기`).setIcon(role === 'sub' ? 'link' : 'file-search').onClick(() => this.plugin.run(() => this.plugin.openIn(role, file))));
+      menu.addItem(item => item.setTitle('Sub Space에서 열기').setIcon('link').onClick(() => this.plugin.run(() => this.plugin.openIn('sub', file))));
       menu.showAtMouseEvent(event as MouseEvent);
     });
   }

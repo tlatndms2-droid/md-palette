@@ -9,6 +9,14 @@ export interface FolderState {
 }
 export const folderKey = (id: string): string => 'd:' + id;
 export const fileKey = (path: string): string => 'f:' + path;
+// Legacy global folders are intentionally not copied into any document.
+export function readDocumentFolders(raw: unknown): Record<string, FolderState> {
+  const result: Record<string, FolderState> = Object.create(null);
+  if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+    for (const [path, value] of Object.entries(raw)) if (path.endsWith('.md')) result[path] = readFolders(value);
+  }
+  return result;
+}
 export function readFolders(raw: unknown): FolderState {
   const v = raw && typeof raw === 'object' ? raw as Partial<FolderState> : {};
   const folders: VirtualFolder[] = [];

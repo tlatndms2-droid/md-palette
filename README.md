@@ -2,31 +2,32 @@
 
 Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 데스크톱 플러그인입니다.
 
-## 현재 버전: 0.0.7 — 전역 가상 폴더
+## 현재 버전: 0.0.8 — Main·Sub와 문서별 가상 폴더
 
-기존 Obsidian 탭 그룹에 Main·Sub·Reference 역할을 지정합니다. 역할 아이콘은 각 그룹에서 현재 활성화된 탭 이름 왼쪽에 표시됩니다. 색상은 Obsidian 테마와 강조색을 따릅니다. Obsidian 1.13.7 이상을 대상으로 합니다.
+기존 Obsidian 탭 그룹에 Main·Sub 역할을 지정합니다. 역할 아이콘은 각 그룹에서 현재 활성화된 탭 이름 왼쪽에 표시됩니다. 색상은 Obsidian 테마와 강조색을 따릅니다. Obsidian 1.13.7 이상을 대상으로 합니다.
 
 1. Markdown 탭 제목 우클릭 → `메인 스페이스로 지정`.
-2. 명령어 팔레트에서 `MD Palette: Sub Space에서 파일 열기` → Markdown 선택. Main 오른쪽에 열리며 이후 같은 Sub를 재사용합니다.
-3. `MD Palette: Reference Space에서 파일 열기` → 파일 선택. 참고 자료가 새 탭에 쌓이며 같은 파일은 기존 탭을 활성화합니다. 파일 우클릭 메뉴에서도 Sub·Reference 열기를 사용할 수 있습니다.
-4. Main의 활성 탭 제목 우클릭 → `메인 / 서브 전환`. 두 그룹의 활성 파일만 교환하며 다른 탭은 유지합니다.
+2. Card·Folder의 파일을 더블클릭하거나 `MD Palette: Sub Space에서 파일 열기` 명령을 실행합니다. Markdown·이미지·Canvas·PDF·영상 등 지원 파일이 Main 오른쪽 Sub에 열립니다.
+3. 다른 파일은 Sub의 새 탭으로 추가하고, 같은 파일은 이미 열린 탭을 보여줍니다.
+4. Main 탭 제목 우클릭 → `메인 스페이스 지정 해제`. 모든 탭을 남기고 Main·Sub 아이콘을 없애며 사이드바는 `Main 없음`이 됩니다.
 5. 왼쪽 리본의 `MD Palette 열기`로 사이드바를 열 수 있습니다. Main을 지정하면 사이드바도 열립니다.
 
-새 Main을 지정하면 이전 Main은 일반 그룹으로 돌아가고, 기존 Sub는 Obsidian 기본 새 탭으로 남으며 Reference 탭 그룹은 닫힙니다. 실제 파일은 삭제하지 않습니다. 다시 Sub 파일을 열면 빈 위치를 재사용합니다.
+다른 그룹을 새 Main으로 지정하면 기존 Main·Sub의 탭은 그대로 남고 일반 그룹으로 돌아갑니다. 새 Main에서 파일을 열면 새 Sub가 생깁니다. Reference Space와 Main/Sub 교환 메뉴·명령은 제거했습니다.
 
-재시작하면 Obsidian이 복원한 기존 그룹에 역할만 다시 연결합니다. 없는 Sub·Reference나 이전 파일을 강제로 다시 열지 않습니다.
+재시작하면 Obsidian이 복원한 기존 그룹에 Main·Sub 역할만 다시 연결합니다. 없는 탭이나 이전 파일을 강제로 다시 열지 않습니다.
 
 ## 연결 파일 Card
 
 Main 지정 → 사이드바 `Link View → Card`에서 나가는 링크와 역링크의 파일을 함께 봅니다. 같은 파일은 한 번만 표시하며 Main 자체는 숨깁니다.
 
 - `연결 파일 추가` → 기존 Vault 파일 선택 → Main 상단 `link note` 속성에 링크를 추가합니다. 본문의 별도 링크 목록은 만들지 않으며, 이미 연결된 파일을 중복 추가하지 않습니다.
-- 한 번 클릭은 선택, Ctrl+클릭은 추가/해제, Shift+클릭은 범위 선택입니다. 더블클릭하면 단일 선택으로 바뀌고 Markdown은 Sub, 다른 파일은 Reference에서 열립니다. Markdown 우클릭 메뉴에서는 Reference로도 열 수 있습니다.
+- 한 번 클릭은 선택, Ctrl+클릭은 추가/해제, Shift+클릭은 범위 선택입니다. 더블클릭하면 단일 선택으로 바뀌고 파일 종류와 관계없이 Sub에서 열립니다. 우클릭 메뉴에서도 Sub 열기를 사용할 수 있습니다.
 - 카드 우클릭 → `새 Label 만들기` 또는 `Label 지정/교체`. 여러 카드를 선택하면 한꺼번에 적용하거나 제거합니다. 라벨 관리에서 이름·색을 바꾸면 사용 중인 카드에 함께 반영되며, 마지막 파일에서 제거된 라벨은 사라집니다.
 - 파일 유형과 여러 라벨로 필터링합니다. 라벨의 `All`은 개별 라벨 선택을 해제합니다. 필터를 접어도 선택 조건은 유지됩니다.
 - 선택한 카드를 드래그하면 Canvas Palette와 같은 밝은 삽입 안내선이 나타납니다. 여러 열에서는 카드 사이 세로선, 목록·한 열에서는 가로선을 기준으로 놓습니다. 카드가 흔들리지 않으며 놓을 때 기존 카드를 그대로 이동합니다. 묶음 내부 순서를 유지하고 Esc로 취소할 수 있습니다.
 - 보기 형식 6종과 글자 크기 3종을 제공합니다. 카드 영역에서 Ctrl+마우스 휠로 보기 형식을 전환합니다.
-- Markdown 본문, 이미지, PDF 첫 페이지, Canvas 축소 그림, 영상 첫 프레임을 미리 봅니다. 지원하지 않거나 읽을 수 없는 자료는 파일 아이콘과 이름으로 표시합니다. 미리보기는 보이는 카드부터 처리하고 최근 결과를 재사용합니다.
+- 파일 제목은 Card와 Folder의 파일 카드 상단에 더 크게 표시합니다. Tree 목록과 가상 폴더 이름 크기는 유지합니다.
+- Markdown 본문은 제목·강조·목록·링크를 렌더링하며 원문은 바꾸지 않습니다. 본문 내 임베드는 링크로 표시하여 재귀적인 문서·미디어 로딩을 피합니다. 이미지, PDF 첫 페이지, Canvas 축소 그림, 영상 첫 프레임을 미리 봅니다. 지원하지 않거나 읽을 수 없는 자료는 파일 아이콘과 이름으로 표시합니다. 미리보기는 보이는 카드부터 처리하고 최근 결과를 재사용합니다.
 
 라벨·필터·보기 형식·글자 크기·카드 순서는 재시작 후 복원됩니다. 라벨과 순서 변경은 Markdown 내용이나 실제 파일 위치를 바꾸지 않습니다.
 
@@ -34,24 +35,26 @@ Main 지정 → 사이드바 `Link View → Card`에서 나가는 링크와 역�
 
 `Link View → Connections`에서 Markdown 역링크·나가는 링크·Main 중심 그래프를 함께 봅니다. Outgoing은 본문과 모든 속성의 Markdown 링크입니다. `child note`, `parent note`, `link note`도 포함합니다. Connections 목록의 별도 검색창·필터는 추가하지 않습니다.
 
-- 목록은 한 번 클릭으로 선택, 더블클릭으로 Sub 열기, 우클릭으로 Sub/Reference를 선택합니다. 기본 그래프 노드는 클릭하면 Markdown은 Sub, 다른 파일은 Reference에서 열립니다. 우클릭으로 열 위치를 선택할 수 있습니다.
+- 목록은 한 번 클릭으로 선택, 더블클릭으로 Sub 열기, 우클릭으로 Sub 열기를 선택합니다. 기본 그래프 노드는 클릭하면 지원 파일을 모두 Sub에서 열며, 우클릭 메뉴도 같습니다.
 - 각 제목으로 영역을 접고 펼칩니다. 구분선 드래그로 높이를 조절하며 Esc로 취소합니다. 구분선을 키보드로 선택한 뒤 위/아래 방향키로도 조절합니다. 높이와 접힘 상태는 재시작 후 복원됩니다.
 - 그래프는 Obsidian 기본 Local Graph 화면을 그대로 사용합니다. 기본 확대·이동·노드 배치와 설정 버튼의 필터·그룹·표시·장력 조절을 사용할 수 있고 설정을 저장합니다. 목록은 Markdown만 표시하고, 그래프의 표시 대상은 Obsidian 기본 동작과 그래프 설정을 따릅니다. Main을 중심으로 유지하며 다른 Obsidian 그래프의 설정은 바꾸지 않습니다. 코어 플러그인의 그래프 보기가 꺼져 있으면 켜는 위치를 안내합니다.
 - 상단 `연결 파일 추가`는 Card와 같은 `link note` 저장 방식을 사용합니다.
 
 ## Folder
 
-`Link View → Folder`에서 실제 Vault 경로를 바꾸지 않고 연결 파일을 정리합니다. 가상 폴더 구조와 파일 위치는 모든 Main에서 공유합니다.
+`Link View → Folder`에서 실제 Vault 경로를 바꾸지 않고 연결 파일을 정리합니다. 가상 폴더 구조와 파일 위치는 Main 문서마다 따로 저장합니다. A에서 정리한 폴더는 B에 나타나지 않으며 A로 돌아오면 복원됩니다. 같은 연결 파일을 각 Main에서 다른 가상 위치에 둘 수 있습니다.
 
 - 빈 공간 우클릭 → `새 가상 폴더 만들기`. 폴더 우클릭으로 이름 변경·삭제를 합니다. 삭제 시 내부 파일과 하위 폴더는 한 단계 위로 이동하고 실제 파일은 남습니다.
-- 한 번 클릭·Ctrl·Shift로 선택한 뒤 폴더, 상위 경로, 빈 공간으로 드래그합니다. 폴더 자신이나 하위 폴더에는 놓을 수 없습니다. 폴더 더블클릭은 탐색, 파일 더블클릭은 Markdown Sub/다른 파일 Reference 열기입니다.
+- 한 번 클릭·Ctrl·Shift로 선택한 뒤 폴더, 상위 경로, 빈 공간으로 드래그합니다. 폴더 자신이나 하위 폴더에는 놓을 수 없습니다. 폴더 더블클릭은 탐색, 파일 더블클릭은 Sub 열기입니다.
 - `보기 형식`에서 복합뷰·Tree뷰·Folder뷰, 6가지 파일 표시, 상하·좌우 분할을 고릅니다. 구분선 드래그로 영역 크기를 조절합니다.
 - `Folder Contents` 오른쪽 정렬 메뉴: 사용자 지정·이름·유형·수정 날짜·크기. 자동 정렬에서는 오름차순·내림차순을 선택합니다. 사용자 지정 순서는 별도로 보존됩니다. Tree 제목 오른쪽은 사용자 지정·이름 정렬입니다.
 - 뒤로·앞으로·위로·경로 버튼으로 이동합니다. 검색은 현재 폴더와 하위 폴더의 파일·폴더 이름을 찾고 가상 경로를 표시합니다. Main 변경·재시작 시 검색어는 비웁니다.
 - 파일 유형 필터는 Card와 공유합니다. Folder는 Card의 라벨을 표시하지만 별도의 라벨 필터는 적용하지 않습니다.
 - Folder 빈 공간 우클릭 → `연결 파일 추가`: Main의 link note 연결과 현재 폴더 배치가 함께 성공해야 완료합니다. 이미 다른 가상 위치에 배치된 파일은 전체 취소합니다.
 
-폴더·위치·보기·정렬·접힘·분할 상태는 재시작 후 복원합니다. 대량 목록은 스크롤에 맞춰 이어 표시하고 검색은 전체 자료에서 찾습니다.
+폴더·위치·보기·정렬·접힘·분할 상태는 Main별로 저장하고 재시작 후 복원합니다. 대량 목록은 스크롤에 맞춰 이어 표시하고 검색은 전체 자료에서 찾습니다.
+
+**0.0.7 → 0.0.8 업데이트:** 기존 테스트용 전역 가상 폴더와 배치 정보는 초기화합니다. 실제 파일·본문·연결·라벨은 유지합니다. 새로 만든 문서별 가상 폴더는 다음 실행이나 업데이트에서 초기화하지 않습니다. 가상 폴더는 플러그인 데이터에 저장하며 Markdown에 쓰지 않습니다.
 
 **Metadata와 카드를 Main 본문에 드롭하는 기능은 후속 단계입니다.** Main 본문 링크 클릭 팝업은 사용자 결정에 따라 보류했습니다.
 
@@ -60,9 +63,9 @@ Main 지정 → 사이드바 `Link View → Card`에서 나가는 링크와 역�
 1. BRAT 설정에서 `Add beta plugin`을 선택합니다.
 2. `https://github.com/tlatndms2-droid/md-palette`를 입력해 설치합니다.
 3. Obsidian 설정 → 커뮤니티 플러그인에서 `MD Palette`를 활성화합니다.
-4. 표시 버전이 `0.0.7`인지 확인합니다. 기존 설치자는 BRAT 업데이트를 실행합니다.
+4. 표시 버전이 `0.0.8`인지 확인합니다. 기존 설치자는 BRAT 업데이트를 실행합니다.
 
-이번 Folder 단계의 사용자 확인 후에만 다음 Metadata 단계로 진행합니다.
+이번 수정의 사용자 확인과 별도 요청 후에 다음 Metadata 단계로 진행합니다.
 
 ## 개발
 
@@ -83,4 +86,4 @@ node --test tests/*.test.mjs
 
 빌드 결과 `main.js`, `manifest.json`, `styles.css`가 Release 자산입니다. `scripts/`의 기술 시험은 전용 Sandbox에만 사용하며 일반 Vault에서 실행하지 않습니다.
 
-구현 범위와 단계는 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), Folder 검증은 [STAGE4_VALIDATION.md](STAGE4_VALIDATION.md), 이전 수정 검증은 [STAGE3_FIX_VALIDATION.md](STAGE3_FIX_VALIDATION.md), 최초 Connections 검증은 [STAGE3_VALIDATION.md](STAGE3_VALIDATION.md), Card 검증은 [STAGE2_VALIDATION.md](STAGE2_VALIDATION.md), 이전 단계는 [STAGE1_VALIDATION.md](STAGE1_VALIDATION.md), 초기 기술 시험은 [STAGE0_VALIDATION.md](STAGE0_VALIDATION.md)를 참고하세요.
+구현 범위와 단계는 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), 이번 수정 검증은 [REVISION_VALIDATION.md](REVISION_VALIDATION.md), 기존 Folder 검증은 [STAGE4_VALIDATION.md](STAGE4_VALIDATION.md), 이전 수정 검증은 [STAGE3_FIX_VALIDATION.md](STAGE3_FIX_VALIDATION.md), 최초 Connections 검증은 [STAGE3_VALIDATION.md](STAGE3_VALIDATION.md), Card 검증은 [STAGE2_VALIDATION.md](STAGE2_VALIDATION.md), 이전 단계는 [STAGE1_VALIDATION.md](STAGE1_VALIDATION.md), 초기 기술 시험은 [STAGE0_VALIDATION.md](STAGE0_VALIDATION.md)를 참고하세요.

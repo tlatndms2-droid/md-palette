@@ -43,15 +43,14 @@ export class NativeLocalGraph {
       const nativeRightClick = view.renderer.onNodeRightClick;
       view.renderer.onNodeClick = (event, path, type) => {
         const file = this.plugin.app.vault.getAbstractFileByPath(path);
-        if (file instanceof TFile) this.plugin.run(() => this.plugin.openIn(file.extension === 'md' ? 'sub' : 'reference', file));
+        if (file instanceof TFile) this.plugin.run(() => this.plugin.openIn('sub', file));
         else if (type === 'tag') nativeClick.call(view.renderer, event, path, type);
       };
       view.renderer.onNodeRightClick = (event, path, type) => {
         const file = this.plugin.app.vault.getAbstractFileByPath(path);
         if (!(file instanceof TFile)) { if (type === 'tag') nativeRightClick.call(view.renderer, event, path, type); return; }
         const menu = new Menu();
-        if (file.extension === 'md') menu.addItem(item => item.setTitle('Sub Space에서 열기').setIcon('link').onClick(() => this.plugin.run(() => this.plugin.openIn('sub', file))));
-        menu.addItem(item => item.setTitle('Reference Space에서 열기').setIcon('file-search').onClick(() => this.plugin.run(() => this.plugin.openIn('reference', file))));
+        menu.addItem(item => item.setTitle('Sub Space에서 열기').setIcon('link').onClick(() => this.plugin.run(() => this.plugin.openIn('sub', file))));
         menu.showAtMouseEvent(event);
       };
       view.file = main;
