@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "checks": [
+    "new Main preserves all tabs, releases previous roles, has independent folders",
+    "returning to Main restores its own virtual folders",
+    "all Folder sort menu choices execute",
+    "folder save/connection failures roll back without leftover new files",
+    "existing virtual placement conflict cancels entirely",
+    "existing new-note name rejected without overwrite",
+    "new-note Escape creates no file",
+    "new note respects current Main folder setting",
+    "new note respects configured folder setting",
+    "Connections collapse and keyboard height adjustment execute",
+    "Task save failure restores checkbox and source",
+    "Metadata URL opens native Web Viewer in Sub with Main preserved",
+    "Main internal link routes to Sub and keeps pinned Main"
+  ]
+}

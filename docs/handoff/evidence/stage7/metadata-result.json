@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "checks": [
+    "five Metadata sections visible including URL Links",
+    "Task click updates Markdown",
+    "footnote edit saves multiline content",
+    "footnote stale draft does not overwrite external edit",
+    "Metadata search temporarily expands matched section"
+  ],
+  "errors": []
+}

@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checks": [
+    "Main context menu assigns pinned document and icon",
+    "Card combines backlink/outgoing without duplicate or Main",
+    "single/Ctrl selection does not open files",
+    "default replaces; Ctrl new tab/reuses same file; Ctrl+Shift new Sub group",
+    "multiple Sub groups use full height alongside stacked left groups",
+    "label menu applies label without changing Markdown",
+    "connection picker adds link note and preserves other frontmatter"
+  ],
+  "errors": []
+}

@@ -1,0 +1,7 @@
+{
+  "passed": true,
+  "corruptDataPreserved": true,
+  "sourcePreserved": true,
+  "missingMainDoesNotRestoreSubs": true,
+  "restoredOriginalData": true
+}

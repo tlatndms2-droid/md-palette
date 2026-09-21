@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checks": [
+    "multi-selected cards receive one label; unselected label unchanged",
+    "label filter and shared Card/Folder file type filter",
+    "label management lists both uses and deletes label only",
+    "multi-card reorder shows insertion marker, keeps relative order; Escape preserves order",
+    "Ctrl hover native previews on Card, Folder Tree and Connections",
+    "labels, filters and reorder leave source Markdown unchanged",
+    "empty Metadata differs from no Main; unset clears icons and preserves all tabs"
+  ]
+}

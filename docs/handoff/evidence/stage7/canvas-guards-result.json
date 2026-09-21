@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "checks": [
+    "Canvas zoom/pan 100,120,-0.7 drop within 2 screen pixels",
+    "Canvas zoom/pan -200,180,0.4 drop within 2 screen pixels",
+    "Canvas menu Escape leaves nodes unchanged",
+    "Canvas save fault removes only new node",
+    "unsupported drop rejected: 그림.svg",
+    "unsupported drop rejected: Paper.pdf",
+    "unsupported drop rejected: Video.webm"
+  ]
+}

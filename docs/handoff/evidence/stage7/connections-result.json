@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "checks": [
+    "Connections lists Markdown from all properties and body",
+    "native Local Graph view mounted",
+    "Connections double click opens target in Sub"
+  ],
+  "errors": []
+}

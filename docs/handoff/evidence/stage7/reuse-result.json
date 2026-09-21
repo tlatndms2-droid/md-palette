@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "checks": [
+    "링크 삽입 exact document position",
+    "임베드 삽입 exact document position",
+    "본문 Markdown 삽입 exact document position",
+    "텍스트 삽입 exact document position",
+    "텍스트로 삽입 exact document position",
+    "주소 그대로 삽입 exact document position",
+    "블록 링크 삽입 exact document position",
+    "블록 임베드 삽입 exact document position",
+    "출처 링크 포함 삽입 exact document position",
+    "제목이 있는 링크 삽입 exact document position",
+    "실제 각주로 추가 exact document position",
+    "one Undo removes footnote reference and definition",
+    "cancel inserts nothing",
+    "save failure restores editor and disk",
+    "intervening target edit cancels stale insertion",
+    "텍스트 카드 만들기 Canvas insertion",
+    "출처 링크 포함 카드 만들기 Canvas insertion",
+    "블록 내용 카드 만들기 Canvas insertion",
+    "블록 링크 카드 만들기 Canvas insertion",
+    "텍스트 카드 만들기 Canvas insertion",
+    "각주 카드 만들기 Canvas insertion",
+    "주소 텍스트 카드 만들기 Canvas insertion",
+    "제목 링크 카드 만들기 Canvas insertion",
+    "Card drop into Canvas rejected without changing nodes",
+    "reused source Markdown preserved",
+    "링크 삽입 exact document position"
+  ]
+}

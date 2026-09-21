@@ -1,0 +1,31 @@
+{
+  "passed": true,
+  "checks": [
+    "virtual parent deletion promotes children/files and keeps Vault file",
+    "folder cannot be dragged into its own descendant",
+    "all three Folder views and both split layouts execute",
+    "narrow Folder panel has no horizontal overflow",
+    "md preview and actual Sub opening",
+    "image preview and actual Sub opening",
+    "canvas preview and actual Sub opening",
+    "pdf preview and actual Sub opening",
+    "video preview and actual Sub opening"
+  ],
+  "bounds": [
+    {
+      "selector": ".mdp-sidebar",
+      "width": 280,
+      "scroll": 280
+    },
+    {
+      "selector": ".mdp-folder-view",
+      "width": 256,
+      "scroll": 256
+    },
+    {
+      "selector": ".mdp-folder-navigation",
+      "width": 255,
+      "scroll": 255
+    }
+  ]
+}

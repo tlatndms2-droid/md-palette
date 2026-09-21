@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "checks": [
+    "virtual folder creation and native file drag preserve source links/files",
+    "double click enters virtual folder",
+    "new linked note created and placed in current virtual folder",
+    "Tree/composite menu preserves folder state"
+  ],
+  "errors": []
+}

@@ -1,8 +1,10 @@
 import { writeFile } from 'node:fs/promises';
 
-export async function connect(port = 19273, surface = 'main') {
+export async function connect(port = Number(process.env.MD_PALETTE_CDP_PORT || 19273), surface = 'main') {
   const targets = await (await fetch(`http://127.0.0.1:${port}/json/list`)).json();
-  const target = targets.find(t => t.type === 'page' && t.title.includes('MDPalette-Stage0-Sandbox') && (surface === 'main' ? t.url === 'app://obsidian.md/index.html' : t.title.startsWith('설정')));
+  const title = process.env.MD_PALETTE_SANDBOX_TITLE || 'MDPalette-Stage0-Sandbox';
+  if (!title.includes('Sandbox')) throw new Error('Expected an explicitly named Sandbox');
+  const target = targets.find(t => t.type === 'page' && t.title.includes(title) && (surface === 'main' ? t.url === 'app://obsidian.md/index.html' : t.title.startsWith('설정')));
   if (!target) throw new Error('Expected isolated MD Palette Sandbox not found');
   const socket = new WebSocket(target.webSocketDebuggerUrl);
   await new Promise((resolve, reject) => {

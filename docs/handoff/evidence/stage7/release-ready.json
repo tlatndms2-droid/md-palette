@@ -1,0 +1,34 @@
+{
+  "version": "0.1.0",
+  "passed": true,
+  "scope": "Local validation only; push, GitHub Release, public asset verification and user BRAT confirmation pending",
+  "assets": [
+    {
+      "name": "main.js",
+      "sha256": "c5e9a52ad3a7ffe0e07740c352bf55387c3f94540ab29c1ddf9f996e94ba034a"
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "d5ccede553f1bb4208a20c570bc72160fdad64b8235f9bb513ced65023e1ee85"
+    },
+    {
+      "name": "styles.css",
+      "sha256": "165663fe1b18d2eba161947315a09f9866e3455314d53fbe06a627265ba5a8cf"
+    }
+  ],
+  "reports": [
+    "spaces",
+    "connections",
+    "folder",
+    "metadata",
+    "reuse",
+    "advanced",
+    "performance",
+    "final-checks",
+    "state-guards",
+    "upgrade",
+    "restart",
+    "details",
+    "canvas-guards"
+  ]
+}
