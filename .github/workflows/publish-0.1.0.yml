@@ -20,6 +20,7 @@ jobs:
       - name: Build release assets
         run: |
           npm install --global pnpm@11.19.0
+          printf 'allowBuilds:\n  esbuild: true\n' > pnpm-workspace.yaml
           pnpm install --frozen-lockfile
           node esbuild.config.mjs
 
