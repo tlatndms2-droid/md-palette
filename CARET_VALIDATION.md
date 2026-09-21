@@ -2,6 +2,11 @@
 
 2026-09-22, Obsidian 1.13.7의 MDPalette-Stage7-Sandbox에서 확인.
 
+공개 Release: https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.1
+공개 다운로드 검증: https://github.com/tlatndms2-droid/md-palette/actions/runs/35669105269
+
+공개 파일 세 개의 SHA-256이 로컬·Sandbox 검증본과 각각 일치한다.
+
 - Metadata 링크를 실제 드래그하여 같은 줄의 두 위치, 빈 줄, 자동 줄바꿈된 문장 중간, 문서 끝에 표시되는 세로 커서와 삽입 결과를 대조했다.
 - Source mode와 Live Preview에서 이전 편집 커서와 무관하게 드롭 위치에 정확한 URL이 삽입됐다.
 - 메뉴 선택 중 위치 표시 유지, Esc 및 메뉴 취소 시 표시 제거·미삽입, 중간 편집 충돌 시 삽입 거부를 확인했다.
