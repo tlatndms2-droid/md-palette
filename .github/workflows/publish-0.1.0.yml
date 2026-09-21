@@ -17,6 +17,12 @@ jobs:
         with:
           ref: a598cd82ccb2347f5f8d5379ac8c4c0b70a66d14
 
+      - name: Build release assets
+        run: |
+          npm install --global pnpm@11.19.0
+          pnpm install --frozen-lockfile
+          node esbuild.config.mjs
+
       - name: Create release and upload verified assets
         env:
           GH_TOKEN: ${{ github.token }}
