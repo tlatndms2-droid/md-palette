@@ -23,6 +23,8 @@ jobs:
           printf 'allowBuilds:\n  esbuild: true\n' > pnpm-workspace.yaml
           pnpm install --frozen-lockfile
           node esbuild.config.mjs
+          git fetch origin codex/planning --depth=1
+          git show origin/codex/planning:.github/release-assets/0.1.0/styles.css > styles.css
 
       - name: Create release and upload verified assets
         env:
@@ -33,7 +35,7 @@ jobs:
               --target a598cd82ccb2347f5f8d5379ac8c4c0b70a66d14 \
               --title "MD Palette 0.1.0" \
               --notes-file RELEASE_NOTES.md
-          gh release upload 0.1.0 main.js manifest.json styles.css
+          gh release upload 0.1.0 main.js manifest.json styles.css --clobber
 
       - name: Verify public release assets
         env:
