@@ -24,4 +24,6 @@
 
 ## 범위
 
+[0.0.14 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.14), 구현 커밋 `80ac833`. 공개 자산 main.js·manifest.json·styles.css를 인증 없이 다운로드하여 최종 빌드와 SHA-256 일치를 확인했다. 증거는 `.artifacts/new-note/release-verification.json`에 보관한다.
+
 실제 Vault 및 BRAT 설치·업데이트 검증은 수행하지 않는다. BRAT 확인은 사용자가 담당한다. Sandbox와 시험 자료는 확인용으로 유지한다. 7단계는 진행하지 않았다.

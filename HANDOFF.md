@@ -4,7 +4,9 @@
 저장소: https://github.com/tlatndms2-droid/md-palette
 작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
 
-## 현재 상태 — 0.0.14 새 링크 파일 생성 검증 통과, Release 대기
+## 현재 상태 — 0.0.14 Release 완료, 사용자 BRAT 확인 대기
+
+- [0.0.14 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.14), 구현 커밋 `80ac833`. 공개 다운로드한 main.js·manifest.json·styles.css의 SHA-256이 최종 Sandbox 검증 빌드와 모두 일치한다.
 
 - 사용자 요청: 새 링크 파일 생성 구현. 저장 위치는 사용자 선택 1번, Obsidian의 새 노트 저장 위치 설정을 따른다.
 - Card·Connections 상단과 Folder 빈 공간 우클릭에 `새 링크 파일 추가`. 이름과 실제 저장 경로를 보여주고 `만들고 연결`로 빈 Markdown 파일 생성 및 Main의 `link note` 연결. Folder는 현재 가상 폴더에 배치한다. 자동으로 열지 않으며 더블클릭으로 기존 Sub 열기를 사용한다.
