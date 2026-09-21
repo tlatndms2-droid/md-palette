@@ -31,6 +31,8 @@
 
 ## 증거와 제외
 
+[0.0.12 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.12) 발행 완료, 구현 커밋 `ad9edf4`. 공개 자산 세 개를 내려받아 최종 로컬·Sandbox 빌드와 SHA-256 일치를 확인했다. `.artifacts/stage6/release-verification.json`에 기록했다.
+
 `.artifacts/stage6`: ui-result.json, advanced-result.json, restart-result.json, originals.json, restart-expected.json, release-ready.json, file-drop-menu.png, markdown-result.png, canvas-drop-menu.png, canvas-result.png, restart.png.
 
 BRAT 설치·업데이트는 사용자가 확인한다. 대형 Vault 신규 성능 수치는 측정하지 않았다. Folder/Connections의 추가 재사용, Tasks·각주·URL 드래그, 모바일 및 7단계 통합 검증은 이번 범위 밖이다.

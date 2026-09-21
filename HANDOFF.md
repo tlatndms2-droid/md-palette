@@ -4,7 +4,9 @@
 저장소: https://github.com/tlatndms2-droid/md-palette
 작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
 
-## 현재 상태 — 6단계 0.0.12 검증 통과, Release 준비
+## 현재 상태 — 6단계 0.0.12 Release 완료, 사용자 BRAT 확인 대기
+
+- [0.0.12 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.12), 구현 커밋 `ad9edf4`. 공개 다운로드한 main.js·manifest.json·styles.css SHA-256이 최종 Sandbox 검증 빌드와 모두 일치한다.
 
 - 사용자가 0.0.11 정상 동작을 확인하고 6단계 진행을 승인했다. HTML에서 1번 선택: 파일 카드 → Main Markdown, 강조·블록 → Main/Sub Markdown 또는 Sub Canvas.
 - 드롭 위치에서 Obsidian 기본 메뉴로 링크·임베드·본문 또는 텍스트·출처 포함·블록 내용을 선택한다. Markdown은 편집 모드의 본문 영역, Canvas는 Sub Canvas가 대상이다.
