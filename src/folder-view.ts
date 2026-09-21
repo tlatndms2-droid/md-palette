@@ -3,6 +3,7 @@ import type MDPalettePlugin from './main';
 import { classify, fileTypes } from './cards-state';
 import { ancestors, folderDisplayModes, canMove, deleteFolder, fileKey, folderKey, moveItems, parentOf, type FolderState, type Sort } from './folders-state';
 import { Thumbnails } from './thumbnails';
+import { NewLinkedNoteModal } from './new-linked-note';
 
 const sortNames: Record<Sort, string> = { manual: '사용자 지정', name: '이름', type: '유형', mtime: '수정 날짜', size: '크기' };
 const displayNames = ['제목 카드', '큰 아이콘', '중간 아이콘', '작은 아이콘', '목록', '자세히', '타일'];
@@ -235,6 +236,7 @@ export class FolderView {
     e.preventDefault(); e.stopPropagation(); const menu = new Menu();
     menu.addItem(i => i.setTitle('새 가상 폴더 만들기').setIcon('folder-plus').onClick(() => new NameModal(this.plugin, parent).open()));
     menu.addItem(i => i.setTitle('연결 파일 추가').setIcon('link').onClick(() => { const main = this.plugin.mainFile; if (!main) { new Notice('메인 스페이스를 먼저 지정해주세요.'); return; } new FolderConnectionPicker(this.plugin, main, parent).open(); }));
+    menu.addItem(i => i.setTitle('새 링크 파일 추가').setIcon('file-plus').onClick(() => { const main = this.plugin.mainFile; if (main) new NewLinkedNoteModal(this.plugin, main, parent).open(); }));
     menu.addSeparator(); menu.addItem(i => i.setTitle('보기 형식…').onClick(() => this.viewMenu(e))); menu.addItem(i => i.setTitle('정렬 기준…').onClick(() => this.sortMenu(e))); menu.showAtMouseEvent(e);
   }
   private clearDrop(): void { this.root?.querySelectorAll('.mdp-folder-drop,.mdp-folder-forbidden,.mdp-folder-before').forEach(el => el.classList.remove('mdp-folder-drop','mdp-folder-forbidden','mdp-folder-before')); }

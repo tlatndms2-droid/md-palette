@@ -1,6 +1,7 @@
 import { Menu, Notice, TFile, WorkspaceLeaf, setIcon } from 'obsidian';
 import type MDPalettePlugin from './main';
 import { ConnectionPicker } from './card-view';
+import { NewLinkedNoteModal } from './new-linked-note';
 import { NativeLocalGraph } from './native-local-graph';
 import { relations, sectionKeys, type SectionKey } from './connections-state';
 
@@ -32,11 +33,15 @@ export class ConnectionsView {
     const main = this.plugin.mainFile; if (!main) return;
     if (main.path !== this.mainPath) { this.mainPath = main.path; this.scroll = {}; this.selected = undefined; }
     root.className = 'mdp-connections';
-    const add = root.createEl('button', { cls: 'mdp-add-connection', text: '+ 연결 파일 추가' });
+    const actions = root.createDiv({ cls: 'mdp-connection-actions' });
+    const add = actions.createEl('button', { cls: 'mdp-add-connection', text: '+ 연결 파일 추가' });
     add.onclick = () => {
       const current = this.plugin.mainFile;
       if (!current) { new Notice('메인 스페이스를 먼저 지정해주세요.'); return; }
       new ConnectionPicker(this.plugin, current).open();
+    };
+    actions.createEl('button', { cls: 'mdp-new-linked-note', text: '+ 새 링크 파일 추가' }).onclick = () => {
+      const file = this.plugin.mainFile; if (file) new NewLinkedNoteModal(this.plugin, file).open();
     };
     const links = this.plugin.app.metadataCache.resolvedLinks;
     const related = relations(links, main.path, new Set(this.plugin.app.vault.getMarkdownFiles().map(f => f.path)));

@@ -3,6 +3,7 @@ import type MDPalettePlugin from './main';
 import { classify, deleteLabel, displayModes, fileTypes, pruneLabels, reorder, type Label } from './cards-state';
 import { Thumbnails } from './thumbnails';
 import { CardReorder } from './card-reorder';
+import { NewLinkedNoteModal } from './new-linked-note';
 
 const typeNames = ['전체', 'MD', 'Canvas', 'PDF', '이미지', '영상', '기타'];
 const modeNames = ['큰 아이콘', '중간 아이콘', '작은 아이콘', '목록', '자세히', '타일'];
@@ -106,8 +107,12 @@ export class CardView {
     if (main.path !== this.mainPath) { this.selected.clear(); this.anchor = this.active = undefined; this.mainPath = main.path; this.scrollTop = 0; }
     const state = this.plugin.cards;
     root.className = 'mdp-card-view';
-    const add = root.createEl('button', { cls: 'mdp-add-connection', text: '+ 연결 파일 추가' });
+    const actions = root.createDiv({ cls: 'mdp-connection-actions' });
+    const add = actions.createEl('button', { cls: 'mdp-add-connection', text: '+ 연결 파일 추가' });
     add.onclick = () => { const file = this.plugin.mainFile; if (!file) { new Notice('메인 스페이스를 먼저 지정해주세요.'); return; } new ConnectionPicker(this.plugin, file).open(); };
+    actions.createEl('button', { cls: 'mdp-new-linked-note', text: '+ 새 링크 파일 추가' }).onclick = () => {
+      const file = this.plugin.mainFile; if (file) new NewLinkedNoteModal(this.plugin, file).open();
+    };
     const typeSection = this.section(root, '파일 유형 필터', state.typeCollapsed, () => { state.typeCollapsed = !state.typeCollapsed; this.plugin.cardsChanged(); });
     if (!state.typeCollapsed) for (let i = 0; i < fileTypes.length; i++) this.chip(typeSection, typeNames[i], state.fileType === fileTypes[i], () => { state.fileType = fileTypes[i]; this.plugin.cardsChanged(); });
     const labelSection = this.section(root, 'Label 필터', state.labelCollapsed, () => { state.labelCollapsed = !state.labelCollapsed; this.plugin.cardsChanged(); });

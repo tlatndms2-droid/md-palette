@@ -4,7 +4,15 @@
 저장소: https://github.com/tlatndms2-droid/md-palette
 작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
 
-## 현재 상태 — 0.0.13 Release 완료, 사용자 BRAT 확인 대기
+## 현재 상태 — 0.0.14 새 링크 파일 생성 검증 통과, Release 대기
+
+- 사용자 요청: 새 링크 파일 생성 구현. 저장 위치는 사용자 선택 1번, Obsidian의 새 노트 저장 위치 설정을 따른다.
+- Card·Connections 상단과 Folder 빈 공간 우클릭에 `새 링크 파일 추가`. 이름과 실제 저장 경로를 보여주고 `만들고 연결`로 빈 Markdown 파일 생성 및 Main의 `link note` 연결. Folder는 현재 가상 폴더에 배치한다. 자동으로 열지 않으며 더블클릭으로 기존 Sub 열기를 사용한다.
+- 중복 이름 덮어쓰기 금지, 잘못된 이름·Main 변경·취소 처리. 연결·폴더 저장 실패 시 이번에 만든 빈 파일만 복구하며 다른 변경이 생긴 파일은 보존한다.
+- 38개 테스트·빌드·최종 0.0.14 Sandbox 실제 클릭·3가지 저장 위치·실패 복구·밝은/어두운 테마·240px·프로세스 재시작·재시작 후 생성 통과. 기존 파일 2,058개 및 라벨·문서별 폴더 보존. `NEW_NOTE_VALIDATION.md` 참조.
+- Sandbox와 자료 유지. BRAT은 사용자 담당, 실제 Vault와 7단계는 제외. 원본 Planning Pack은 수정하지 않았다.
+
+## 0.0.13 당시 기록 — Release 완료
 
 - [0.0.13 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.13), 구현 커밋 9ba689e. 공개 자산 3개의 SHA-256이 최종 Sandbox 검증 빌드와 일치한다.
 - 사용자 승인: 한 번 클릭은 선택 유지, 더블클릭은 마지막 Sub 탭 교체, Ctrl+더블클릭은 새 탭, Ctrl+Shift+더블클릭은 추가 Sub 그룹. 여러 Sub와 마지막 사용 그룹을 저장한다.
