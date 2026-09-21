@@ -4,8 +4,9 @@
 저장소: https://github.com/tlatndms2-droid/md-palette
 작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
 
-## 현재 상태 — 0.0.11 검증 통과, Release 준비
+## 현재 상태 — 0.0.11 Release 완료, 사용자 BRAT 확인 대기
 
+- [0.0.11 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.11), 구현 커밋 a63e414. 공개 자산 세 개의 SHA-256이 최종 Sandbox 빌드와 일치한다.
 - 사용자 0.0.10 확인 완료. 승인 HTML 시안과 최종 계획의 Folder 제목 카드·Main 토글을 구현했다.
 - Folder 전용 제목 카드: 아이콘·최대 두 줄 제목, 66px 높이·160px 최소 너비. 본문·썸네일 생성 없음. 새 문서 기본값이며 기존 문서의 6가지 보기 선택은 보존한다.
 - 기존 set-main 명령을 메인 스페이스 지정/해제 토글로 변경하고 unset-main 명령만 제거했다. 같은 Main은 해제, 다른 지정 가능한 문서는 새 Main. 기존 단축키·탭·데이터 보존.

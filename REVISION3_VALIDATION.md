@@ -13,3 +13,5 @@
 - 기존 파일 2,039개 SHA-256 일치. 빌드와 Sandbox의 main.js·manifest.json·styles.css 일치. 런타임 예외 없음.
 - 증거·백업: .artifacts/revision3. UI 결과, 재시작 결과, 최종 자산 해시와 compact/hover/narrow/restart 화면 캡처를 보관한다.
 - Sandbox와 시험 자료는 그대로 남겼다. BRAT 확인은 사용자 담당으로 실행하지 않았으며 6단계는 시작하지 않았다.
+
+공개 배포: [0.0.11 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.11), 구현 커밋 a63e414. main.js·manifest.json·styles.css를 공개 다운로드하여 최종 검증 빌드와 SHA-256 일치를 확인했다.
