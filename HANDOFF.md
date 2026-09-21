@@ -4,7 +4,14 @@
 저장소: https://github.com/tlatndms2-droid/md-palette
 작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
 
-## 현재 상태 — 6단계 0.0.12 Release 완료, 사용자 BRAT 확인 대기
+## 현재 상태 — 0.0.13 검증 통과, Release 준비
+
+- 사용자 승인: 한 번 클릭은 선택 유지, 더블클릭은 마지막 Sub 탭 교체, Ctrl+더블클릭은 새 탭, Ctrl+Shift+더블클릭은 추가 Sub 그룹. 여러 Sub와 마지막 사용 그룹을 저장한다.
+- 각주·URL 드래그와 Card → Sub Markdown을 추가했다. 각주는 텍스트/실제 각주, URL은 주소/제목 링크를 선택한다. Sub Canvas 카드도 지원한다.
+- 36개 테스트·빌드·실제 Sandbox 클릭/드래그·저장 실패 복구·재시작 통과. 기존 파일 2,051개 및 라벨·문서별 폴더 보존. REVISION4_VALIDATION.md 참조.
+- BRAT은 사용자 담당. 실제 Vault 수정과 7단계는 제외. Sandbox와 시험 자료 유지.
+
+## 0.0.12 당시 기록 — 후속 수정 승인
 
 - [0.0.12 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.12), 구현 커밋 `ad9edf4`. 공개 다운로드한 main.js·manifest.json·styles.css SHA-256이 최종 Sandbox 검증 빌드와 모두 일치한다.
 

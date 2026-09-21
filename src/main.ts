@@ -1,7 +1,7 @@
-import { FuzzySuggestModal, MarkdownView, Menu, Notice, Plugin, TFile, WorkspaceLeaf, parseLinktext, setIcon } from 'obsidian';
+import { FuzzySuggestModal, MarkdownView, Menu, Notice, Plugin, TFile, TextFileView, WorkspaceLeaf, parseLinktext, setIcon } from 'obsidian';
 import { activeIn, arrange, fileIn, groupOf, groupsIn, isCentral, newTab, type Group } from './workspace-adapter';
 import { PaletteView, VIEW_TYPE } from './sidebar';
-import { readSpaces, type LinkView, type SavedSpaces, type TopView } from './state';
+import { readSpaces, subOpenMode, type SubOpenMode, type LinkView, type SavedSpaces, type TopView } from './state';
 import { readCards, pruneLabels, type CardState } from './cards-state';
 import { readConnections } from './connections-state';
 import { readFolders, readDocumentFolders, fileKey, type FolderState } from './folders-state';
@@ -22,6 +22,9 @@ export default class MDPalettePlugin extends Plugin {
   private pinnedMain?: TFile;
   metadataCollapsed: string[] = [];
   subGroup?: Group;
+  subGroups: Group[] = [];
+  isSub(group?: Group): boolean { return !!group && this.subGroups.includes(group); }
+  openFileGesture(file: TFile, event?: MouseEvent): void { this.run(() => this.openIn('sub', file, '', subOpenMode(event))); }
   topView: TopView = 'link';
   linkView: LinkView = 'card';
   cards: CardState = readCards(null);
@@ -85,7 +88,7 @@ export default class MDPalettePlugin extends Plugin {
     this.registerEvent(this.app.workspace.on('file-menu', (menu, file, source, leaf) => {
       if (!(file instanceof TFile)) return;
       if (source === 'tab-header' && leaf) {
-        if (file.extension === 'md' && groupOf(leaf) !== this.subGroup && leaf !== this.mainLeaf) menu.addItem(item => item.setTitle('메인 스페이스로 지정').setIcon('book-open').onClick(() => this.run(() => this.setMain(leaf))));
+        if (file.extension === 'md' && !this.isSub(groupOf(leaf)) && leaf !== this.mainLeaf) menu.addItem(item => item.setTitle('메인 스페이스로 지정').setIcon('book-open').onClick(() => this.run(() => this.setMain(leaf))));
         if (leaf === this.mainLeaf) menu.addItem(item => item.setTitle('메인 스페이스 지정 해제').setIcon('book-open').onClick(() => this.run(() => this.unsetMain())));
       }
       if (this.mainFile) {
@@ -95,7 +98,11 @@ export default class MDPalettePlugin extends Plugin {
     }));
     const schedule = () => this.scheduleSync();
     this.registerEvent(this.app.workspace.on('layout-change', schedule));
-    this.registerEvent(this.app.workspace.on('active-leaf-change', schedule));
+    this.registerEvent(this.app.workspace.on('active-leaf-change', leaf => {
+      const group = groupOf(leaf);
+      if (this.isSub(group)) { this.subGroup = group; this.persist(); }
+      schedule();
+    }));
     this.registerEvent(this.app.workspace.on('file-open', schedule));
     this.registerEvent(this.app.vault.on('rename', schedule));
     this.registerEvent(this.app.vault.on('delete', schedule));
@@ -164,9 +171,10 @@ export default class MDPalettePlugin extends Plugin {
     const group = groupOf(leaf);
     const file = fileIn(this.app, leaf ?? undefined);
     if (!leaf || !group || !isCentral(this.app, group) || file?.extension !== 'md' || leaf.getViewState().type !== 'markdown') { new Notice('메인 스페이스는 Markdown 파일만 지정할 수 있습니다.'); return; }
-    if (group === this.subGroup) { new Notice('서브 스페이스에서는 메인을 지정할 수 없습니다.'); return; }
+    if (this.isSub(group)) { new Notice('서브 스페이스에서는 메인을 지정할 수 없습니다.'); return; }
     if (leaf === this.mainLeaf) { await this.openSidebar(); return; }
     this.mainGroup = group; this.mainLeaf = leaf; this.pinnedMain = file; this.subGroup = undefined;
+    this.subGroups = [];
     this.clearIcons();
     this.app.workspace.setActiveLeaf(leaf, { focus: true });
     await this.openSidebar();
@@ -174,27 +182,33 @@ export default class MDPalettePlugin extends Plugin {
 
   async unsetMain(): Promise<void> {
     this.mainGroup = this.subGroup = undefined;
+    this.subGroups = [];
     this.mainLeaf = undefined; this.pinnedMain = undefined;
     this.clearIcons(); this.render();
   }
 
-  async openIn(_role: Role, file: TFile, subpath = ''): Promise<void> {
+  async openIn(_role: Role, file: TFile, subpath = '', mode: SubOpenMode = 'replace'): Promise<void> {
     if (!this.mainFile || !this.mainGroup) { new Notice('메인 스페이스를 먼저 지정해주세요.'); return; }
     if (this.app.vault.getAbstractFileByPath(file.path) !== file) return;
     const previous = this.app.workspace.getMostRecentLeaf();
     let group = this.subGroup;
     if (group && !groupsIn(this.app).includes(group)) group = undefined;
-    const existing = group?.children.find(leaf => fileIn(this.app, leaf)?.path === file.path);
+    const existing = mode !== 'group' ? group?.children.find(leaf => fileIn(this.app, leaf)?.path === file.path) : undefined;
     if (existing) {
       if (subpath) await existing.openFile(file, { active: true, eState: { subpath } });
       await this.app.workspace.revealLeaf(existing); this.app.workspace.setActiveLeaf(existing, { focus: true }); return;
     }
     const anchor = this.mainLeaf;
     if (!anchor) return;
-    const leaf = group ? newTab(this.app, group) : this.app.workspace.createLeafBySplit(anchor, 'vertical');
+    const replacing = mode === 'replace' && group ? activeIn(group) : undefined;
+    const leaf = replacing ?? (mode !== 'group' && group ? newTab(this.app, group) : this.app.workspace.createLeafBySplit(activeIn(group) ?? anchor, 'vertical'));
+    const oldState = replacing?.getViewState();
+    if (replacing?.view instanceof TextFileView) await replacing.view.save();
     try { await leaf.openFile(file, { active: true, eState: subpath ? { subpath } : undefined }); }
-    catch (error) { leaf.detach(); if (previous) this.app.workspace.setActiveLeaf(previous, { focus: false }); throw error; }
+    catch (error) { if (oldState) await leaf.setViewState(oldState); else leaf.detach(); if (previous) this.app.workspace.setActiveLeaf(previous, { focus: false }); throw error; }
     this.subGroup = groupOf(leaf);
+    if (this.subGroup && !this.isSub(this.subGroup)) this.subGroups.push(this.subGroup);
+    this.app.workspace.setActiveLeaf(leaf, { focus: true });
     this.enforceOrder(false);
   }
 
@@ -288,10 +302,15 @@ export default class MDPalettePlugin extends Plugin {
     const group = this.subGroup && groupsIn(this.app).includes(this.subGroup) ? this.subGroup : undefined;
     const existing = group?.children.find(l => l.getViewState().type === type && l.getViewState().state?.url === url);
     if (existing) { await this.app.workspace.revealLeaf(existing); this.app.workspace.setActiveLeaf(existing, { focus: true }); return; }
-    const leaf = group ? newTab(this.app, group) : this.app.workspace.createLeafBySplit(anchor, 'vertical');
+    const replacing = activeIn(group);
+    const leaf = replacing ?? this.app.workspace.createLeafBySplit(anchor, 'vertical');
+    const oldState = replacing?.getViewState();
+    if (replacing?.view instanceof TextFileView) await replacing.view.save();
     try { await leaf.setViewState({ type, active: true, state: { url, title: url, navigate: true } }); }
-    catch (error) { leaf.detach(); throw error; }
-    this.subGroup = groupOf(leaf); this.enforceOrder(false);
+    catch (error) { if (oldState) await leaf.setViewState(oldState); else leaf.detach(); throw error; }
+    this.subGroup = groupOf(leaf);
+    if (this.subGroup && !this.isSub(this.subGroup)) this.subGroups.push(this.subGroup);
+    this.enforceOrder(false);
   }
   async commitFolders(next: FolderState, main: TFile): Promise<void> {
     if (!this.saveAllowed) throw Error('저장 상태를 읽지 못해 가상 폴더를 변경할 수 없습니다.');
@@ -372,9 +391,10 @@ export default class MDPalettePlugin extends Plugin {
   private sync(notify: boolean): void {
     const live = groupsIn(this.app);
     const pinnedGroup = groupOf(this.mainLeaf ?? null);
-    if (this.mainGroup && (!pinnedGroup || !live.includes(pinnedGroup) || !pinnedGroup.children.includes(this.mainLeaf!) || !isCentral(this.app, pinnedGroup) || !this.mainFile)) { this.mainGroup = this.subGroup = undefined; this.mainLeaf = undefined; this.pinnedMain = undefined; }
+    if (this.mainGroup && (!pinnedGroup || !live.includes(pinnedGroup) || !pinnedGroup.children.includes(this.mainLeaf!) || !isCentral(this.app, pinnedGroup) || !this.mainFile)) { this.mainGroup = this.subGroup = undefined; this.subGroups = []; this.mainLeaf = undefined; this.pinnedMain = undefined; }
     else if (this.mainLeaf) this.mainGroup = pinnedGroup;
-    if (this.subGroup && (!live.includes(this.subGroup) || !this.subGroup.children.some(l => fileIn(this.app, l) || l.getViewState().type === 'webviewer'))) this.subGroup = undefined;
+    this.subGroups = this.subGroups.filter(g => live.includes(g) && g !== this.mainGroup && isCentral(this.app, g) && g.children.some(l => fileIn(this.app, l) || l.getViewState().type === 'webviewer'));
+    if (!this.isSub(this.subGroup)) this.subGroup = this.subGroups[0];
     if (this.mainGroup) {
       this.busy = true;
       try { this.enforceOrder(notify); }
@@ -392,7 +412,7 @@ export default class MDPalettePlugin extends Plugin {
   }
   private enforceOrder(notify: boolean): void {
     if (!this.mainGroup) return;
-    const followers = [this.subGroup].filter((g): g is Group => !!g);
+    const followers = this.subGroups;
     if (arrange(this.app, this.mainGroup, followers) && notify) new Notice('스페이스 순서는 변경할 수 없습니다.');
   }
   private clearIcons(): void {
@@ -401,7 +421,7 @@ export default class MDPalettePlugin extends Plugin {
   }
   private updateIcons(): void {
     this.clearIcons();
-    for (const [group, icon, label] of [[this.mainGroup, 'book-open', 'Main Space'], [this.subGroup, 'link', 'Sub Space']] as const) {
+    for (const [group, icon, label] of [[this.mainGroup, 'book-open', 'Main Space'], ...this.subGroups.map(g => [g, 'link', 'Sub Space'] as const)] as const) {
       if (!group) continue;
       const leaf = (group === this.mainGroup ? this.mainLeaf : activeIn(group)) as (WorkspaceLeaf & { tabHeaderEl?: HTMLElement }) | undefined;
       const header = leaf?.tabHeaderEl;
@@ -422,8 +442,11 @@ export default class MDPalettePlugin extends Plugin {
     const file = fileIn(this.app, leaf);
     if (!leaf || file?.extension !== 'md' || file.path !== saved.main?.activeFile || leaf.getViewState().type !== 'markdown') return;
     this.mainGroup = main; this.mainLeaf = leaf; this.pinnedMain = file;
-    const sub = find(saved.sub?.groupId);
-    if (sub && sub !== main && sub.children.some(l => fileIn(this.app, l) || l.getViewState().type === 'webviewer')) this.subGroup = sub;
+    this.subGroups = (saved.subs ?? (saved.sub ? [saved.sub] : [])).flatMap(s => {
+      const sub = find(s.groupId);
+      return sub && sub !== main && sub.children.some(l => fileIn(this.app, l) || l.getViewState().type === 'webviewer') ? [sub] : [];
+    });
+    this.subGroup = this.subGroups.find(g => g.id === saved.sub?.groupId) ?? this.subGroups[0];
   }
   private persist(): void {
     if (this.stopped || !this.ready || !this.saveAllowed) return;
@@ -433,7 +456,7 @@ export default class MDPalettePlugin extends Plugin {
   private flushState(): void {
     if (!this.ready || !this.saveAllowed || this.folderSaving) return;
     const space = (g?: Group) => g ? { groupId: g.id, activeFile: fileIn(this.app, activeIn(g))?.path ?? null } : undefined;
-    const spaces: SavedSpaces = { main: this.mainGroup && this.mainFile ? { groupId: this.mainGroup.id, activeFile: this.mainFile.path, leafId: (this.mainLeaf as WorkspaceLeaf & { id: string }).id } : undefined, sub: space(this.subGroup) };
+    const spaces: SavedSpaces = { main: this.mainGroup && this.mainFile ? { groupId: this.mainGroup.id, activeFile: this.mainFile.path, leafId: (this.mainLeaf as WorkspaceLeaf & { id: string }).id } : undefined, sub: space(this.subGroup), subs: this.subGroups.map(g => space(g)!) };
     const next = { ...this.data, spaces, metadataCollapsed: this.metadataCollapsed.slice(), topView: this.topView, linkView: this.linkView, cards: structuredClone(this.cards), connections: structuredClone(this.connections), foldersByMain: structuredClone(this.foldersByMain), folderDefaults: structuredClone(this.folderDefaults) };
     const serialized = JSON.stringify(next);
     if (serialized === this.persistedJSON) return;

@@ -1,7 +1,7 @@
 {
   "id": "md-palette",
   "name": "MD Palette",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "minAppVersion": "1.13.7",
   "description": "Main·Sub 작업 공간과 연결 파일 Card·썸네일·라벨 정리.",
   "author": "tlatndms2-droid",

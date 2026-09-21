@@ -3,11 +3,26 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {transform} from 'esbuild';
 const {code}=await transform(await readFile('src/reuse-model.ts','utf8'),{loader:'ts',format:'esm'});
-const {canReuse,reuseOptions,reuseText,sameCanvasData}=await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
-test('approved target matrix limits file cards to Main and metadata to Main/Sub Markdown or Sub Canvas',()=>{
+const {canReuse,reuseOptions,reuseText,sameCanvasData,footnoteInsertion,webReuseText}=await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+test('approved target matrix allows file cards in Main/Sub and metadata in Markdown or Sub Canvas',()=>{
  const targets=['main-markdown','sub-markdown','sub-canvas','unsupported'];
- assert.deepEqual(targets.map(t=>canReuse('file',t)),[true,false,false,false]);
- for(const kind of ['highlight','block'])assert.deepEqual(targets.map(t=>canReuse(kind,t)),[true,true,true,false]);
+ assert.deepEqual(targets.map(t=>canReuse('file',t)),[true,true,false,false]);
+ for(const kind of ['highlight','block','footnote','url'])assert.deepEqual(targets.map(t=>canReuse(kind,t)),[true,true,true,false]);
+});
+test('footnotes insert one reference and multiline definition without reusing existing or dangling IDs',()=>{
+ const original='앞 뒤\n\n[^mdp-1]: 기존\n\n없는 정의 [^mdp-2]';
+ const r=footnoteInsertion(original,2,'첫 줄\r\n둘째 줄');
+ assert.equal(r.value,'앞 [^mdp-3]뒤\n\n[^mdp-1]: 기존\n\n없는 정의 [^mdp-2]\n\n[^mdp-3]: 첫 줄\n    둘째 줄\n');
+ let applied=original;for(const c of [...r.changes].reverse())applied=applied.slice(0,c.offset)+c.text+applied.slice(c.offset);assert.equal(applied,r.value);
+ const end=footnoteInsertion('끝',1,'각주');assert.equal(end.changes.length,1);assert.equal(end.value,'끝[^mdp-1]\n\n[^mdp-1]: 각주\n');
+ assert.throws(()=>footnoteInsertion('a',2,'b'));
+});
+test('URL reuse preserves HTTP(S) URLs and safely escapes link labels',()=>{
+ assert.equal(webReuseText('https://example.com/a?q=1#s','참고',false),'https://example.com/a?q=1#s');
+ assert.equal(webReuseText('https://example.com','A [B]',true),'[A \\[B\\]](<https://example.com/>)');
+ assert.throws(()=>webReuseText('javascript:alert(1)','제목',true));
+ assert.deepEqual(reuseOptions('footnote',true,false).map(x=>x.mode),['text','footnote']);
+ assert.deepEqual(reuseOptions('url',true,true).map(x=>x.mode),['address','named-url']);
 });
 test('drop choices exclude file-body insertion for non-Markdown and block-content insertion into Markdown',()=>{
  assert.deepEqual(reuseOptions('file',true,false).map(x=>x.mode),['link','embed','body']);

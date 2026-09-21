@@ -133,7 +133,7 @@ export class ConnectionsView {
       this.selected = file.path;
       for (const node of Array.from(this.root?.querySelectorAll('[data-path]') ?? [])) node.classList.toggle('is-selected', node.getAttribute('data-path') === file.path);
     });
-    element.addEventListener('dblclick', () => this.plugin.run(() => this.plugin.openIn('sub', file)));
+    element.addEventListener('dblclick', event => this.plugin.openFileGesture(file, event as MouseEvent));
     element.addEventListener('keydown', e => {
       if ((e as KeyboardEvent).key === 'Enter') { e.preventDefault(); this.plugin.run(() => this.plugin.openIn('sub', file)); }
     });

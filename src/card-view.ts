@@ -167,7 +167,7 @@ export class CardView {
       const more = card.createEl('button', { cls: 'mdp-card-more', attr: { 'aria-label': `${file.name} 메뉴` } }); setIcon(more, 'more-vertical');
       more.onclick = e => { e.stopPropagation(); this.context(e, file); };
       card.onclick = e => { this.selection(e, file); };
-      card.ondblclick = e => { if ((e.target as HTMLElement).closest('button')) return; this.selected = new Set([file.path]); this.active = this.anchor = file.path; this.paint(); this.open(file); };
+      card.ondblclick = e => { if ((e.target as HTMLElement).closest('button')) return; this.selected = new Set([file.path]); this.active = this.anchor = file.path; this.paint(); this.plugin.openFileGesture(file, e); };
       card.oncontextmenu = e => { e.preventDefault(); this.context(e, file); };
       card.onkeydown = e => {
         if (e.key === 'Enter') { e.preventDefault(); this.selected = new Set([file.path]); this.active = file.path; this.paint(); this.open(file); }

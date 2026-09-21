@@ -3,7 +3,7 @@ import type MDPalettePlugin from './main';
 import type { MetadataItem } from './metadata-model';
 import { bodyOnly } from './cards-state';
 import { groupOf } from './workspace-adapter';
-import { canReuse, reuseOptions, reuseText, sameCanvasData, type ReuseDestination, type ReuseKind, type ReuseMode } from './reuse-model';
+import { canReuse, footnoteInsertion, webReuseText, reuseOptions, reuseText, sameCanvasData, type ReuseDestination, type ReuseKind, type ReuseMode } from './reuse-model';
 
 const MIME = 'application/x-md-palette-reuse';
 interface Source { token: string; kind: ReuseKind; file: TFile; path: string; main: WorkspaceLeaf; mainFile: TFile; original?: string; item?: MetadataItem }
@@ -39,8 +39,9 @@ export class ReuseDrag {
   destroy(): void { this.stopped = true; this.source = undefined; this.menu?.hide(); this.clearHighlight(); for (const clean of this.cleanup) clean(); this.documents.clear(); }
   startFile(event: DragEvent, file: TFile): void { this.start(event, 'file', file); }
   startMetadata(event: DragEvent, file: TFile, original: string, item: MetadataItem): void {
-    if (item.kind !== 'highlights' && item.kind !== 'blocks') return;
-    this.start(event, item.kind === 'highlights' ? 'highlight' : 'block', file, original, item);
+    if (item.kind === 'tasks') return;
+    const kinds = { highlights: 'highlight', blocks: 'block', footnotes: 'footnote', links: 'url' } as const;
+    this.start(event, kinds[item.kind], file, original, item);
   }
   private start(event: DragEvent, kind: ReuseKind, file: TFile, original?: string, item?: MetadataItem): void {
     this.menu?.hide(); this.source = undefined;
@@ -65,9 +66,9 @@ export class ReuseDrag {
     if (!this.plugin.mainFile) return 'unsupported';
     if (leaf.view instanceof MarkdownView && leaf.view.getMode() === 'source') {
       if (leaf === this.plugin.mainLeaf) return 'main-markdown';
-      if (groupOf(leaf) === this.plugin.subGroup && this.plugin.subGroup) return 'sub-markdown';
+      if (this.plugin.isSub(groupOf(leaf))) return 'sub-markdown';
     }
-    if (leaf.getViewState().type === 'canvas' && groupOf(leaf) === this.plugin.subGroup && this.plugin.subGroup) return 'sub-canvas';
+    if (leaf.getViewState().type === 'canvas' && this.plugin.isSub(groupOf(leaf))) return 'sub-canvas';
     return 'unsupported';
   }
   private target(event: DragEvent, source: Source): Target | null {
@@ -104,7 +105,7 @@ export class ReuseDrag {
     }
     this.source = undefined;
     if (!source || event.dataTransfer.getData(MIME) !== source.token) return;
-    if (!target) { new Notice(source.kind === 'file' ? '파일 카드 한 개를 Main 문서의 편집 영역에 놓아주세요.' : 'Main/Sub 문서의 편집 영역 또는 Sub Canvas에 놓아주세요.'); return; }
+    if (!target) { new Notice(source.kind === 'file' ? '파일 카드 한 개를 Main/Sub 문서의 편집 영역에 놓아주세요.' : 'Main/Sub 문서의 편집 영역 또는 Sub Canvas에 놓아주세요.'); return; }
     const menu = new Menu(); this.menu?.hide(); this.menu = menu;
     for (const option of reuseOptions(source.kind, source.file.extension === 'md', !!target.canvas)) {
       menu.addItem(item => item.setTitle(option.title).setIcon(option.mode === 'link' || option.mode === 'source' ? 'link' : 'file-text').onClick(() => {
@@ -137,7 +138,7 @@ export class ReuseDrag {
     if (source.original !== undefined && await this.fileText(source.file) !== source.original) throw Error('원문이 변경되었습니다. 최신 항목을 다시 끌어 놓아주세요.');
     if (mode === 'body') content = bodyOnly(await this.fileText(source.file));
     const link = app.fileManager.generateMarkdownLink(source.file, target.file.path, source.kind === 'block' ? '#^' + source.item!.id : undefined);
-    const text = reuseText(mode, link, content);
+    const text = source.kind === 'url' ? webReuseText(source.item!.target!, source.item!.text, mode === 'named-url') : mode === 'footnote' && target.canvas ? footnoteInsertion('', 0, content).value : reuseText(mode, link, content);
     if (!text) throw Error('삽입할 본문이 없습니다.');
     const disk = await app.vault.read(target.file);
     if (!this.valid(source, target)) throw Error('문서 또는 Space가 변경되었습니다. 다시 끌어 놓아주세요.');
@@ -147,12 +148,13 @@ export class ReuseDrag {
       if (view.editor !== editor || editor.getValue() !== target.original) throw Error('삽입 대상이 변경되었습니다. 다시 끌어 놓아주세요.');
       // Refuse an external-disk conflict instead of overwriting newer content.
       if (disk.replace(/\r\n/g, '\n') !== target.original.replace(/\r\n/g, '\n')) throw Error('문서 저장이 끝난 뒤 다시 끌어 놓아주세요.');
-      const from = editor.offsetToPos(target.offset!), changed = target.original.slice(0, target.offset) + text + target.original.slice(target.offset!);
-      editor.transaction({ changes: [{ from, text }] }, 'input.drop');
+      const insertion = mode === 'footnote' ? footnoteInsertion(target.original, target.offset!, content) : { changes: [{ offset: target.offset!, text }], value: target.original.slice(0, target.offset) + text + target.original.slice(target.offset!) };
+      const changed = insertion.value;
+      editor.transaction({ changes: insertion.changes.map(change => ({ from: editor.offsetToPos(change.offset), text: change.text })) }, 'input.drop');
       try { await view.save(); }
       catch (error) {
         if (editor.getValue() === changed) {
-          editor.replaceRange('', from, editor.offsetToPos(target.offset! + text.length));
+          editor.replaceRange(target.original, { line: 0, ch: 0 }, editor.offsetToPos(changed.length));
           await app.vault.process(target.file, current => current.replace(/\r\n/g, '\n') === changed.replace(/\r\n/g, '\n') ? disk : current);
         }
         throw Error('삽입 내용을 저장하지 못했습니다. ' + String(error));

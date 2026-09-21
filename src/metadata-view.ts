@@ -95,10 +95,13 @@ export class MetadataView {
   private item(parent: HTMLElement, item: MetadataItem): void {
     const file = this.file!, original = this.source;
     const row = parent.createDiv({ cls: `mdp-metadata-item mdp-meta-${item.kind}${item.checked ? ' is-complete' : ''}` });
-    if (item.kind === 'highlights' || item.kind === 'blocks') {
+    if (item.kind !== 'tasks') {
       row.draggable = true;
       row.title = '끌어서 Main/Sub 문서 또는 Sub Canvas에 추가';
-      row.ondragstart = event => this.plugin.reuseDrag.startMetadata(event, file, original, item);
+      row.ondragstart = event => {
+        if ((event.target as HTMLElement).closest('textarea,input,.mdp-footnote-edit,.mdp-footnote-actions') || (item.kind === 'footnotes' && this.draft)) { event.preventDefault(); return; }
+        this.plugin.reuseDrag.startMetadata(event, file, original, item);
+      };
     }
     const go = () => this.plugin.run(() => this.plugin.navigateMain(file, item.offset));
     if (item.kind === 'tasks') {

@@ -192,7 +192,7 @@ export class FolderView {
     }
     el.onclick = e => { if ((e.target as HTMLElement).closest('button')) return; this.select(item.key, surface, visible, e); };
     const open = () => item.folder ? this.navigate(item.folder) : this.plugin.run(() => this.plugin.openIn('sub', item.file!));
-    el.ondblclick = e => { if (!(e.target as HTMLElement).closest('button')) open(); };
+    el.ondblclick = e => { if ((e.target as HTMLElement).closest('button')) return; if (item.folder) this.navigate(item.folder); else this.plugin.openFileGesture(item.file!, e); };
     el.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); open(); } else if (e.key === ' ') { e.preventDefault(); this.select(item.key, surface, visible, e); } };
     el.oncontextmenu = e => { e.preventDefault(); e.stopPropagation(); if (!this.selections[surface].has(item.key)) this.select(item.key, surface, visible, e); const menu = new Menu();
       if (item.folder) {
