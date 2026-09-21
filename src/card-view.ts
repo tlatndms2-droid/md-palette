@@ -178,6 +178,7 @@ export class CardView {
         const paths = this.visible.map(f => f.path).filter(p => this.selected.has(p));
         e.dataTransfer?.setData('application/x-md-palette-reorder', this.mainPath!);
         if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
+        if (paths.length === 1) this.plugin.reuseDrag.startFile(e, file);
         this.reorderDrag?.start(paths);
       };
     }

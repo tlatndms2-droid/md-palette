@@ -4,7 +4,16 @@
 저장소: https://github.com/tlatndms2-droid/md-palette
 작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
 
-## 현재 상태 — 0.0.11 Release 완료, 사용자 BRAT 확인 대기
+## 현재 상태 — 6단계 0.0.12 검증 통과, Release 준비
+
+- 사용자가 0.0.11 정상 동작을 확인하고 6단계 진행을 승인했다. HTML에서 1번 선택: 파일 카드 → Main Markdown, 강조·블록 → Main/Sub Markdown 또는 Sub Canvas.
+- 드롭 위치에서 Obsidian 기본 메뉴로 링크·임베드·본문 또는 텍스트·출처 포함·블록 내용을 선택한다. Markdown은 편집 모드의 본문 영역, Canvas는 Sub Canvas가 대상이다.
+- Card 단일 파일만 재사용하며 기존 카드 정렬을 보존한다. Metadata는 Highlights·Block Reference만 드래그한다. Tasks·각주·웹 링크 및 Folder/Connections의 새 삽입 동작은 포함하지 않는다.
+- 32개 테스트·빌드·0.0.12 Sandbox 실제 드래그·좌표·취소·저장 실패 복구·원문 변경 충돌·지원하지 않는 대상·재시작 통과. 기존 파일 2,045개 해시 유지. STAGE6_VALIDATION.md 참조.
+- Sandbox는 전용 프로필·포트 19273에서 시험 자료와 함께 열어둔다. `.artifacts/stage6`에 백업·화면·결과·자산 해시를 남겼다.
+- BRAT 확인은 사용자 담당이다. 실제 작업 Vault는 수정하지 않았다. 7단계는 사용자 확인과 별도 진행 요청 전까지 시작하지 않는다.
+
+## 0.0.11 당시 기록 — 사용자 확인 완료
 
 - [0.0.11 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.11), 구현 커밋 a63e414. 공개 자산 세 개의 SHA-256이 최종 Sandbox 빌드와 일치한다.
 - 사용자 0.0.10 확인 완료. 승인 HTML 시안과 최종 계획의 Folder 제목 카드·Main 토글을 구현했다.

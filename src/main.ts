@@ -5,6 +5,7 @@ import { readSpaces, type LinkView, type SavedSpaces, type TopView } from './sta
 import { readCards, pruneLabels, type CardState } from './cards-state';
 import { readConnections } from './connections-state';
 import { readFolders, readDocumentFolders, fileKey, type FolderState } from './folders-state';
+import { ReuseDrag } from './reuse-drag';
 
 type Role = 'sub';
 class SpaceFilePicker extends FuzzySuggestModal<TFile> {
@@ -15,6 +16,7 @@ class SpaceFilePicker extends FuzzySuggestModal<TFile> {
 }
 
 export default class MDPalettePlugin extends Plugin {
+  reuseDrag!: ReuseDrag;
   mainGroup?: Group;
   mainLeaf?: WorkspaceLeaf;
   private pinnedMain?: TFile;
@@ -71,6 +73,8 @@ export default class MDPalettePlugin extends Plugin {
     this.registerView(VIEW_TYPE, leaf => new PaletteView(leaf, this));
     this.registerHoverLinkSource('md-palette', { display: 'MD Palette 파일', defaultMod: true });
     this.routeMainLinks();
+    this.reuseDrag = new ReuseDrag(this);
+    this.register(() => this.reuseDrag.destroy());
     this.addRibbonIcon('panels-top-left', 'MD Palette 열기', () => this.run(() => this.openSidebar()));
     this.addCommand({ id: 'open-sidebar', name: '사이드바 열기', callback: () => this.run(() => this.openSidebar()) });
     this.addCommand({ id: 'set-main', name: '메인 스페이스 지정/해제', callback: () => this.run(() => this.toggleMain(this.app.workspace.getMostRecentLeaf())) });

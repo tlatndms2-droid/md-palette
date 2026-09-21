@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 const repository = 'tlatndms2-droid/md-palette';
 const manifest = JSON.parse(await readFile('manifest.json', 'utf8'));
 const tag = manifest.version;
-const reportDir = tag === '0.0.11' ? '.artifacts/revision3' : tag === '0.0.10' ? '.artifacts/revision2' : tag === '0.0.9' ? '.artifacts/stage5' : tag === '0.0.8' ? '.artifacts/revision' : tag === '0.0.7' ? '.artifacts/stage4' : tag === '0.0.1' ? '.artifacts' : tag === '0.0.2' ? '.artifacts/stage1' : tag === '0.0.6' ? '.artifacts/stage3-fix' : tag === '0.0.5' ? '.artifacts/stage3' : tag === '0.0.4' ? '.artifacts/stage2-drag' : '.artifacts/stage2';
+const reportDir = tag === '0.0.12' ? '.artifacts/stage6' : tag === '0.0.11' ? '.artifacts/revision3' : tag === '0.0.10' ? '.artifacts/revision2' : tag === '0.0.9' ? '.artifacts/stage5' : tag === '0.0.8' ? '.artifacts/revision' : tag === '0.0.7' ? '.artifacts/stage4' : tag === '0.0.1' ? '.artifacts' : tag === '0.0.2' ? '.artifacts/stage1' : tag === '0.0.6' ? '.artifacts/stage3-fix' : tag === '0.0.5' ? '.artifacts/stage3' : tag === '0.0.4' ? '.artifacts/stage2-drag' : '.artifacts/stage2';
 const mode = process.argv[2] || 'inspect';
 const credential = execFileSync('git', ['credential', 'fill'], { input: 'protocol=https\nhost=github.com\n\n', encoding: 'utf8', stdio: ['pipe','pipe','pipe'] });
 const token = credential.split(/\r?\n/).find(line => line.startsWith('password='))?.slice(9);

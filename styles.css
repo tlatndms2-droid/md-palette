@@ -193,3 +193,5 @@
 .mdp-display-compact .mdp-compact-icon svg { width: 16px; height: 16px; }
 .mdp-display-compact [data-key^="d:"] .mdp-compact-icon { color: var(--text-accent); }
 .mdp-display-compact .mdp-compact-title { min-width: 0; font-size: 14px; line-height: 21px; font-weight: 500; overflow-wrap: anywhere; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.mdp-reuse-target { outline: 2px solid var(--interactive-accent); outline-offset: -2px; }
+.mdp-meta-highlights[draggable="true"], .mdp-meta-blocks[draggable="true"] { cursor: grab; }
