@@ -1,0 +1,40 @@
+name: Publish MD Palette 0.1.0
+
+on:
+  push:
+    branches: [codex/planning]
+    paths: [.github/workflows/publish-0.1.0.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: a598cd82ccb2347f5f8d5379ac8c4c0b70a66d14
+
+      - name: Create release and upload verified assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view 0.1.0 >/dev/null 2>&1 || \
+            gh release create 0.1.0 \
+              --target a598cd82ccb2347f5f8d5379ac8c4c0b70a66d14 \
+              --title "MD Palette 0.1.0" \
+              --notes-file RELEASE_NOTES.md
+          gh release upload 0.1.0 main.js manifest.json styles.css
+
+      - name: Verify public release assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir release-assets
+          gh release download 0.1.0 --dir release-assets --pattern main.js --pattern manifest.json --pattern styles.css
+          test "$(sha256sum release-assets/main.js | cut -d' ' -f1)" = "c5e9a52ad3a7ffe0e07740c352bf55387c3f94540ab29c1ddf9f996e94ba034a"
+          test "$(sha256sum release-assets/manifest.json | cut -d' ' -f1)" = "d5ccede553f1bb4208a20c570bc72160fdad64b8235f9bb513ced65023e1ee85"
+          test "$(sha256sum release-assets/styles.css | cut -d' ' -f1)" = "165663fe1b18d2eba161947315a09f9866e3455314d53fbe06a627265ba5a8cf"
+
