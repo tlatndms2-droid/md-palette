@@ -2,6 +2,8 @@
 
 Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 데스크톱 플러그인입니다.
 
+다른 PC에서 개발을 이어가려면 [HANDOFF.md](HANDOFF.md)부터 읽으세요. [현재 확정 사양](docs/handoff/CURRENT_SPEC.md) · [기획 변경 이력](docs/handoff/DECISIONS.md) · [새 PC 준비](docs/handoff/NEW_PC.md).
+
 ## 현재 버전: 0.0.15 — Sub 전체 높이 배치
 
 Main이 영상 등 다른 탭 그룹과 위아래로 놓여 있어도 Sub는 그 묶음 전체의 오른쪽에서 전체 높이로 열립니다. 왼쪽의 영상·Main 배치와 기존 탭은 유지하며, 이미 아래쪽에 열려 있던 Sub도 업데이트 후 오른쪽 전체 높이로 정리합니다. 기본 더블클릭·Ctrl·Ctrl+Shift 열기 동작은 그대로입니다.
@@ -96,7 +98,7 @@ Main 본문 자체의 링크 클릭 팝업은 보류 상태이며, 위 웹 링�
 1. BRAT 설정에서 `Add beta plugin`을 선택합니다.
 2. `https://github.com/tlatndms2-droid/md-palette`를 입력해 설치합니다.
 3. Obsidian 설정 → 커뮤니티 플러그인에서 `MD Palette`를 활성화합니다.
-4. 표시 버전이 `0.0.13`인지 확인합니다. 기존 설치자는 BRAT 업데이트를 실행합니다.
+4. 표시 버전이 `0.0.15`인지 확인합니다. 기존 설치자는 BRAT 업데이트를 실행합니다.
 
 이번 단계의 사용자 확인과 별도 요청 후에 7단계로 진행합니다. BRAT 설치·업데이트 확인은 사용자가 담당합니다.
 
@@ -119,4 +121,4 @@ node --test tests/*.test.mjs
 
 빌드 결과 `main.js`, `manifest.json`, `styles.css`가 Release 자산입니다. `scripts/`의 기술 시험은 전용 Sandbox에만 사용하며 일반 Vault에서 실행하지 않습니다.
 
-구현 범위와 단계는 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), 이번 수정 검증은 [REVISION_VALIDATION.md](REVISION_VALIDATION.md), 기존 Folder 검증은 [STAGE4_VALIDATION.md](STAGE4_VALIDATION.md), 이전 수정 검증은 [STAGE3_FIX_VALIDATION.md](STAGE3_FIX_VALIDATION.md), 최초 Connections 검증은 [STAGE3_VALIDATION.md](STAGE3_VALIDATION.md), Card 검증은 [STAGE2_VALIDATION.md](STAGE2_VALIDATION.md), 이전 단계는 [STAGE1_VALIDATION.md](STAGE1_VALIDATION.md), 초기 기술 시험은 [STAGE0_VALIDATION.md](STAGE0_VALIDATION.md)를 참고하세요.
+구현 범위와 단계는 [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), 최신 Sub 배치 검증은 [SUB_HEIGHT_VALIDATION.md](SUB_HEIGHT_VALIDATION.md), Main/Sub 개편 검증은 [REVISION_VALIDATION.md](REVISION_VALIDATION.md), 기존 Folder 검증은 [STAGE4_VALIDATION.md](STAGE4_VALIDATION.md), 이전 수정 검증은 [STAGE3_FIX_VALIDATION.md](STAGE3_FIX_VALIDATION.md), 최초 Connections 검증은 [STAGE3_VALIDATION.md](STAGE3_VALIDATION.md), Card 검증은 [STAGE2_VALIDATION.md](STAGE2_VALIDATION.md), 이전 단계는 [STAGE1_VALIDATION.md](STAGE1_VALIDATION.md), 초기 기술 시험은 [STAGE0_VALIDATION.md](STAGE0_VALIDATION.md)를 참고하세요.

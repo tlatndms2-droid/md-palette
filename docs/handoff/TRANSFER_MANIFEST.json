@@ -1,0 +1,264 @@
+{
+  "date": "2026-09-21",
+  "pluginVersion": "0.0.15",
+  "sourceCommit": "9761cff",
+  "branch": "codex/planning",
+  "scope": "Original planning and UI reference files plus selected handoff references/evidence; excludes duplicate ZIP, dependencies, private Vault and full Sandbox/artifacts.",
+  "files": [
+    {
+      "path": "MD_Palette_Planning_Pack_Final/00_README.md",
+      "bytes": 1285,
+      "sha256": "eb2f5e3f43060993784219b8d31248ff74a131b3e6cb3a67de22f41298dab651"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/01_Glossary_and_Concept_Model.md",
+      "bytes": 1553,
+      "sha256": "c6b027470855298be9e8724f8d97f64b1f9f141a6fe9d67c544d080d7eb13d12"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/02_Project_Overview_and_Scope.md",
+      "bytes": 1123,
+      "sha256": "d992576038ea8fe84cdb5ffd15b15a9be9dc8952acdf1c6984f025aaf25dd912"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/03_Space_System.md",
+      "bytes": 3194,
+      "sha256": "c3cc8c91685f8b07c2741100a17a97d40cf9f20e504c0755ff9ae8931aa73ff2"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/04_Link_View_Overview.md",
+      "bytes": 1125,
+      "sha256": "a49ac8ed225fac47579414ba41a940cdd5888395e4e0e7cf96b9fbcbe567a65b"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/05_Card_View.md",
+      "bytes": 2042,
+      "sha256": "84124708eed1625f4bb5da3bfd4caea1dbf768a70b9835f8ee36fbc82095eb81"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/06_Connections_View.md",
+      "bytes": 751,
+      "sha256": "f5e881e405244af5f58817591cb3f60c94d82dae426f4c3cab7ae5f050d43529"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/07_Folder_View.md",
+      "bytes": 1563,
+      "sha256": "b77decc4fa94428bbc74c88ec133df3f826fda331a0e39028bc0a4bbae1a6088"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/08_Metadata_View.md",
+      "bytes": 1603,
+      "sha256": "e4cfabc68ff44d29efca8f44233f084c95a9d17db72eb62cf8f9a640b24facc7"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/09_Drag_and_Drop.md",
+      "bytes": 849,
+      "sha256": "dcd5aea183542c072a9cdf36e57e92438ef6524b0b66307e11923f6a03ec6fd7"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/10_Data_Persistence_and_Restart.md",
+      "bytes": 1186,
+      "sha256": "74d9dd8d654004a3cace0faaf1a5d21cdc7eb16494338868c17888e87a9ea507"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/11_Exceptions_and_Notices.md",
+      "bytes": 1106,
+      "sha256": "96b04b56cd3ff8109b21c1f877383a5785e03a997fde4bf79cd97af32815f75e"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/12_Performance_and_Platform.md",
+      "bytes": 804,
+      "sha256": "e7c2c5ebe1b21a92376eaa1f88e83930b3d23543e8f8e39cfa9a6db60ab249ef"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/13_UI_Reference_Policy.md",
+      "bytes": 1185,
+      "sha256": "379b49d5a1929e54c2f2aea21ed24afd5d4eb32be803a72ec959a2ecb795d7f8"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/14_Acceptance_Criteria.md",
+      "bytes": 6020,
+      "sha256": "2ee46757f7b452cea58ba262233ec27093a0845311dbac07947a29178130ad90"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/15_Codex_Handoff.md",
+      "bytes": 1794,
+      "sha256": "16a776492c7412445a9f5ac99efd2c33014c229b5e70c49e6a642ebd7dd5a327"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/UI_Reference/00_INDEX.md",
+      "bytes": 181,
+      "sha256": "8ab551be003cee125b6775155eb1da16e25b0334da2967ca7943db3f72890780"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/UI_Reference/12_Connections_Open_Context.png",
+      "bytes": 1719576,
+      "sha256": "dba3b12893bf430088a47b65242cea376d97dfc4fa0bcf0a9fd2c836c937d4ef"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/UI_Reference/24_Sidebar_Overview.png",
+      "bytes": 1790567,
+      "sha256": "a6ded90d212bfef93765da79217c818d22923ddbb2161f8eda24f6ee40eb544a"
+    },
+    {
+      "path": "MD_Palette_Planning_Pack_Final/UI_Reference/25_Obsidian_Default_New_Tab_Reference.png",
+      "bytes": 39286,
+      "sha256": "5f9e6a3a33b5408c2e27e741fa8c0d80e38a2d416c2e76c79d5a9cf120c453fd"
+    },
+    {
+      "path": "docs/handoff/evidence/after.png",
+      "bytes": 58655,
+      "sha256": "7dc716258d40f101b394daabd8fccc5c7c8d13e966020ffff121f9bec31bd7f8"
+    },
+    {
+      "path": "docs/handoff/evidence/before.png",
+      "bytes": 58260,
+      "sha256": "c2cff7f08a39d94a0d3df45e6df65207bd0abe24e777e2331b3837d7460a6060"
+    },
+    {
+      "path": "docs/handoff/evidence/release-verification.json",
+      "bytes": 764,
+      "sha256": "7891fc3dc42623ddcd4aaeddeb968dde38dd6c9683df13a7f01ee677bdf7d094"
+    },
+    {
+      "path": "docs/handoff/evidence/restart.png",
+      "bytes": 59125,
+      "sha256": "aac2df686f259e34b60f32474845c11a41342c0e6d44c9cd21a471415d29a3c6"
+    },
+    {
+      "path": "docs/handoff/references/sub-full-height-comparison.html",
+      "bytes": 6177,
+      "sha256": "d69fb98629bf1178bcaef4b45eff646bc019ca0f7ba62f2a06999c422b5721f4"
+    },
+    {
+      "path": "md palette ui image/linkview ui/cardview ui/Pasted image 20260910225124.png",
+      "bytes": 1712157,
+      "sha256": "b172d9c1418e841e0dfd0a18f70c489990bc0098a6467d8bb1a07a05113b4266"
+    },
+    {
+      "path": "md palette ui image/linkview ui/cardview ui/cardview card 본문삽입 메뉴.png",
+      "bytes": 1424692,
+      "sha256": "490d2d2d541930399491467200e199ded33c19a8ae01e82d5587373f0967de16"
+    },
+    {
+      "path": "md palette ui image/linkview ui/cardview ui/cardview 우클릭 context design.png",
+      "bytes": 1744567,
+      "sha256": "b3878d6d971cb4209170908b0471718311da0a9def4c6c2d661b24300f0e3d84"
+    },
+    {
+      "path": "md palette ui image/linkview ui/cardview ui/carview ui 상세 명세서.png",
+      "bytes": 1529806,
+      "sha256": "416c16a7bd80ad237fbf7f18dc7469e0f0ec0bb02084e0c894efd3ab4c24c2ad"
+    },
+    {
+      "path": "md palette ui image/linkview ui/cardview ui/link view_ cardview.png",
+      "bytes": 1268763,
+      "sha256": "eecb966bded4bc3d9fcb56c3072155a189fc30bd20df2f1dfc653c0488f99bb7"
+    },
+    {
+      "path": "md palette ui image/linkview ui/connection view ui/Connection view 상세가이드.png",
+      "bytes": 1719576,
+      "sha256": "dba3b12893bf430088a47b65242cea376d97dfc4fa0bcf0a9fd2c836c937d4ef"
+    },
+    {
+      "path": "md palette ui image/linkview ui/connection view ui/connection view ui 디테일.png",
+      "bytes": 1568255,
+      "sha256": "cf30e3dfd20392934521b55404de5ef5bc0abdcd28f964fec43e0f5ef05a7fbf"
+    },
+    {
+      "path": "md palette ui image/linkview ui/connection view ui/connection view ui.png",
+      "bytes": 1208068,
+      "sha256": "b29ca1a2fc671710d646f14f10f93339d654c5c3888f8ce1f7e174f1f730434c"
+    },
+    {
+      "path": "md palette ui image/linkview ui/folderview ui/md palette 폴더뷰 ui.png",
+      "bytes": 1319395,
+      "sha256": "2a2791a549e168acb3ae8d32f136bc3edde5ccf20f554877b43ab71fffa414e8"
+    },
+    {
+      "path": "md palette ui image/linkview ui/folderview ui/폴더 뷰 드래그 앤 드롭 동작 가이드.png",
+      "bytes": 1652073,
+      "sha256": "dea6629331f5a7f8a312591a981fea47b10afd5c1c9f10e2862c0aad6a1c15da"
+    },
+    {
+      "path": "md palette ui image/linkview ui/folderview ui/폴더뷰 3가지  뷰형식.png",
+      "bytes": 1433365,
+      "sha256": "514e9b2355a695a050f3145a5e872b63801880bb5702e2ac612ea9919d00783a"
+    },
+    {
+      "path": "md palette ui image/linkview ui/folderview ui/폴더뷰 ui 디테일.png",
+      "bytes": 1714454,
+      "sha256": "70eb48dc2e6c220730d2c1ce74e559f2fe1697282764e95c6101e6584a747cd9"
+    },
+    {
+      "path": "md palette ui image/linkview ui/link view 연결 파일 추가 UX 명세 인포그래픽.png",
+      "bytes": 1688453,
+      "sha256": "dad43b56599944528b65f8c321b2587ade06b94a8ee424265f089c01cc9b3b00"
+    },
+    {
+      "path": "md palette ui image/metadata view ui/메타데이터 뷰 Empty State를 정의.png",
+      "bytes": 1698620,
+      "sha256": "a8015fa6a8964a8d0d579f0e472a2c9438c094000b4aac39e36e8f3b943cbe4c"
+    },
+    {
+      "path": "md palette ui image/metadata view ui/메타데이터 뷰 UI 디테일.png",
+      "bytes": 1683237,
+      "sha256": "80254dfebfb4872b9699a13b44bf55e221f439c6f29bbcdea3beec79c3241c38"
+    },
+    {
+      "path": "md palette ui image/metadata view ui/메타데이터 뷰 task ui 디테일.png",
+      "bytes": 1296212,
+      "sha256": "cc1a5f84efb42710964e26ff93f05ecac4b1e9c1d030d14bb21545f089eb06c9"
+    },
+    {
+      "path": "md palette ui image/metadata view ui/메타데이터 뷰 각주 UI.png",
+      "bytes": 1322468,
+      "sha256": "33c369d52c418dae63bccaea60e90dad013d52fd597fb319ae885b68f2c2d2d6"
+    },
+    {
+      "path": "md palette ui image/metadata view ui/메타데이터뷰 block reference ui 상세가이드.png",
+      "bytes": 1672973,
+      "sha256": "dd62faba39dd1b75ac4be628d414d41b3bc4ce8aa9292cc4f7e770e1e04f1719"
+    },
+    {
+      "path": "md palette ui image/metadata view ui/메타데이터뷰 동작 가이드.png",
+      "bytes": 1821514,
+      "sha256": "5e3cb2440806f7b8d19439abd77e0b82ae8a2bc2f415c10bd57cb9e21caddc9d"
+    },
+    {
+      "path": "md palette ui image/metadata view ui/메타데이터뷰 드래그 앤 드롭 가이드.png",
+      "bytes": 1696982,
+      "sha256": "ebbc9e088e642f4361f3f01574b3f0a018f08ee4b8d07f4baf6229cfb0478e74"
+    },
+    {
+      "path": "md palette ui image/sidebar 전체 구조 over view.png",
+      "bytes": 1790567,
+      "sha256": "a6ded90d212bfef93765da79217c818d22923ddbb2161f8eda24f6ee40eb544a"
+    },
+    {
+      "path": "md palette ui image/space ui/main space 지정 토글.png",
+      "bytes": 1217082,
+      "sha256": "7753960c3a54438d5df982f2b684f370a8b0f971d4e6456fd703c641ef7d67f4"
+    },
+    {
+      "path": "md palette ui image/space ui/space 공간 디자인.png",
+      "bytes": 2073392,
+      "sha256": "760b576487d2b38edd7b85f4f7b08a70d4c935b089e51430c06a881990baf078"
+    },
+    {
+      "path": "md palette ui image/space ui/메인 서브전환 기능 개발 명세 (ui spec).png",
+      "bytes": 1711776,
+      "sha256": "7addadfca747ce170e9e4ce7a0dd19215f7c16cb3ca5efbc4b9bf3188b904eb1"
+    },
+    {
+      "path": "md palette ui image/space ui/메인스페이스 링크 클릭시 선택 팝업.png",
+      "bytes": 1606368,
+      "sha256": "78a037472cc59f7d72cf4e1b86f9317b110da4a2d3cae29dde4714b31310f3fa"
+    },
+    {
+      "path": "md palette ui image/space ui/스페이스 탭 아이콘.png",
+      "bytes": 2033809,
+      "sha256": "5dde2ae31c534dc08944f82432ad8884b9581a12ca22f0ab482876e534284112"
+    }
+  ]
+}

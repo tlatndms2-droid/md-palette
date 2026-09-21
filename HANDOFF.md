@@ -1,200 +1,79 @@
-# MD Palette 작업 인계
+# MD Palette 작업 인계 — 다른 PC 재개 시작점
 
-갱신일: 2026-09-21
-저장소: https://github.com/tlatndms2-droid/md-palette
-작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
+갱신일: 2026-09-21. 저장소: https://github.com/tlatndms2-droid/md-palette
+기본·작업 브랜치: `codex/planning`. 현재 플러그인 버전: **0.0.15**.
 
-## 현재 상태 — 0.0.15 Release 완료, 사용자 BRAT 확인 대기
+## 현재 상태
 
-- [0.0.15 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.15), 구현 커밋 `9761cff`. 공개 자산 세 개를 다운로드해 최종 Sandbox 빌드와 SHA-256 일치를 확인했다.
+**0.0.15 Release 완료, 사용자 BRAT 확인 대기. 7단계 최종 통합 검증은 미시작이다.**
 
-- 사용자 0.0.14 정상 작동 확인 완료. 이어서 이미지 및 HTML 비교 배치로 확정한 Sub 위치 수정 요청을 받았다.
-- Main 위에 영상이 있는 경우 왼쪽의 위아래 묶음을 보존하고 Sub를 오른쪽 전체 높이에 배치한다. 기존 좁은 Sub도 재배치하며 그룹·탭을 닫지 않는다. 더블클릭 교체·Ctrl 새 탭·Ctrl+Shift 새 그룹 동작 유지.
-- 41개 테스트·빌드·0.0.15 실제 Sandbox UI·참조 배치 비교·재시작 통과. 원본 파일 2,065개·라벨·기존 문서별 폴더·모든 탭 복원 확인. `SUB_HEIGHT_VALIDATION.md` 참조.
-- Sandbox는 `SubHeight-Review/Main.md`와 영상·학습 노트 화면으로 유지. BRAT은 사용자 담당. 실제 Vault와 7단계 제외.
+- 구현 커밋: `9761cff`. 이전 배포 기록 커밋: `fbd11ad`.
+- [0.0.15 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.15).
+- 최신 수정: 영상과 Main의 위아래 묶음을 왼쪽에 보존하고 Sub를 오른쪽 전체 높이에 배치. 여러 Sub와 기존 더블클릭 조합 유지.
+- 당시 41개 테스트·빌드·Sandbox 실제 UI·재시작·기존 파일 2,065개 보존·공개 자산 3개 SHA-256 일치 통과 기록. [검증 보고서](SUB_HEIGHT_VALIDATION.md).
+- 0.0.14 사용자 정상 작동 확인은 기록되어 있다. 0.0.15 사용자 확인은 아직 받지 않았다. 인계 요청은 다음 단계 승인이나 기능 정상 확인이 아니다.
+- BRAT 설치·업데이트 확인은 사용자가 담당한다. Codex가 대신 수행하는 것으로 되돌리지 않는다.
+- 이번 변경은 문서 정리와 핵심 자료의 GitHub 전달이다. 플러그인 코드·버전 변경, 새 Release, 앱 조작·재검증은 포함하지 않는다.
 
-## 0.0.14 당시 기록 — 사용자 정상 작동 확인 완료
+## 읽는 순서와 문서 관계
 
-- [0.0.14 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.14), 구현 커밋 `80ac833`. 공개 다운로드한 main.js·manifest.json·styles.css의 SHA-256이 최종 Sandbox 검증 빌드와 모두 일치한다.
+1. 현재 사용자 요청과 [프로젝트 지침](AGENTS.md).
+2. 이 HANDOFF 및 [현재 확정 사양](docs/handoff/CURRENT_SPEC.md).
+3. [기획 변경 이력·원본 완료 기준 대응표](docs/handoff/DECISIONS.md).
+4. [현재 진행 계획](IMPLEMENTATION_PLAN.md)과 [새 PC 준비·재개 방법](docs/handoff/NEW_PC.md).
+5. 변경 대상의 코드·검증 보고서·원본 기획·해당 참조 이미지.
 
-- 사용자 요청: 새 링크 파일 생성 구현. 저장 위치는 사용자 선택 1번, Obsidian의 새 노트 저장 위치 설정을 따른다.
-- Card·Connections 상단과 Folder 빈 공간 우클릭에 `새 링크 파일 추가`. 이름과 실제 저장 경로를 보여주고 `만들고 연결`로 빈 Markdown 파일 생성 및 Main의 `link note` 연결. Folder는 현재 가상 폴더에 배치한다. 자동으로 열지 않으며 더블클릭으로 기존 Sub 열기를 사용한다.
-- 중복 이름 덮어쓰기 금지, 잘못된 이름·Main 변경·취소 처리. 연결·폴더 저장 실패 시 이번에 만든 빈 파일만 복구하며 다른 변경이 생긴 파일은 보존한다.
-- 38개 테스트·빌드·최종 0.0.14 Sandbox 실제 클릭·3가지 저장 위치·실패 복구·밝은/어두운 테마·240px·프로세스 재시작·재시작 후 생성 통과. 기존 파일 2,058개 및 라벨·문서별 폴더 보존. `NEW_NOTE_VALIDATION.md` 참조.
-- Sandbox와 자료 유지. BRAT은 사용자 담당, 실제 Vault와 7단계는 제외. 원본 Planning Pack은 수정하지 않았다.
+원본 기획과 AGENTS의 일부 기능 문구에는 Reference·Main/Sub 교환·전역 가상 폴더가 남아 있다. 이는 이후 명시적인 사용자 결정으로 대체되었다. 현재 사양과 변경 이력에 근거를 모았으며, 원본이나 지침 자체는 고치지 않았다. 새 충돌을 발견하면 코드만 보고 의도를 확정하지 말고 구체적인 불일치를 확인한다.
 
-## 0.0.13 당시 기록 — Release 완료
+이전 HANDOFF·계획 전체는 [history](docs/handoff/history/HANDOFF-before-2026-09-21.md)에 보존했다. 그 안의 '다음 6단계', '6~7단계 미구현', 오래된 포트·버전·확인 대기는 당시 기록이며 현재 지시가 아니다.
 
-- [0.0.13 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.13), 구현 커밋 9ba689e. 공개 자산 3개의 SHA-256이 최종 Sandbox 검증 빌드와 일치한다.
-- 사용자 승인: 한 번 클릭은 선택 유지, 더블클릭은 마지막 Sub 탭 교체, Ctrl+더블클릭은 새 탭, Ctrl+Shift+더블클릭은 추가 Sub 그룹. 여러 Sub와 마지막 사용 그룹을 저장한다.
-- 각주·URL 드래그와 Card → Sub Markdown을 추가했다. 각주는 텍스트/실제 각주, URL은 주소/제목 링크를 선택한다. Sub Canvas 카드도 지원한다.
-- 36개 테스트·빌드·실제 Sandbox 클릭/드래그·저장 실패 복구·재시작 통과. 기존 파일 2,051개 및 라벨·문서별 폴더 보존. REVISION4_VALIDATION.md 참조.
-- BRAT은 사용자 담당. 실제 Vault 수정과 7단계는 제외. Sandbox와 시험 자료 유지.
+## 기능을 되돌리지 않기 위한 핵심
 
-## 0.0.12 당시 기록 — 후속 수정 승인
+- Main/Sub만 사용. Reference와 활성 파일 교환 없음. Main 변경·해제는 탭 보존·역할 해제.
+- 지정 Main 문서 고정. 기본 더블클릭은 마지막 Sub 탭 교체, Ctrl은 새 탭, Ctrl+Shift는 새 그룹.
+- Sub는 Main을 포함한 위아래 묶음의 오른쪽 전체 높이.
+- 가상 폴더는 Main 문서별. 0.0.8의 테스트용 전역 데이터 초기화는 일회성 승인이다.
+- Connections는 모든 속성의 Markdown 연결과 기본 Local Graph. 별도 검색·필터 제외.
+- Metadata는 URL Links 포함 다섯 구역. Main 본문 별도 링크 선택 팝업은 보류.
+- Folder 제목 카드 기본값·기존 보기 보존. 파일 카드와 Metadata의 드래그는 현재 사양의 대상표를 따른다.
+- 새 링크 파일은 Obsidian 새 노트 저장 설정에 따라 생성·연결하고 자동으로 열지 않는다.
 
-- [0.0.12 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.12), 구현 커밋 `ad9edf4`. 공개 다운로드한 main.js·manifest.json·styles.css SHA-256이 최종 Sandbox 검증 빌드와 모두 일치한다.
+## 단계별 진행과 증거
 
-- 사용자가 0.0.11 정상 동작을 확인하고 6단계 진행을 승인했다. HTML에서 1번 선택: 파일 카드 → Main Markdown, 강조·블록 → Main/Sub Markdown 또는 Sub Canvas.
-- 드롭 위치에서 Obsidian 기본 메뉴로 링크·임베드·본문 또는 텍스트·출처 포함·블록 내용을 선택한다. Markdown은 편집 모드의 본문 영역, Canvas는 Sub Canvas가 대상이다.
-- Card 단일 파일만 재사용하며 기존 카드 정렬을 보존한다. Metadata는 Highlights·Block Reference만 드래그한다. Tasks·각주·웹 링크 및 Folder/Connections의 새 삽입 동작은 포함하지 않는다.
-- 32개 테스트·빌드·0.0.12 Sandbox 실제 드래그·좌표·취소·저장 실패 복구·원문 변경 충돌·지원하지 않는 대상·재시작 통과. 기존 파일 2,045개 해시 유지. STAGE6_VALIDATION.md 참조.
-- Sandbox는 전용 프로필·포트 19273에서 시험 자료와 함께 열어둔다. `.artifacts/stage6`에 백업·화면·결과·자산 해시를 남겼다.
-- BRAT 확인은 사용자 담당이다. 실제 작업 Vault는 수정하지 않았다. 7단계는 사용자 확인과 별도 진행 요청 전까지 시작하지 않는다.
+| 단계·후속 변경 | 배포 | 상태·근거 |
+|---|---|---|
+| 0 실행 기반 | 0.0.1 | STAGE0_VALIDATION.md |
+| 1 Space·사이드바 | 0.0.2 | 사용자 확인 기록, STAGE1_VALIDATION.md. 이후 Main/Sub 사양으로 변경 |
+| 2 Card·라벨·드래그 정렬 | 0.0.3~4 | 사용자 확인 후 다음 단계 진행, STAGE2_VALIDATION.md / STAGE2_DRAG_VALIDATION.md |
+| 3 Connections | 0.0.5~6 | 사용자 확인, STAGE3_VALIDATION.md / STAGE3_FIX_VALIDATION.md |
+| 4 Folder 및 Main/Sub·문서별 정리 개편 | 0.0.7~8 | 사용자 확인, STAGE4_VALIDATION.md / REVISION_VALIDATION.md |
+| 5 Metadata·URL·라벨 관리·미리보기 | 0.0.9~10 | 후속 사용자 확인, STAGE5_VALIDATION.md / REVISION2_VALIDATION.md |
+| Folder 제목 카드·Main 토글 | 0.0.11 | 사용자 확인, REVISION3_VALIDATION.md |
+| 6 드래그 재사용·여러 Sub·각주·URL 확장 | 0.0.12~13 | 구현·검증·배포 기록, STAGE6_VALIDATION.md / REVISION4_VALIDATION.md |
+| 새 링크 파일 | 0.0.14 | 사용자 정상 작동 확인, NEW_NOTE_VALIDATION.md |
+| Sub 전체 높이 | 0.0.15 | 검증·배포 기록, 사용자 BRAT 확인 대기, SUB_HEIGHT_VALIDATION.md |
+| 7 최종 통합 | 목표 0.1.0 | 미시작. 사용자 확인과 별도 진행 승인 필요 |
 
-## 0.0.11 당시 기록 — 사용자 확인 완료
+각 버전의 자동·Sandbox 검증은 사용자 직접 확인과 별개다. 0.0.12/13의 개별 사용자 확인 문장을 추정해서 추가하지 않는다. 코드가 배포되어 있다는 사실만으로 최종 통합 완료를 선언하지 않는다.
 
-- [0.0.11 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.11), 구현 커밋 a63e414. 공개 자산 세 개의 SHA-256이 최종 Sandbox 빌드와 일치한다.
-- 사용자 0.0.10 확인 완료. 승인 HTML 시안과 최종 계획의 Folder 제목 카드·Main 토글을 구현했다.
-- Folder 전용 제목 카드: 아이콘·최대 두 줄 제목, 66px 높이·160px 최소 너비. 본문·썸네일 생성 없음. 새 문서 기본값이며 기존 문서의 6가지 보기 선택은 보존한다.
-- 기존 set-main 명령을 메인 스페이스 지정/해제 토글로 변경하고 unset-main 명령만 제거했다. 같은 Main은 해제, 다른 지정 가능한 문서는 새 Main. 기존 단축키·탭·데이터 보존.
-- 27개 테스트·빌드·Sandbox 실제 UI·재시작·기존 파일 2,039개 해시 보존 통과. REVISION3_VALIDATION.md 참조.
-- BRAT은 사용자 담당, 6단계 미시작. Sandbox와 시험 자료는 열린 상태로 유지한다.
+## 다음 작업
 
-## 0.0.10 당시 기록 — 사용자 확인 완료
+1. 새 PC에서 브랜치·버전·문서·도구와 누락 자료를 확인하고 현재 상태를 사용자에게 설명한다.
+2. 0.0.15의 사용자 정상 작동 확인 여부를 확인한다. 현재 기록은 대기다.
+3. 별도 7단계 진행 승인이 있을 때 현재 사양을 기준으로 원본 완료 기준을 대조한다. 폐기된 기능을 복원하지 않는다.
+4. 필요한 통합·업데이트·저장 복원·대량 자료 반응성 검증을 새 격리 Sandbox에서 수행한다. 발견한 결함은 승인된 범위에서 수정·재검증한다.
+5. 필요한 최종 버전으로 필수 검증을 마친 뒤 Release·자산 확인과 사용자 확인 항목을 제공한다. 기존 공개 버전은 덮어쓰지 않는다.
 
-- [0.0.10 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.10), 구현 커밋 1343b3a. 공개 자산 세 개의 SHA-256이 Sandbox 검증 빌드와 일치한다.
-- 최신 요청 네 가지를 구현했다: Metadata Links의 URL 전용 목록, 라벨별 전체 Vault 파일 수·목록·삭제, Main 본문·속성 링크의 Sub 열기, 카드·파일 목록의 기본 Ctrl 미리보기.
-- 최종 0.0.10 빌드로 읽기·편집 모드, 같은 Sub 탭 재사용·포커스, 일반 문서 동작 보존, 웹뷰어 Sub, 라벨 삭제·필터 해제·파일 보존을 실제 Sandbox에서 확인했다.
-- Card 6가지 보기·Folder 파일 카드/Tree·Connections 파일 행의 Ctrl 미리보기와 버튼·가상 폴더 제외를 확인했다.
-- 26개 테스트·빌드 통과. 프로세스 재시작 뒤 웹뷰어만 남은 Sub 역할·아이콘, Main, 라벨 삭제·남은 라벨, 폴더·연결 상태 복원 확인. 기존 파일 2,033개와 새 시험 파일 6개의 해시 일치.
-- 검증 기록: REVISION2_VALIDATION.md. 증거·백업: .artifacts/revision2. Sandbox는 시험 자료와 함께 열린 상태로 남긴다.
-- BRAT 확인은 사용자가 담당하며 Codex는 실행하지 않는다. 6단계는 시작하지 않는다.
+별도 팝아웃 창 배치는 0.0.15 검증 범위에 포함되지 않았다. 지원 확대를 이번 인계로 승인받은 것으로 간주하지 않는다. 미검증·미수행은 통합 완료 보고에서 구분한다.
 
-## 0.0.9 당시 기록
-### 0.0.9 Release 완료
+## 전달된 자료와 실행 환경
 
-- [0.0.9 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.9), 구현 커밋 `cef8cf7`. 공개 자산 main.js·manifest.json·styles.css를 다시 내려받아 검증 빌드와 SHA-256 일치를 확인했다.
+- 원본 Planning Pack·UI 이미지 46개를 폴더 그대로 Git 추적에 추가. 원본 ZIP은 중복이므로 로컬에 보존한다.
+- 코드·tests·scripts·설정·lockfile·검증 보고서, 새 인계 자료를 포함한다.
+- [최신 배치 시안](docs/handoff/references/sub-full-height-comparison.html), [수정 전](docs/handoff/evidence/before.png), [수정 후](docs/handoff/evidence/after.png), [재시작 후](docs/handoff/evidence/restart.png), [릴리즈 해시 확인 기록](docs/handoff/evidence/release-verification.json)을 선별 보관한다. 화면은 당시 증거이며 이번에 앱을 재검증한 결과가 아니다.
+- [전달 파일 목록·SHA-256](docs/handoff/TRANSFER_MANIFEST.json)은 원본과 선별 자료의 목록이다.
+- 새 PC의 실행 절차와 스크립트 이식 제한은 [NEW_PC.md](docs/handoff/NEW_PC.md)를 따른다. 기존 개인 스킬과 전역 설정은 자동으로 복제되지 않는다.
 
-- 사용자는 0.0.8 정상 동작을 확인하고 5단계 진행을 승인했다. HTML 계획 확인 후 `진행해`로 구현을 요청했다.
-- 각주·Highlights·Tasks·Block Reference·Links, 검색·접힘·원문 이동·각주 편집·Task 체크, Main 탭 고정과 Main 옆 링크 열기를 구현했다.
-- 25개 테스트·빌드·Sandbox 실제 UI·프로세스 재시작·기존 파일 2,028개 보존 검증 통과. STAGE5_VALIDATION.md 참조.
-- 최신 사용자 확정: Codex는 GitHub Release까지 진행하고 BRAT 확인은 사용자가 담당한다. BRAT 설치·업데이트를 자동 실행하지 않는다.
-- 최신 예상 28~45분은 실측 전 잠정 계획이며 이전 시간 추정을 대체한다.
-- 6~7단계 미시작. 사용자 0.0.9 확인과 별도 다음 단계 요청을 기다린다.
+기존 PC의 Sandbox 위치는 `C:\Users\tlatn\AppData\Local\Temp\MDPalette-Stage0-Sandbox-20260918`, 별도 프로필은 `MDPalette-Stage0-Profile-20260918`, 당시 포트는 19273이다. 현재 실행 여부는 이번에 확인하지 않았다. 새 PC에서 이 경로·포트·PID를 그대로 사용하지 않는다. 기존 Sandbox는 사용자 확인용으로 유지하는 상태이며 이번 인계에서 종료·정리하지 않았다.
 
-## 0.0.8 당시 기록 — 사용자 확인 완료
-
-- 4단계 0.0.7은 사용자가 정상 작동을 확인했다. 5~7단계는 아직 시작하지 않았다.
-- 최신 요청은 HTML로 확인한 수정 내용을 구현하는 `수정 진행해줘`다.
-- 0.0.8: Main/Sub만 사용, 모든 지원 파일 Sub 새 탭·동일 파일 재사용, Main 변경·해제 시 탭 보존, Card/Folder 파일 제목 상단 확대, Markdown 미리보기 렌더링, Main 문서별 가상 폴더 저장을 구현했다.
-- 기존 테스트용 전역 가상 폴더·배치만 초기화한다. 사용자가 `그냥 지워줘 어차피 테스트 중이여서 지워도 상관없어`로 승인했다. 실제 파일·본문·연결·라벨은 보존한다.
-- 최종 0.0.8 빌드의 실제 Sandbox UI·프로세스 재시작·기존 파일 2,020개 해시 검증을 통과했다. 공개 Release 자산 일치 및 Sandbox BRAT 0.0.7 → 0.0.8 업데이트도 통과했다.
-- 원본 Planning Pack과 AGENTS에 남아 있는 Reference·교환·전역 가상 폴더 규칙은 최신 사용자 결정으로 대체됐다. 원본 자료나 지침 파일은 수정하지 않았다.
-- 다음 5단계 Metadata는 이번 수정에 포함하지 않는다. 사용자 본인의 0.0.8 확인 및 별도 진행 요청을 기다린다.
-
-## 0.0.8 배포 결과
-
-- [0.0.8 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.8).
-- 구현 커밋: `3750ec7`. 최종 자산 세 개를 공개 다운로드해 검증 빌드와 SHA-256 일치를 확인했다.
-- Sandbox BRAT 2.2.0의 실제 업데이트 명령으로 0.0.7 → 0.0.8 설치·활성화 확인. 문서별 가상 폴더·Main/Sub 역할·Card·Connections·기타 데이터가 유지됐다.
-- BRAT 설치본의 main.js·styles.css 바이트 일치, manifest.json은 공백 재직렬화만 다르고 모든 JSON 값이 동일하다.
-- 실제 UI·재시작·원본 보존 및 성능 검증 세부는 `REVISION_VALIDATION.md`에 기록했다. Sandbox는 열린 상태로 남긴다.
-
-## 이번 수정의 확정 동작
-
-- Main과 Sub는 기존 Obsidian 탭 그룹 역할이다. Reference 역할·메뉴·명령과 Main/Sub 교환을 제거한다.
-- Card·Folder·Connections·기본 그래프·파일 메뉴·Sub 파일 선택 명령은 모두 Sub로 연다. 다른 파일은 새 탭, 같은 파일은 기존 탭이다.
-- 새 Main 지정: 이전 Main·Sub 탭은 보존하고 역할·아이콘만 제거한다. 이전 Sub를 새 Main에 자동 연결하지 않는다.
-- Main 탭 우클릭 → 메인 스페이스 지정 해제: 모든 탭을 보존하고 사이드바를 Main 없음으로 만든다.
-- 파일 제목은 Card와 Folder 파일 카드 상단에 크게 표시한다. Tree와 가상 폴더 이름은 기존 크기다.
-- Markdown 미리보기는 제목·강조·목록·링크를 렌더링한다. 본문 임베드는 링크로 표시한다. 원본 수정·영상 자동 재생 같은 별도 기능을 추가하지 않는다.
-- 가상 폴더·배치·Folder 보기 상태는 Main 경로별 Plugin Data다. Main 변경·복귀·재시작 후 각 문서 상태를 복원한다. 같은 자료를 Main마다 다른 가상 위치에 놓을 수 있다.
-- 기존 전역 가상 정리는 복사·이전하지 않고 비운다. 기존 보기 기본값·Card·Connections·기타 데이터는 유지하고 새 문서별 정리는 반복 초기화하지 않는다.
-- 이후 6단계의 Markdown·Canvas 드래그 대상은 Sub로 계획한다. 세부 구현은 해당 단계에서 진행한다.
-
-## 단계별 진행 상황
-
-| 단계 | 구현 결과 | 배포 버전 | 현재 상태 |
-|---|---|---|---|
-| 0 | 플러그인 실행 기반·기술 확인 | 0.0.1 | 완료, 후속 단계 진행 |
-| 1 | Main·Sub·Reference Space와 사이드바 | 0.0.2 | 사용자 확인 완료 |
-| 2 | Card·썸네일·라벨·필터·선택·순서 변경 | 0.0.3, 드래그 개선 0.0.4 | 사용자 확인 후 3단계 진행 |
-| 3 | Connections·역링크·Outgoing·기본 Local Graph | 0.0.5, 속성 연결·그래프 수정 0.0.6 | 사용자 확인 완료 |
-| 4 | 전역 가상 폴더·세 가지 보기·탐색·검색·정렬 | 0.0.7 | **사용자 정상 작동 확인 완료** |
-| 5 | Metadata·URL Links·라벨 관리·Main 링크 Sub·Ctrl 미리보기 | 0.0.10 | 검증·Release 완료, 사용자 BRAT 확인 대기 |
-| 6 | Card·Metadata를 Markdown·Canvas에 드래그해 재사용 | 미배포 | 미시작 |
-| 7 | 최종 통합 검증 | 최종 목표 0.1.0 | 미시작 |
-
-## 0.0.7 당시의 4단계 기능 기록 — 위 0.0.8 변경이 우선
-
-- `Link View → Folder`: 복합뷰(Tree + Folder) / Tree뷰 / Folder뷰. 같은 전역 가상 폴더 데이터를 보여준다.
-- 가상 폴더 생성·이름 변경·이동·삭제. 삭제 시 바로 안의 파일과 하위 폴더를 한 단계 위로 옮기며 자식 구조를 유지한다. 실제 파일은 삭제·이동하지 않는다.
-- 단일·Ctrl·Shift 선택과 묶음 드래그, 폴더·상위 경로·빈 공간으로 이동, 자기 자신·하위 폴더 이동 금지, Esc 취소.
-- 뒤로·앞으로·위로·경로 탐색. 현재 폴더와 하위 폴더의 파일·폴더 이름 검색 및 가상 경로 표시.
-- Folder 정렬: 사용자 지정 / 이름 / 유형 / 수정 날짜 / 크기. 자동 정렬에서 오름차순·내림차순을 제공한다.
-- Tree 정렬: 사용자 지정 / 이름. 자동 정렬로 바꿔도 저장된 수동 순서는 유지하고, 다른 폴더로 이동하는 드래그는 허용한다.
-- 표시 형식 6종, 상하·좌우 분할, 영역 크기 조절·저장. Card와 파일 유형 필터를 공유하고 기존 라벨을 표시한다.
-- 빈 공간 우클릭 → 연결 파일 추가: Main의 `link note` 연결과 현재 가상 폴더 배치가 함께 성공해야 완료한다. 이미 다른 가상 위치에 배치된 파일이면 둘 다 취소한다.
-- Markdown 더블클릭 → Sub, 다른 파일 → Reference. Markdown 우클릭에서 Reference도 선택할 수 있다.
-- Main을 바꿔도 전역 폴더 구조와 파일의 가상 위치는 유지한다. 검색어는 Main 변경·재시작 시 비운다.
-- 대량 목록은 화면에 가까운 항목부터 이어 표시한다. 검색은 전체 자료를 대상으로 한다.
-
-### 사용자 확정 사항
-
-- **정렬 기능 범위는 문서의 전체 옵션을 따른다.** 참조 이미지에 일부 옵션만 보이는 것은 기능 제한이 아니다.
-- 정렬 컨트롤 위치·크기·스타일·전체 화면 배치는 참조 이미지와 최대한 유사하게 유지한다. 전체 옵션은 기존 메뉴 안에 넣었다.
-- 옵션 추가를 위해 이미지 구조를 크게 바꿔야 한다면 임의 재설계하지 말고 확인받는다.
-
-## 0.0.7 검증·Release·BRAT 기록
-
-- [0.0.7 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.7).
-- TypeScript 검사·빌드·18개 자동 테스트 통과.
-- Obsidian 1.13.7 Sandbox에서 실제 클릭·키보드·드래그로 보기·생성·이름 변경·삭제·탐색·검색·정렬·다중 선택·이동·취소를 확인했다.
-- 연결 추가 성공·중복·다른 위치 충돌·취소, 저장 오류와 본문 변경 오류 시 가상 상태·Markdown·저장 데이터 복구를 확인했다.
-- 밝은/어두운 테마, 240px 사이드바 가로 넘침 없음, 참조 이미지 구조 대조 통과.
-- 별도 Sandbox 프로세스 재시작 후 0.0.7·가상 폴더·위치·정렬·보기·분할 및 기존 Card·Connections·Space 상태 복원 확인.
-- 2,000개 연결 파일에서 최초 목록 생성 약 35.8ms(각 영역 첫 80개 항목). 실제 휠 스크롤로 2,000개 모두 도달하고 전체 자료 검색을 확인했다. 일반 사용자 지연이나 전체 목록 동시 렌더링 수치로 해석하지 않는다.
-- 기존 파일 경로와 SHA-256 일치 확인. 실제 작업 Vault는 테스트하지 않았다.
-- 공개 자산 `main.js`, `manifest.json`, `styles.css`가 검증 빌드와 SHA-256 일치.
-- Sandbox BRAT 2.2.0의 실제 업데이트 명령으로 **0.0.6 → 0.0.7** 설치·활성화·이전 상태 보존 확인. manifest는 BRAT의 공백 재직렬화만 다르고 JSON 값은 동일하다.
-- 자동 검증과 별개로 **사용자의 정상 작동 확인까지 받았다.**
-
-## 저장소와 관련 파일
-
-- 현재 브랜치: `codex/planning`.
-- 구현 커밋: `f5cef8a` — Add stage 4 global virtual Folder View.
-- Release·BRAT 결과 기록 커밋: `f7a5245` — Record stage 4 release and BRAT verification. 두 커밋 모두 원격에 push했다.
-- 미추적 Planning Pack·이미지·ZIP은 원본 자료이므로 그대로 보존한다.
-- Folder: `src/folder-view.ts`, `src/folders-state.ts`.
-- 공통 연결·저장·Space: `src/main.ts`, `src/state.ts`, `src/workspace-adapter.ts`, `src/sidebar.ts`.
-- Card: `src/card-view.ts`, `src/cards-state.ts`, `src/card-reorder.ts`, `src/thumbnails.ts`.
-- Connections: `src/connections-view.ts`, `src/connections-state.ts`, `src/native-local-graph.ts`.
-- 이번 검증 보고서: `REVISION_VALIDATION.md`. 이전 Folder 보고서: `STAGE4_VALIDATION.md`. 이전 단계는 `STAGE0_VALIDATION.md`, `STAGE1_VALIDATION.md`, `STAGE2_VALIDATION.md`, `STAGE2_DRAG_VALIDATION.md`, `STAGE3_VALIDATION.md`, `STAGE3_FIX_VALIDATION.md`.
-- 4단계 원시 증거·화면·사전 백업: `.artifacts/stage4/`. 검증 스크립트: `scripts/stage4-*.mjs`.
-
-## Sandbox 인계
-
-- Vault: `C:\Users\tlatn\AppData\Local\Temp\MDPalette-Stage0-Sandbox-20260918`.
-- 전용 프로필: `C:\Users\tlatn\AppData\Local\Temp\MDPalette-Stage0-Profile-20260918`.
-- CDP: `19273`. 재사용 시 실제 실행 여부를 확인하고 새 CDP 대상을 탐색한다. 과거 PID·대상 ID를 그대로 쓰지 않는다.
-- 이번 0.0.8 검증에 같은 격리 Sandbox를 사용했고 프로세스 재시작도 확인했다. 최종 빌드와 시험 자료·설정을 남긴다.
-- 확인 화면: `Revision-Review/Main-A.md → MD Palette → Link View → Folder`. Main-B.md는 독립적인 여행 준비 폴더를 가진다.
-- 이번 사전 설정·설치 자산 백업: `.artifacts/revision/backup-obsidian`. 기존 파일 해시: `.artifacts/revision/originals.json`. 화면·결과: `.artifacts/revision/`. 검증 스크립트: `scripts/revision-*.mjs`.
-- **사용자의 최신 요청에 따라 검증 후 자동 종료·원상 복원하지 않는다.** 종료·정리는 별도 요청이 있을 때만 사용자 변경 내용을 보존한 뒤 진행한다.
-- 열기: `obsidian-sandbox-open`. 설치·검증: `obsidian-sandbox-validation`. 실제 Vault로 대체하지 않는다.
-
-## 유지해야 할 확정 결정
-
-- 한 단계씩 구현 → 관련 검사·빌드 → Sandbox 실제 UI·재시작 → GitHub Release → Sandbox BRAT → 사용자 본인 확인 순서로 진행한다.
-- 이전 단계 사용자 확인을 받았어도 다음 단계의 별도 진행 요청 전에는 구현하지 않는다.
-- Main은 기존 Obsidian Tab Group에 부여하는 역할이다. Main/Sub 교환은 제거했고, Main 변경·해제 시 일반 Tab을 포함한 기존 탭을 보존한다.
-- Main 본문 링크 클릭 팝업은 보류. 기존 Obsidian 동작을 유지한다.
-- 연결 추가는 Main의 `link note` 속성에 저장한다. 별도 본문 `## link` 목록을 만들지 않는다.
-- Connections 목록은 Markdown-only, 본문과 모든 속성의 연결을 포함한다. 별도 목록 검색창·필터는 제외한다.
-- Local Graph는 Obsidian 기본 View·renderer·engine·설정 UI를 재사용하고 Main에 고정한다. 내부 API 접근은 `native-local-graph.ts`에 격리했다.
-- Virtual Folder와 파일 배치는 Main별 Plugin Data다. 파일 하나는 각 Main 안에서 가상 위치 하나만 가진다.
-- 라벨·가상 폴더 조작으로 Markdown 내용이나 실제 Vault 경로를 바꾸지 않는다. 업데이트 시 이전 설정을 보존하며, 예외는 삭제 승인된 기존 테스트용 전역 가상 폴더·배치뿐이다.
-- UI는 제공 이미지의 배치·비율·밀도, 색상은 Obsidian 테마·강조색을 따른다. 새 시안 이미지는 불필요하다고 확정했다.
-- 사용자 요청 없는 병렬 에이전트·별도 작업 분산 금지. Sandbox 검증은 백그라운드 CDP가 기본이다.
-- 원본 `MD_Palette_Planning_Pack_Final`, `md palette ui image`, ZIP은 수정·이동·삭제하지 않는다.
-
-## 다음 작업 — 사용자 확인 후 별도 요청 시 6단계
-
-1. 현재 사용자 요청, 프로젝트 AGENTS, 이 HANDOFF, IMPLEMENTATION_PLAN, Git 상태·버전을 다시 확인한다.
-2. 먼저 사용자의 0.0.9 BRAT 확인을 기다린다. Codex가 BRAT을 대신 설치·업데이트하지 않는다.
-3. 6단계의 재사용 드래그 문서와 최신 Main/Sub 결정을 대조한다. 기존 Reference·교환 규칙을 되살리지 않는다.
-4. 별도 6단계 요청이 있을 때만 계획·구현한다. 실제 Sandbox UI·재시작 검증 후 새 버전 Release까지 진행하고 기존 공개 버전을 덮어쓰지 않는다.
-5. 사용자 본인의 다음 단계 확인을 받기 전에는 그다음 단계로 넘어가지 않는다.
-
-현재 6~7단계는 미구현이다. 지원하지 않는 미디어의 썸네일은 아이콘·파일명으로 대체하며, 별도 팝아웃 창 간 Space 이동은 기존 검증 범위에 포함되지 않았다.
+현재 대화 전체, 개인 Vault·플러그인 사용자 데이터, Sandbox 전체 백업, 원시 .artifacts 전체는 전달하지 않는다. 과거 승인 시안 전체가 확보된 것은 아니며, 필요한 경우 해당 자료를 별도로 확인한다. 기능별 결정의 확인 가능한 근거와 확인되지 않은 부분은 변경 이력에 명시했다.

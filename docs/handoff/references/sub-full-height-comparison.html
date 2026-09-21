@@ -1,0 +1,62 @@
+<div id="sub-height-compare">
+<style>
+#sub-height-compare{color-scheme:light dark;--sh-bg:light-dark(#f4f4f6,#202020);--sh-panel:light-dark(#ffffff,#252525);--sh-bar:light-dark(#eaeaec,#303030);--sh-line:light-dark(#d3d3da,#49494e);--sh-text:light-dark(#282832,#ededf0);--sh-muted:light-dark(#636371,#b6b6c0);--sh-accent:light-dark(#7544aa,#c196ee);--sh-fill:light-dark(#efe7f8,#382b45);font:14px/1.5 system-ui,sans-serif;color:var(--sh-text)}
+#sub-height-compare *{box-sizing:border-box}
+#sub-height-compare .sh-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+#sub-height-compare h3{font-size:19px;margin:0 0 6px;font-weight:650}
+#sub-height-compare .sh-caption{font-size:13px;color:var(--sh-muted);margin-bottom:14px}
+#sub-height-compare .sh-window{background:var(--sh-bg);border:1px solid var(--sh-line);border-radius:9px;overflow:hidden}
+#sub-height-compare .sh-chrome{padding:9px 12px;background:var(--sh-bar);font-size:12px;display:flex;justify-content:space-between;gap:12px}
+#sub-height-compare .sh-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:210px 240px;gap:5px;padding:5px}
+#sub-height-compare .sh-pane{min-width:0;background:var(--sh-panel);border:1px solid var(--sh-line);display:flex;flex-direction:column}
+#sub-height-compare .sh-tab{display:flex;align-items:center;gap:6px;flex-wrap:wrap;background:var(--sh-bar);padding:8px;font-size:12px;min-height:36px}
+#sub-height-compare .sh-tab b{color:var(--sh-accent)}
+#sub-height-compare .sh-content{padding:14px 10px;min-width:0;overflow-wrap:anywhere}
+#sub-height-compare .sh-title{font-weight:650;font-size:16px;margin-bottom:12px}
+#sub-height-compare .sh-prop{font-size:12px;color:var(--sh-muted);margin:9px 0}
+#sub-height-compare .sh-note-line{height:5px;background:var(--sh-line);margin:12px 0;border-radius:2px;width:90%}
+#sub-height-compare .sh-note-line:nth-child(even){width:68%}
+#sub-height-compare .sh-video-screen{display:grid;place-content:center;flex:1;margin:12px;background:var(--sh-fill);color:var(--sh-accent);text-align:center;gap:7px}
+#sub-height-compare .sh-video-screen i{margin:auto}
+#sub-height-compare .sh-sub{border:2px solid var(--sh-accent)}
+#sub-height-compare .sh-sub .sh-tab{background:var(--sh-fill)}
+#sub-height-compare .sh-height{margin-top:auto;padding:12px 8px;text-align:center;background:var(--sh-fill);color:var(--sh-accent);font-size:13px;font-weight:600}
+#sub-height-compare .sh-before .sh-video{grid-column:1/3;grid-row:1}
+#sub-height-compare .sh-before .sh-main{grid-column:1;grid-row:2}
+#sub-height-compare .sh-before .sh-sub{grid-column:2;grid-row:2}
+#sub-height-compare .sh-after .sh-video{grid-column:1;grid-row:1}
+#sub-height-compare .sh-after .sh-main{grid-column:1;grid-row:2}
+#sub-height-compare .sh-after .sh-sub{grid-column:2;grid-row:1/3}
+#sub-height-compare .sh-label{margin-top:12px;font-size:14px;font-weight:550}
+#sub-height-compare .sh-after .sh-label{color:var(--sh-accent)}
+@media(max-width:700px){#sub-height-compare .sh-pair{grid-template-columns:minmax(0,1fr);gap:26px}#sub-height-compare .sh-layout{grid-template-rows:165px 205px}#sub-height-compare .sh-title{font-size:14px}}
+</style>
+<div class="sh-pair">
+  <section class="sh-before" aria-label="기존 방식: 영상은 위 전체 너비, 아래에서 Main과 Sub가 좌우 분할">
+    <h3>기존 방식</h3>
+    <div class="sh-caption">이미지 1 · Main이 있는 아래 영역만 좌우 분할</div>
+    <div class="sh-window">
+      <div class="sh-chrome"><span>Obsidian</span><span aria-hidden="true">—　□　×</span></div>
+      <div class="sh-layout">
+        <div class="sh-pane sh-video"><div class="sh-tab">영상 자료</div><div class="sh-video-screen"><i data-lucide="play" aria-hidden="true"></i><span>3D 개념 영상</span></div></div>
+        <div class="sh-pane sh-main"><div class="sh-tab"><b>Main</b> 원본 문서</div><div class="sh-content"><div class="sh-title">3D 개념 정리</div><div class="sh-prop">속성 · 영상 링크</div><div class="sh-note-line"></div><div class="sh-note-line"></div></div></div>
+        <div class="sh-pane sh-sub"><div class="sh-tab"><b>Sub</b> 학습 노트</div><div class="sh-content"><div class="sh-title">학습 노트</div><div class="sh-prop">Vertex · Edge · Face</div><div class="sh-note-line"></div><div class="sh-note-line"></div></div><div class="sh-height">아래쪽 높이만 사용</div></div>
+      </div>
+    </div>
+    <div class="sh-label">Sub가 Main 바로 옆의 작은 영역에 열림</div>
+  </section>
+  <section class="sh-after" aria-label="원하는 방식: 왼쪽 영상과 Main의 위아래 관계 유지, Sub는 오른쪽에서 두 영역 전체 높이 사용">
+    <h3>바꾸고 싶은 방식</h3>
+    <div class="sh-caption">이미지 2 · 위아래 묶음 전체의 오른쪽에 Sub 배치</div>
+    <div class="sh-window">
+      <div class="sh-chrome"><span>Obsidian · 원하는 배치</span><span aria-hidden="true">—　□　×</span></div>
+      <div class="sh-layout">
+        <div class="sh-pane sh-video"><div class="sh-tab">영상 자료</div><div class="sh-video-screen"><i data-lucide="play" aria-hidden="true"></i><span>3D 개념 영상</span></div></div>
+        <div class="sh-pane sh-main"><div class="sh-tab"><b>Main</b> 원본 문서</div><div class="sh-content"><div class="sh-title">3D 개념 정리</div><div class="sh-prop">속성 · 영상 링크</div><div class="sh-note-line"></div><div class="sh-note-line"></div></div></div>
+        <div class="sh-pane sh-sub"><div class="sh-tab"><b>Sub</b> 학습 노트</div><div class="sh-content"><div class="sh-title">학습 노트</div><div class="sh-prop">Vertex · Edge · Face</div><div class="sh-note-line"></div><div class="sh-note-line"></div><div class="sh-note-line"></div><div class="sh-note-line"></div><div class="sh-prop">영상과 Main을 보며 학습</div><div class="sh-note-line"></div><div class="sh-note-line"></div></div><div class="sh-height">↕ 오른쪽 전체 높이 사용</div></div>
+      </div>
+    </div>
+    <div class="sh-label">왼쪽은 영상 위·Main 아래, 오른쪽은 큰 Sub 그룹</div>
+  </section>
+</div>
+</div>

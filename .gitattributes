@@ -1,0 +1,5 @@
+# Preserve the supplied planning/reference files byte-for-byte across PCs.
+MD_Palette_Planning_Pack_Final/** -text
+"md palette ui image/**" -text
+docs/handoff/references/** -text
+docs/handoff/evidence/** -text
