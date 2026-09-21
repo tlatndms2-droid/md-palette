@@ -1,10 +1,20 @@
 # MD Palette 작업 인계
 
-갱신일: 2026-09-20
+갱신일: 2026-09-21
 저장소: https://github.com/tlatndms2-droid/md-palette
 작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
 
-## 현재 상태 — 0.0.9 Release 완료, 사용자 BRAT 확인 대기
+## 현재 상태 — 0.0.10 검증 통과, Release 준비
+
+- 최신 요청 네 가지를 구현했다: Metadata Links의 URL 전용 목록, 라벨별 전체 Vault 파일 수·목록·삭제, Main 본문·속성 링크의 Sub 열기, 카드·파일 목록의 기본 Ctrl 미리보기.
+- 최종 0.0.10 빌드로 읽기·편집 모드, 같은 Sub 탭 재사용·포커스, 일반 문서 동작 보존, 웹뷰어 Sub, 라벨 삭제·필터 해제·파일 보존을 실제 Sandbox에서 확인했다.
+- Card 6가지 보기·Folder 파일 카드/Tree·Connections 파일 행의 Ctrl 미리보기와 버튼·가상 폴더 제외를 확인했다.
+- 26개 테스트·빌드 통과. 프로세스 재시작 뒤 웹뷰어만 남은 Sub 역할·아이콘, Main, 라벨 삭제·남은 라벨, 폴더·연결 상태 복원 확인. 기존 파일 2,033개와 새 시험 파일 6개의 해시 일치.
+- 검증 기록: REVISION2_VALIDATION.md. 증거·백업: .artifacts/revision2. Sandbox는 시험 자료와 함께 열린 상태로 남긴다.
+- BRAT 확인은 사용자가 담당하며 Codex는 실행하지 않는다. 6단계는 시작하지 않는다.
+
+## 0.0.9 당시 기록
+### 0.0.9 Release 완료
 
 - [0.0.9 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.9), 구현 커밋 `cef8cf7`. 공개 자산 main.js·manifest.json·styles.css를 다시 내려받아 검증 빌드와 SHA-256 일치를 확인했다.
 

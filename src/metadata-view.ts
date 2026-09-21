@@ -42,11 +42,12 @@ export class MetadataView {
       if (this.file !== file) { this.draft = false; this.limits = {}; this.searchCollapsed.clear(); }
       this.file = file; this.source = text;
       this.result = parseMetadata(text);
-      // Resolve aliases/relative paths before deduplication. Anchor targets stay distinct.
+      // File connections belong in Link View. Metadata Links contains only web URLs.
       const seen = new Set<string>();
       this.result.links = this.result.links.filter(item => {
         const target = this.resolve(item);
-        const key = target.url ?? (target.file ? target.file.path + target.subpath : item.target!);
+        if (!target.url) return false;
+        const key = target.url;
         if (seen.has(key)) return false; seen.add(key); return true;
       });
       this.draw();

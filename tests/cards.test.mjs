@@ -3,7 +3,18 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { transform } from 'esbuild';
 const { code } = await transform(await readFile('src/cards-state.ts', 'utf8'), { loader: 'ts', format: 'esm' });
-const { readCards, reorder, bodyOnly, pruneLabels, classify } = await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+const { readCards, reorder, bodyOnly, pruneLabels, classify, deleteLabel } = await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+
+test('deleting a label removes all its assignments and filter without changing files or other labels', () => {
+  const state = readCards({ order: ['A.md', 'B.md', 'C.md'], labels: [{id:'x',name:'X',color:'#123456'}, {id:'y',name:'Y',color:'#abcdef'}], assignments:{'A.md':'x','B.md':'x','C.md':'y'},labelFilter:['x','y'] });
+  deleteLabel(state, 'x');
+  assert.deepEqual(state.order, ['A.md','B.md','C.md']);
+  assert.deepEqual({...state.assignments}, {'C.md':'y'});
+  assert.deepEqual(state.labels.map(l=>l.id), ['y']);
+  assert.deepEqual(state.labelFilter, ['y']);
+  assert.deepEqual(readCards(state), state);
+  const saved = JSON.stringify(state); deleteLabel(state, 'missing'); assert.equal(JSON.stringify(state), saved);
+});
 test('group reorder preserves relative order, hidden Main slot and unrelated paths', () => {
   const order = ['A', 'B', 'Main', 'C', 'D', 'E'];
   assert.deepEqual(reorder(order, ['D', 'B'], 'E', true), ['A', 'Main', 'C', 'E', 'B', 'D']);

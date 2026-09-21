@@ -1,6 +1,6 @@
 import { FuzzySuggestModal, Menu, Modal, Notice, TFile, setIcon } from 'obsidian';
 import type MDPalettePlugin from './main';
-import { classify, displayModes, fileTypes, pruneLabels, reorder, type Label } from './cards-state';
+import { classify, deleteLabel, displayModes, fileTypes, pruneLabels, reorder, type Label } from './cards-state';
 import { Thumbnails } from './thumbnails';
 import { CardReorder } from './card-reorder';
 
@@ -21,10 +21,15 @@ class LabelEditor extends Modal {
     this.contentEl.empty(); this.titleEl.setText(this.paths ? '새 Label 만들기' : '라벨 관리');
     if (!this.paths && !this.chosen) { this.contentEl.createEl('p', { text: '사용 중인 라벨이 없습니다.' }); return; }
     const layout = this.contentEl.createDiv({ cls: 'mdp-label-editor' });
+    const members = new Map<string, TFile[]>();
+    for (const [path, id] of Object.entries(this.plugin.cards.assignments)) {
+      const file = this.app.vault.getAbstractFileByPath(path);
+      if (file instanceof TFile) { const files = members.get(id) ?? []; files.push(file); members.set(id, files); }
+    }
     if (!this.paths) {
       const list = layout.createDiv({ cls: 'mdp-label-list' });
       for (const label of this.plugin.cards.labels) {
-        const b = list.createEl('button', { text: label.name, cls: this.chosen?.id === label.id ? 'is-selected' : '' });
+        const b = list.createEl('button', { text: `${label.name} (${members.get(label.id)?.length ?? 0})`, cls: this.chosen?.id === label.id ? 'is-selected' : '' });
         b.style.borderLeft = `6px solid ${label.color}`;
         b.onclick = () => { this.chosen = label; this.draw(); };
       }
@@ -34,7 +39,29 @@ class LabelEditor extends Modal {
     const name = nameLabel.createEl('input', { type: 'text', value: this.chosen?.name ?? '', attr: { 'aria-label': '라벨 이름', maxlength: '80' } });
     const colorLabel = form.createEl('label', { text: '색상' });
     const color = colorLabel.createEl('input', { type: 'color', value: this.chosen?.color ?? this.accent(), attr: { 'aria-label': '라벨 색상' } });
+    if (!this.paths && this.chosen) {
+      const files = members.get(this.chosen.id) ?? [];
+      form.createDiv({ text: `사용 파일 ${files.length}개 · 전체 Vault`, cls: 'mdp-label-members-title' });
+      const list = form.createDiv({ cls: 'mdp-label-members' });
+      for (const file of files.sort((a, b) => a.path.localeCompare(b.path))) {
+        const row = list.createDiv({ cls: 'mdp-label-member', attr: { title: file.path } });
+        row.createDiv({ text: file.name }); row.createDiv({ text: file.parent?.path || '/', cls: 'mdp-muted' });
+        this.plugin.bindFilePreview(row, file);
+      }
+    }
     const actions = form.createDiv({ cls: 'mdp-modal-actions' });
+    if (!this.paths && this.chosen) {
+      actions.createEl('button', { text: '라벨 삭제', cls: 'mod-warning mdp-delete-label' }).onclick = () => {
+        if (form.querySelector('.mdp-label-delete-confirm')) return;
+        const confirmation = form.createDiv({ cls: 'mdp-label-delete-confirm' });
+        confirmation.createEl('p', { text: `‘${this.chosen!.name}’ 라벨과 파일에 붙은 표시를 삭제합니다. 파일은 그대로 남습니다.` });
+        confirmation.createEl('button', { text: '취소' }).onclick = () => confirmation.remove();
+        confirmation.createEl('button', { text: '라벨만 삭제', cls: 'mod-warning' }).onclick = () => {
+          deleteLabel(this.plugin.cards, this.chosen!.id); this.plugin.cardsChanged();
+          this.chosen = this.plugin.cards.labels[0]; this.draw();
+        };
+      };
+    }
     actions.createEl('button', { text: '취소' }).onclick = () => this.close();
     const apply = actions.createEl('button', { text: this.paths ? '만들기' : '적용', cls: 'mod-cta' });
     apply.onclick = () => {
@@ -125,6 +152,7 @@ export class CardView {
     for (const file of this.visible) {
       const card = grid.createDiv({ cls: 'mdp-card', attr: { 'data-path': file.path, role: 'option', tabindex: '0', draggable: 'true', title: file.path } });
       card.classList.add('mdp-file-card');
+      this.plugin.bindFilePreview(card, file);
       card.createDiv({ cls: 'mdp-card-name mdp-file-title', text: file.name });
       const preview = card.createDiv({ cls: 'mdp-preview', attr: { 'aria-hidden': 'true' } });
       if (state.display !== 'list' && state.display !== 'details') this.thumbnails.observe(preview, file);

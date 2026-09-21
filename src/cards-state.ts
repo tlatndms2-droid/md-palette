@@ -44,3 +44,8 @@ export function pruneLabels(state: CardState): void {
   state.labels = state.labels.filter(l => used.has(l.id));
   state.labelFilter = state.labelFilter.filter(id => used.has(id));
 }
+export function deleteLabel(state: CardState, id: string): void {
+  state.labels = state.labels.filter(label => label.id !== id);
+  state.labelFilter = state.labelFilter.filter(label => label !== id);
+  for (const path of Object.keys(state.assignments)) if (state.assignments[path] === id) delete state.assignments[path];
+}

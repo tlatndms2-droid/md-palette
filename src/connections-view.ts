@@ -127,6 +127,7 @@ export class ConnectionsView {
     this.cancelDrag = () => stop(true);
   }
   private fileEvents(element: HTMLElement | SVGElement, file: TFile): void {
+    if (element instanceof HTMLElement) this.plugin.bindFilePreview(element, file);
     element.classList.toggle('is-selected', this.selected === file.path);
     element.addEventListener('click', () => {
       this.selected = file.path;

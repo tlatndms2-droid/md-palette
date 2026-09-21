@@ -178,3 +178,12 @@
 .mdp-footnote-actions { display: flex; gap: 8px; margin-top: 7px; }
 .mdp-metadata-empty { padding: 9px 4px; }
 .mdp-metadata-more { width: 100%; margin: 8px 0; }
+.mdp-label-members-title { margin: 16px 0 8px; font-weight: var(--font-semibold); }
+.mdp-label-members { max-height: 240px; overflow-y: auto; border: 1px solid var(--background-modifier-border); border-radius: 6px; margin-bottom: 16px; }
+.mdp-label-member { padding: 8px 10px; overflow-wrap: anywhere; }
+.mdp-label-member + .mdp-label-member { border-top: 1px solid var(--background-modifier-border); }
+.mdp-label-member:hover { background: var(--background-modifier-hover); }
+.mdp-label-member .mdp-muted { font-size: var(--font-ui-smaller); margin-top: 3px; }
+.mdp-delete-label { margin-right: auto; }
+.mdp-label-delete-confirm { margin-top: 12px; padding: 10px; border: 1px solid var(--background-modifier-border); border-radius: 6px; }
+.mdp-label-delete-confirm button + button { margin-left: 8px; }

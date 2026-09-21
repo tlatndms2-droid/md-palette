@@ -169,6 +169,7 @@ export class FolderView {
   private row(root: HTMLElement, item: Entry, surface: 'tree' | 'folder', visible: Entry[], depth = 0): void {
     const tree = surface === 'tree', s = this.plugin.folders;
     const el = root.createDiv({ cls: tree ? 'mdp-folder-row' : 'mdp-card mdp-folder-item', attr: { 'data-key': item.key, 'data-surface': surface, role: tree ? 'treeitem' : 'option', tabindex: '0', draggable: 'true', title: item.file?.path ?? this.virtualPath(item.folder!) } });
+    if (item.file) this.plugin.bindFilePreview(el, item.file);
     if (!tree && item.file) { el.classList.add('mdp-file-card'); el.createDiv({ cls: 'mdp-card-name mdp-file-title', text: item.name }); }
     if (tree) { el.style.paddingLeft = `${6 + depth * 16}px`; el.setAttribute('aria-level', String(depth + 1)); }
     if (tree && item.folder) { el.setAttribute('aria-expanded', String(!s.collapsed.includes(item.folder))); this.iconButton(el, `${item.name} 접기/펼치기`, s.collapsed.includes(item.folder) ? 'chevron-right' : 'chevron-down', () => this.change(n => { n.collapsed = n.collapsed.includes(item.folder!) ? n.collapsed.filter(id => id !== item.folder) : [...n.collapsed, item.folder!]; })); }
