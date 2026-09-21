@@ -1,5 +1,7 @@
 # 0.0.15 Sub 전체 높이 배치
 
+[0.0.15 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.15), 구현 커밋 `9761cff`. 공개 main.js·manifest.json·styles.css를 인증 없이 다운로드해 최종 검증 빌드와 SHA-256 일치를 확인했다. `.artifacts/sub-height/release-verification.json` 참조.
+
 2026-09-21, Obsidian 1.13.7, 격리 Sandbox 백그라운드 CDP.
 
 - 기존 0.0.14에서 영상 위/Main 아래 배치 후 실제 카드 더블클릭으로 문제 재현: 작업 영역 1000px, Sub 500px.

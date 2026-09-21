@@ -4,7 +4,9 @@
 저장소: https://github.com/tlatndms2-droid/md-palette
 작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
 
-## 현재 상태 — 0.0.15 Sub 전체 높이 배치 검증 통과, Release 대기
+## 현재 상태 — 0.0.15 Release 완료, 사용자 BRAT 확인 대기
+
+- [0.0.15 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.15), 구현 커밋 `9761cff`. 공개 자산 세 개를 다운로드해 최종 Sandbox 빌드와 SHA-256 일치를 확인했다.
 
 - 사용자 0.0.14 정상 작동 확인 완료. 이어서 이미지 및 HTML 비교 배치로 확정한 Sub 위치 수정 요청을 받았다.
 - Main 위에 영상이 있는 경우 왼쪽의 위아래 묶음을 보존하고 Sub를 오른쪽 전체 높이에 배치한다. 기존 좁은 Sub도 재배치하며 그룹·탭을 닫지 않는다. 더블클릭 교체·Ctrl 새 탭·Ctrl+Shift 새 그룹 동작 유지.
