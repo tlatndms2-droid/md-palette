@@ -66,15 +66,14 @@ export default class MDPalettePlugin extends Plugin {
     this.foldersByMain = readDocumentFolders(this.data.foldersByMain);
     // Keep display preferences while discarding only the old test folder organization.
     const legacy = readFolders(this.data.folderDefaults ?? this.data.folders);
-    this.folderDefaults = readFolders({ ...legacy, folders: [], positions: {}, order: [], current: '', collapsed: [] });
+    this.folderDefaults = readFolders({ ...legacy, display: 'compact', folders: [], positions: {}, order: [], current: '', collapsed: [] });
     delete this.data.folders;
     this.registerView(VIEW_TYPE, leaf => new PaletteView(leaf, this));
     this.registerHoverLinkSource('md-palette', { display: 'MD Palette 파일', defaultMod: true });
     this.routeMainLinks();
     this.addRibbonIcon('panels-top-left', 'MD Palette 열기', () => this.run(() => this.openSidebar()));
     this.addCommand({ id: 'open-sidebar', name: '사이드바 열기', callback: () => this.run(() => this.openSidebar()) });
-    this.addCommand({ id: 'set-main', name: '메인 스페이스로 지정', callback: () => this.run(() => this.setMain(this.app.workspace.getMostRecentLeaf())) });
-    this.addCommand({ id: 'unset-main', name: '메인 스페이스 지정 해제', callback: () => this.run(() => this.unsetMain()) });
+    this.addCommand({ id: 'set-main', name: '메인 스페이스 지정/해제', callback: () => this.run(() => this.toggleMain(this.app.workspace.getMostRecentLeaf())) });
     for (const role of ['sub'] as const) this.addCommand({ id: `open-${role}`, name: `Sub Space에서 파일 열기`, callback: () => {
       if (!this.mainFile) { new Notice('메인 스페이스를 먼저 지정해주세요.'); return; }
       new SpaceFilePicker(this, role).open();
@@ -150,6 +149,11 @@ export default class MDPalettePlugin extends Plugin {
       console.error('MD Palette:', error);
       new Notice('MD Palette 작업을 완료하지 못했습니다. 파일은 삭제하지 않았습니다.');
     }).finally(() => { this.busy = false; if (!this.stopped) { this.sync(false); this.persist(); } });
+  }
+
+  async toggleMain(leaf: WorkspaceLeaf | null): Promise<void> {
+    if (leaf && leaf === this.mainLeaf && this.mainFile) await this.unsetMain();
+    else await this.setMain(leaf);
   }
 
   async setMain(leaf: WorkspaceLeaf | null): Promise<void> {

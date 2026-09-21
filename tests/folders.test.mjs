@@ -5,6 +5,15 @@ import {transform} from 'esbuild';
 const {code}=await transform(await readFile('src/folders-state.ts','utf8'),{loader:'ts',format:'esm'});
 const {readDocumentFolders,readFolders,moveItems,deleteFolder,canMove,ancestors}=await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
 const fixture=()=>readFolders({folders:[{id:'a',name:'A',parent:''},{id:'b',name:'B',parent:'a'},{id:'c',name:'C',parent:''}],positions:{'one.md':'a','two.md':'b','hidden.md':'a'},order:['d:a','f:one.md','d:b','f:two.md','f:hidden.md','d:c']});
+
+test('new folders default to compact while all saved display choices and organization survive',()=>{
+ assert.equal(readFolders(null).display,'compact');
+ for(const display of ['compact','large','medium','small','list','details','tiles']){
+  const state=fixture();state.display=display;
+  assert.deepEqual(readFolders(JSON.parse(JSON.stringify(state))),state);
+ }
+ assert.equal(readFolders({display:'invalid'}).display,'compact');
+});
 test('mixed parent/child move keeps child structure, hidden file and relative order',()=>{const s=fixture();moveItems(s,['d:a','d:b','f:one.md'],'c');assert.equal(s.folders[0].parent,'c');assert.equal(s.folders[1].parent,'a');assert.equal(s.positions['one.md'],'a');assert.equal(s.positions['hidden.md'],'a');assert.deepEqual(ancestors(s,'b'),['c','a','b']);});
 test('self, descendants and missing targets reject entire move without mutation',()=>{for(const target of ['a','b','missing']){const s=fixture(),before=JSON.stringify(s);assert.equal(canMove(s,['d:a','f:two.md'],target),false);assert.throws(()=>moveItems(s,['d:a','f:two.md'],target));assert.equal(JSON.stringify(s),before);}});
 test('folder deletion promotes direct children but preserves nested contents and global hidden positions',()=>{const s=fixture();s.current='a';deleteFolder(s,'a');assert.equal(s.current,'');assert.equal(s.folders.find(f=>f.id==='b').parent,'');assert.equal(s.positions['one.md'],'');assert.equal(s.positions['hidden.md'],'');assert.equal(s.positions['two.md'],'b');assert.deepEqual(s.order,['f:one.md','d:b','f:two.md','f:hidden.md','d:c']);});

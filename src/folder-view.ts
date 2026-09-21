@@ -1,11 +1,11 @@
 import { FuzzySuggestModal, Menu, Modal, Notice, TFile, setIcon } from 'obsidian';
 import type MDPalettePlugin from './main';
-import { classify, displayModes, fileTypes } from './cards-state';
-import { ancestors, canMove, deleteFolder, fileKey, folderKey, moveItems, parentOf, type FolderState, type Sort } from './folders-state';
+import { classify, fileTypes } from './cards-state';
+import { ancestors, folderDisplayModes, canMove, deleteFolder, fileKey, folderKey, moveItems, parentOf, type FolderState, type Sort } from './folders-state';
 import { Thumbnails } from './thumbnails';
 
 const sortNames: Record<Sort, string> = { manual: '사용자 지정', name: '이름', type: '유형', mtime: '수정 날짜', size: '크기' };
-const displayNames = ['큰 아이콘', '중간 아이콘', '작은 아이콘', '목록', '자세히', '타일'];
+const displayNames = ['제목 카드', '큰 아이콘', '중간 아이콘', '작은 아이콘', '목록', '자세히', '타일'];
 const nameCollator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' });
 type Entry = { key: string; name: string; parent: string; folder?: string; file?: TFile };
 class NameModal extends Modal {
@@ -106,13 +106,13 @@ export class FolderView {
       const search = nav.createEl('input', { type: 'search', value: this.query, placeholder: '현재 폴더에서 검색…', attr: { 'aria-label': '현재 폴더에서 검색' } });
       search.oninput = () => { this.query = search.value; this.scroll.folder = 0; this.redraw(); const next = this.root?.querySelector<HTMLInputElement>('input[type=search]'); next?.focus(); };
       const grid = folder.createDiv({ cls: `mdp-card-grid mdp-folder-grid mdp-display-${s.display}`, attr: { role: 'listbox', 'aria-label': '가상 폴더 내용', 'aria-multiselectable': 'true' } });
-      this.thumbnails = new Thumbnails(this.plugin.app, grid);
+      if (s.display !== 'compact') this.thumbnails = new Thumbnails(this.plugin.app, grid);
       const query = this.query.trim().toLocaleLowerCase();
       const visible = this.sorted(this.entries.filter(x => query ? (s.current === '' || ancestors(s, x.parent).includes(s.current)) && x.name.toLocaleLowerCase().includes(query) : x.parent === s.current));
       this.renderEntries(grid, visible.map(item => ({ item, depth: 0 })), 'folder');
       if (!visible.length) grid.createDiv({ cls: 'mdp-muted mdp-no-cards', text: query ? '검색 결과가 없습니다.' : '빈 가상 폴더입니다. 빈 공간을 우클릭해 폴더나 연결 파일을 추가하세요.' });
       grid.oncontextmenu = e => { if (!(e.target as HTMLElement).closest('[data-key]')) this.emptyMenu(e, s.current); }; this.dropTarget(grid, s.current, 'folder');
-      grid.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); const index = displayModes.indexOf(s.display), next = Math.max(0, Math.min(5, index + (e.deltaY > 0 ? 1 : -1))); if (next !== index) this.change(n => { n.display = displayModes[next]; }); }, { passive: false });
+      grid.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); const index = folderDisplayModes.indexOf(s.display), next = Math.max(0, Math.min(folderDisplayModes.length - 1, index + (e.deltaY > 0 ? 1 : -1))); if (next !== index) this.change(n => { n.display = folderDisplayModes[next]; }); }, { passive: false });
       grid.onscroll = () => { this.scroll.folder = grid.scrollTop; };
     }
     if (tree && divider) {
@@ -167,20 +167,28 @@ export class FolderView {
     });
   }
   private row(root: HTMLElement, item: Entry, surface: 'tree' | 'folder', visible: Entry[], depth = 0): void {
-    const tree = surface === 'tree', s = this.plugin.folders;
+    const tree = surface === 'tree', s = this.plugin.folders, compact = !tree && s.display === 'compact';
     const el = root.createDiv({ cls: tree ? 'mdp-folder-row' : 'mdp-card mdp-folder-item', attr: { 'data-key': item.key, 'data-surface': surface, role: tree ? 'treeitem' : 'option', tabindex: '0', draggable: 'true', title: item.file?.path ?? this.virtualPath(item.folder!) } });
     if (item.file) this.plugin.bindFilePreview(el, item.file);
-    if (!tree && item.file) { el.classList.add('mdp-file-card'); el.createDiv({ cls: 'mdp-card-name mdp-file-title', text: item.name }); }
-    if (tree) { el.style.paddingLeft = `${6 + depth * 16}px`; el.setAttribute('aria-level', String(depth + 1)); }
-    if (tree && item.folder) { el.setAttribute('aria-expanded', String(!s.collapsed.includes(item.folder))); this.iconButton(el, `${item.name} 접기/펼치기`, s.collapsed.includes(item.folder) ? 'chevron-right' : 'chevron-down', () => this.change(n => { n.collapsed = n.collapsed.includes(item.folder!) ? n.collapsed.filter(id => id !== item.folder) : [...n.collapsed, item.folder!]; })); }
-    const preview = el.createDiv({ cls: tree ? 'mdp-folder-icon' : 'mdp-preview' });
-    if (item.folder) setIcon(preview, 'folder'); else if (!tree && !['list','details'].includes(s.display)) this.thumbnails?.observe(preview, item.file!); else setIcon(preview, classify(item.file!.extension) === 'image' ? 'image' : 'file-text');
-    const info = el.createDiv({ cls: 'mdp-card-info' }); if (tree || item.folder) info.createDiv({ cls: 'mdp-card-name', text: item.name });
-    if (!tree) {
-      const label = this.plugin.cards.labels.find(l => l.id === this.plugin.cards.assignments[item.file?.path ?? '']);
-      if (label) { const badge = info.createSpan({ cls: 'mdp-label-badge', text: label.name }); badge.style.setProperty('--mdp-label-color', label.color); }
-      if (this.query.trim()) info.createDiv({ cls: 'mdp-card-detail', text: this.virtualPath(item.parent) });
-      if (['details','tiles'].includes(s.display)) info.createDiv({ cls: 'mdp-card-detail', text: item.folder ? '가상 폴더' : `${item.file!.extension.toUpperCase()} · ${new Date(item.file!.stat.mtime).toLocaleString()} · ${item.file!.stat.size} B` });
+    if (compact) {
+      const icon = el.createSpan({ cls: 'mdp-compact-icon' });
+      setIcon(icon, item.folder ? 'folder' : classify(item.file!.extension) === 'image' ? 'image' : item.file!.extension === 'canvas' ? 'layout-dashboard' : 'file-text');
+      el.createDiv({ cls: 'mdp-compact-title', text: item.name });
+      el.setAttribute('aria-label', item.name);
+      el.title = item.file ? `${item.file.path}\n가상 위치: ${this.virtualPath(item.parent)}` : this.virtualPath(item.folder!);
+    } else {
+      if (!tree && item.file) { el.classList.add('mdp-file-card'); el.createDiv({ cls: 'mdp-card-name mdp-file-title', text: item.name }); }
+      if (tree) { el.style.paddingLeft = `${6 + depth * 16}px`; el.setAttribute('aria-level', String(depth + 1)); }
+      if (tree && item.folder) { el.setAttribute('aria-expanded', String(!s.collapsed.includes(item.folder))); this.iconButton(el, `${item.name} 접기/펼치기`, s.collapsed.includes(item.folder) ? 'chevron-right' : 'chevron-down', () => this.change(n => { n.collapsed = n.collapsed.includes(item.folder!) ? n.collapsed.filter(id => id !== item.folder) : [...n.collapsed, item.folder!]; })); }
+      const preview = el.createDiv({ cls: tree ? 'mdp-folder-icon' : 'mdp-preview' });
+      if (item.folder) setIcon(preview, 'folder'); else if (!tree && !['list','details'].includes(s.display)) this.thumbnails?.observe(preview, item.file!); else setIcon(preview, classify(item.file!.extension) === 'image' ? 'image' : 'file-text');
+      const info = el.createDiv({ cls: 'mdp-card-info' }); if (tree || item.folder) info.createDiv({ cls: 'mdp-card-name', text: item.name });
+      if (!tree) {
+        const label = this.plugin.cards.labels.find(l => l.id === this.plugin.cards.assignments[item.file?.path ?? '']);
+        if (label) { const badge = info.createSpan({ cls: 'mdp-label-badge', text: label.name }); badge.style.setProperty('--mdp-label-color', label.color); }
+        if (this.query.trim()) info.createDiv({ cls: 'mdp-card-detail', text: this.virtualPath(item.parent) });
+        if (['details','tiles'].includes(s.display)) info.createDiv({ cls: 'mdp-card-detail', text: item.folder ? '가상 폴더' : `${item.file!.extension.toUpperCase()} · ${new Date(item.file!.stat.mtime).toLocaleString()} · ${item.file!.stat.size} B` });
+      }
     }
     el.onclick = e => { if ((e.target as HTMLElement).closest('button')) return; this.select(item.key, surface, visible, e); };
     const open = () => item.folder ? this.navigate(item.folder) : this.plugin.run(() => this.plugin.openIn('sub', item.file!));
@@ -213,7 +221,7 @@ export class FolderView {
   private viewMenu(e: MouseEvent): void {
     const menu = new Menu(), s = this.plugin.folders;
     for (const [mode, name] of [['composite','복합뷰'],['tree','Tree뷰'],['folder','Folder뷰']] as const) menu.addItem(i => i.setTitle(name).setChecked(s.mode === mode).onClick(() => this.change(n => { n.mode = mode; })));
-    menu.addSeparator(); displayModes.forEach((mode,index) => menu.addItem(i => i.setTitle(displayNames[index]).setChecked(s.display === mode).onClick(() => this.change(n => { n.display = mode; }))));
+    menu.addSeparator(); folderDisplayModes.forEach((mode,index) => menu.addItem(i => i.setTitle(displayNames[index]).setChecked(s.display === mode).onClick(() => this.change(n => { n.display = mode; }))));
     menu.addSeparator(); for (const [layout,name] of [['vertical','상하 분할'],['horizontal','좌우 분할']] as const) menu.addItem(i => i.setTitle(name).setChecked(s.layout === layout).onClick(() => this.change(n => { n.layout = layout; })));
     menu.showAtMouseEvent(e);
   }

@@ -1,9 +1,11 @@
 import type { DisplayMode } from './cards-state';
+export type FolderDisplay = DisplayMode | 'compact';
+export const folderDisplayModes: readonly FolderDisplay[] = ['compact', 'large', 'medium', 'small', 'list', 'details', 'tiles'];
 export interface VirtualFolder { id: string; name: string; parent: string }
 export type Sort = 'manual' | 'name' | 'type' | 'mtime' | 'size';
 export interface FolderState {
   folders: VirtualFolder[]; positions: Record<string, string>; order: string[];
-  mode: 'composite' | 'tree' | 'folder'; display: DisplayMode; current: string;
+  mode: 'composite' | 'tree' | 'folder'; display: FolderDisplay; current: string;
   collapsed: string[]; treeSort: 'manual' | 'name'; sort: Sort; descending: boolean;
   split: number; layout: 'vertical' | 'horizontal';
 }
@@ -29,7 +31,7 @@ export function readFolders(raw: unknown): FolderState {
   const positions: Record<string, string> = Object.create(null);
   if (v.positions && typeof v.positions === 'object') for (const [path, id] of Object.entries(v.positions)) if (exists(id)) positions[path] = id;
   return { folders, positions, order: Array.isArray(v.order) ? [...new Set(v.order.filter(x => typeof x === 'string'))] : [],
-    mode: v.mode === 'tree' || v.mode === 'folder' ? v.mode : 'composite', display: ['large','medium','small','list','details','tiles'].includes(v.display!) ? v.display! : 'medium',
+    mode: v.mode === 'tree' || v.mode === 'folder' ? v.mode : 'composite', display: folderDisplayModes.includes(v.display!) ? v.display! : 'compact',
     current: exists(v.current) ? v.current : '', collapsed: Array.isArray(v.collapsed) ? v.collapsed.filter(exists) : [], treeSort: v.treeSort === 'name' ? 'name' : 'manual',
     sort: ['manual','name','type','mtime','size'].includes(v.sort!) ? v.sort! : 'manual', descending: v.descending === true,
     split: typeof v.split === 'number' && Number.isFinite(v.split) ? Math.max(.2, Math.min(.8, v.split)) : .5, layout: v.layout === 'horizontal' ? 'horizontal' : 'vertical' };
