@@ -4,8 +4,9 @@
 저장소: https://github.com/tlatndms2-droid/md-palette
 작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
 
-## 현재 상태 — 0.0.10 검증 통과, Release 준비
+## 현재 상태 — 0.0.10 Release 완료, 사용자 BRAT 확인 대기
 
+- [0.0.10 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.10), 구현 커밋 1343b3a. 공개 자산 세 개의 SHA-256이 Sandbox 검증 빌드와 일치한다.
 - 최신 요청 네 가지를 구현했다: Metadata Links의 URL 전용 목록, 라벨별 전체 Vault 파일 수·목록·삭제, Main 본문·속성 링크의 Sub 열기, 카드·파일 목록의 기본 Ctrl 미리보기.
 - 최종 0.0.10 빌드로 읽기·편집 모드, 같은 Sub 탭 재사용·포커스, 일반 문서 동작 보존, 웹뷰어 Sub, 라벨 삭제·필터 해제·파일 보존을 실제 Sandbox에서 확인했다.
 - Card 6가지 보기·Folder 파일 카드/Tree·Connections 파일 행의 Ctrl 미리보기와 버튼·가상 폴더 제외를 확인했다.
@@ -64,7 +65,7 @@
 | 2 | Card·썸네일·라벨·필터·선택·순서 변경 | 0.0.3, 드래그 개선 0.0.4 | 사용자 확인 후 3단계 진행 |
 | 3 | Connections·역링크·Outgoing·기본 Local Graph | 0.0.5, 속성 연결·그래프 수정 0.0.6 | 사용자 확인 완료 |
 | 4 | 전역 가상 폴더·세 가지 보기·탐색·검색·정렬 | 0.0.7 | **사용자 정상 작동 확인 완료** |
-| 5 | Metadata 5개 구역·Main 고정·링크 옆 탭 열기 | 0.0.9 | 검증·Release 완료, 사용자 BRAT 확인 대기 |
+| 5 | Metadata·URL Links·라벨 관리·Main 링크 Sub·Ctrl 미리보기 | 0.0.10 | 검증·Release 완료, 사용자 BRAT 확인 대기 |
 | 6 | Card·Metadata를 Markdown·Canvas에 드래그해 재사용 | 미배포 | 미시작 |
 | 7 | 최종 통합 검증 | 최종 목표 0.1.0 | 미시작 |
 

@@ -21,3 +21,7 @@
 - 시험 중 창 최소화로 발생한 캡처 실패는 Sandbox 창 복원·실제 창 크기 정정으로 해결했다. 정상 스크린샷을 직접 비교했다.
 - 증거: .artifacts/revision2의 ui-partial.json, ui-result.json, restart-result.json, release-ready.json 및 화면 캡처. 원본 설정 백업을 보관하며 Sandbox와 시험 자료를 남겼다.
 - BRAT 설치·업데이트는 사용자 담당으로 미실행. 다음 단계 구현 미실행.
+
+## 공개 Release
+
+[0.0.10 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.10), 구현 커밋 1343b3a. main.js·manifest.json·styles.css를 공개 다운로드하여 최종 Sandbox 빌드와 SHA-256 일치를 확인했다. BRAT은 사용자 확인 대기다.
