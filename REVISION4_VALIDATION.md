@@ -17,3 +17,5 @@
 검증 중 클릭 좌표가 닫기 버튼/이전 시험 탭을 가리키는 테스트 문제를 수정했고, 재시작 시 비활성 탭은 지연 로딩 상태의 저장된 파일 경로로 확인했다. 제품 오류로 판정하지 않았다.
 
 증거와 설정 백업: .artifacts/revision4의 opening-result, drag-result, guards-result, restart-result, release-ready JSON 및 화면. Sandbox와 시험 자료는 유지한다. BRAT 확인은 사용자 담당. 7단계 미시작.
+
+Release: https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.13 · 구현 커밋 9ba689e. 공개 main.js·manifest.json·styles.css를 다시 내려받아 검증 빌드와 SHA-256 일치 확인. Metadata 웹뷰어 메뉴도 기존 마지막 Sub 탭을 교체하고 Main을 유지하는 것을 실제 클릭으로 추가 확인했다.
