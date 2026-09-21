@@ -7,7 +7,7 @@ import { canReuse, footnoteInsertion, webReuseText, reuseOptions, reuseText, sam
 
 const MIME = 'application/x-md-palette-reuse';
 interface Source { token: string; kind: ReuseKind; file: TFile; path: string; main: WorkspaceLeaf; mainFile: TFile; original?: string; item?: MetadataItem }
-type NativeEditor = Editor & { posAtMouse?: (event: MouseEvent) => EditorPosition | null };
+type NativeEditor = Editor & { posAtMouse?: (event: MouseEvent) => EditorPosition | null; cm?: { coordsAtPos(pos: number): { left: number; top: number; bottom: number } | null } };
 interface CanvasNode { id: string }
 interface NativeCanvas {
   wrapperEl: HTMLElement;
@@ -27,6 +27,8 @@ export class ReuseDrag {
   private stopped = false;
   private pending = false;
   private highlight?: HTMLElement;
+  private caret?: HTMLElement;
+  private markedTarget?: Target;
   private documents = new Set<Document>();
   private cleanup: Array<() => void> = [];
   constructor(private plugin: MDPalettePlugin) {
@@ -54,14 +56,34 @@ export class ReuseDrag {
   private bind(doc: Document): void {
     if (this.documents.has(doc)) return; this.documents.add(doc);
     const drag = (event: DragEvent) => this.handle(event);
-    const clear = () => { this.source = undefined; this.clearHighlight(); };
+    const clear = () => { this.source = undefined; if (!this.menu) this.clearHighlight(); };
     const leave = (event: DragEvent) => { if (!event.relatedTarget) this.clearHighlight(); };
     const escape = (event: KeyboardEvent) => { if (event.key === 'Escape') { clear(); this.menu?.hide(); } };
+    const reposition = () => { const target = this.markedTarget; if (target) { this.clearHighlight(); this.showTarget(target); } };
+    doc.addEventListener('scroll', reposition, true);
+    doc.defaultView?.addEventListener('resize', reposition);
     doc.addEventListener('dragover', drag, true); doc.addEventListener('drop', drag, true);
     doc.addEventListener('dragend', clear, true); doc.addEventListener('dragleave', leave, true); doc.addEventListener('keydown', escape, true);
     this.cleanup.push(() => { doc.removeEventListener('dragover', drag, true); doc.removeEventListener('drop', drag, true); doc.removeEventListener('dragend', clear, true); doc.removeEventListener('dragleave', leave, true); doc.removeEventListener('keydown', escape, true); });
+    this.cleanup.push(() => { doc.removeEventListener('scroll', reposition, true); doc.defaultView?.removeEventListener('resize', reposition); });
   }
-  private clearHighlight(): void { this.highlight?.classList.remove('mdp-reuse-target'); this.highlight = undefined; }
+  private clearHighlight(): void { this.highlight?.classList.remove('mdp-reuse-target'); this.highlight = undefined; this.caret?.remove(); this.caret = undefined; this.markedTarget = undefined; }
+  private showTarget(target: Target): void {
+    this.markedTarget = target;
+    this.highlight = target.canvas?.wrapperEl ?? target.leaf.view.containerEl;
+    this.highlight.classList.add('mdp-reuse-target');
+    if (!target.editor || target.offset === undefined) return;
+    const rect = target.editor.cm?.coordsAtPos(target.offset);
+    if (!rect) return;
+    const viewport = target.leaf.view.containerEl.querySelector('.cm-scroller')?.getBoundingClientRect();
+    if (viewport && (rect.top < viewport.top || rect.bottom > viewport.bottom || rect.left < viewport.left || rect.left > viewport.right)) return;
+    const doc = target.leaf.view.containerEl.ownerDocument;
+    this.caret = doc.createElement('div');
+    this.caret.className = 'mdp-reuse-caret';
+    this.caret.setAttribute('aria-hidden', 'true');
+    Object.assign(this.caret.style, { left: `${rect.left}px`, top: `${rect.top}px`, height: `${rect.bottom - rect.top}px` });
+    doc.body.appendChild(this.caret);
+  }
   private destination(leaf: WorkspaceLeaf): ReuseDestination {
     if (!this.plugin.mainFile) return 'unsupported';
     if (leaf.view instanceof MarkdownView && leaf.view.getMode() === 'source') {
@@ -100,13 +122,15 @@ export class ReuseDrag {
     const target = source && !this.pending ? this.target(event, source) : null;
     event.dataTransfer.dropEffect = target ? 'copy' : 'none';
     if (event.type === 'dragover') {
-      if (target) { this.highlight = target.canvas?.wrapperEl ?? target.leaf.view.containerEl; this.highlight.classList.add('mdp-reuse-target'); }
+      if (target) this.showTarget(target);
       return;
     }
     this.source = undefined;
     if (!source || event.dataTransfer.getData(MIME) !== source.token) return;
     if (!target) { new Notice(source.kind === 'file' ? '파일 카드 한 개를 Main/Sub 문서의 편집 영역에 놓아주세요.' : 'Main/Sub 문서의 편집 영역 또는 Sub Canvas에 놓아주세요.'); return; }
     const menu = new Menu(); this.menu?.hide(); this.menu = menu;
+    this.showTarget(target);
+    menu.onHide(() => { if (this.menu === menu) { this.menu = undefined; this.clearHighlight(); } });
     for (const option of reuseOptions(source.kind, source.file.extension === 'md', !!target.canvas)) {
       menu.addItem(item => item.setTitle(option.title).setIcon(option.mode === 'link' || option.mode === 'source' ? 'link' : 'file-text').onClick(() => {
         if (this.pending || this.stopped) return;
