@@ -19,6 +19,7 @@ export type Split = {
   containerEl: HTMLElement;
   removeChild(item: Group | Split): void;
   insertChild(index: number, item: Group | Split): void;
+  setDirection(direction: string): void;
 };
 
 export function groupOf(leaf: WorkspaceLeaf | null): Group | undefined {
@@ -56,34 +57,41 @@ export function newTab(app: App, group: Group): WorkspaceLeaf {
 /** Move managed groups only, preserving every leaf and all ordinary groups. */
 export function arrange(app: App, main: Group, followers: Group[]): boolean {
   if (!followers.length) return false;
-  let parent = main.parent;
-  const ordered = () => parent.direction === 'vertical' && followers.every((g, i) => g.parent === parent && parent.children[parent.children.indexOf(main) + i + 1] === g);
+  const root = activeIn(main)?.getRoot() as unknown as Split | undefined;
+  if (!root || !Array.isArray(root.children) || typeof root.setDirection !== 'function') throw Error('지원하지 않는 작업 공간 구조입니다.');
+  const branch = (): Group | Split => {
+    let node: Group | Split = main;
+    while (node.parent && node.parent !== root) node = node.parent;
+    if (node.parent !== root) throw Error('메인 탭의 위치를 찾을 수 없습니다.');
+    return node;
+  };
+  const ordered = () => root.direction === 'vertical' && followers.every((g, i) => g.parent === root && root.children[root.children.indexOf(branch()) + i + 1] === g);
   if (ordered()) return false;
   for (const group of [main, ...followers]) {
     if (!group.parent || typeof group.parent.removeChild !== 'function' || typeof group.parent.insertChild !== 'function') throw Error('지원하지 않는 탭 그룹 구조입니다.');
   }
-  let spacer: WorkspaceLeaf | undefined;
-  // A vertical split is left-to-right in Obsidian. Preserve other horizontal rows.
-  if (parent.direction !== 'vertical') {
-    const leaf = activeIn(main);
-    if (!leaf) throw Error('메인 탭을 찾을 수 없습니다.');
-    spacer = app.workspace.createLeafBySplit(leaf, 'vertical');
-    parent = main.parent;
+  // Keep the complete top/bottom layout together as the left column.
+  // Obsidian's "vertical" direction means side-by-side columns.
+  if (root.direction !== 'vertical') {
+    const Constructor = WorkspaceSplit as unknown as new (workspace: App['workspace'], direction: string) => Split;
+    const stack = new Constructor(app.workspace, root.direction);
+    if (typeof stack.insertChild !== 'function') throw Error('지원하지 않는 작업 공간 구조입니다.');
+    for (const child of [...root.children]) { root.removeChild(child); stack.insertChild(stack.children.length, child); }
+    root.setDirection('vertical');
+    root.insertChild(0, stack);
   }
-  try {
-    let anchor = main;
+    let anchor: Group | Split = branch();
     for (const group of followers) {
-      parent = anchor.parent;
-      if (group.parent === parent && parent.children[parent.children.indexOf(anchor) + 1] === group) { anchor = group; continue; }
+      if (group.parent === root && root.children[root.children.indexOf(anchor) + 1] === group) { anchor = group; continue; }
       const oldParent = group.parent;
       const oldIndex = oldParent.children.indexOf(group);
       oldParent.removeChild(group);
-      // Removal can collapse an intermediate split. Re-read the live anchor parent.
-      try { anchor.parent.insertChild(anchor.parent.children.indexOf(anchor) + 1, group); }
+      // Extracting a nested Sub may collapse the old split around Main.
+      if (!root.children.includes(anchor)) anchor = branch();
+      try { root.insertChild(root.children.indexOf(anchor) + 1, group); }
       catch (error) { oldParent.insertChild(oldIndex, group); throw error; }
       anchor = group;
     }
-  } finally { spacer?.detach(); }
   app.workspace.requestSaveLayout();
   return true;
 }

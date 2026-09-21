@@ -4,7 +4,14 @@
 저장소: https://github.com/tlatndms2-droid/md-palette
 작업 경로: `C:\Users\tlatn\OneDrive\문서\ChatGPT\obsidian md pallete`
 
-## 현재 상태 — 0.0.14 Release 완료, 사용자 BRAT 확인 대기
+## 현재 상태 — 0.0.15 Sub 전체 높이 배치 검증 통과, Release 대기
+
+- 사용자 0.0.14 정상 작동 확인 완료. 이어서 이미지 및 HTML 비교 배치로 확정한 Sub 위치 수정 요청을 받았다.
+- Main 위에 영상이 있는 경우 왼쪽의 위아래 묶음을 보존하고 Sub를 오른쪽 전체 높이에 배치한다. 기존 좁은 Sub도 재배치하며 그룹·탭을 닫지 않는다. 더블클릭 교체·Ctrl 새 탭·Ctrl+Shift 새 그룹 동작 유지.
+- 41개 테스트·빌드·0.0.15 실제 Sandbox UI·참조 배치 비교·재시작 통과. 원본 파일 2,065개·라벨·기존 문서별 폴더·모든 탭 복원 확인. `SUB_HEIGHT_VALIDATION.md` 참조.
+- Sandbox는 `SubHeight-Review/Main.md`와 영상·학습 노트 화면으로 유지. BRAT은 사용자 담당. 실제 Vault와 7단계 제외.
+
+## 0.0.14 당시 기록 — 사용자 정상 작동 확인 완료
 
 - [0.0.14 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.0.14), 구현 커밋 `80ac833`. 공개 다운로드한 main.js·manifest.json·styles.css의 SHA-256이 최종 Sandbox 검증 빌드와 모두 일치한다.
 
