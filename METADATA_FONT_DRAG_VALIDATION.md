@@ -21,4 +21,8 @@
 
 Sandbox: `C:\Users\tlatn\AppData\Local\Temp\MDPalette-Metadata-Sandbox-20260922`. 별도 프로필: `MDPalette-Metadata-Profile-20260922`, CDP 19330. 백업과 원문 해시는 `.artifacts/metadata-font/backup.json`, 긴 문서 시험 백업은 `.artifacts/metadata-drag/performance-backup.json`에 보존했다. Sandbox는 사용자 확인용으로 유지한다.
 
+드래그 중 문서가 편집되면 원문 캐시가 갱신되는 것도 확인했다.
+
+0.1.4 공개 완료: 소스 `f2cc389`. 공개 다운로드한 main.js·manifest.json·styles.css의 SHA-256이 최종 검증 빌드와 모두 일치한다. [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.4).
+
 선별 증거: [evidence/0.1.4](docs/handoff/evidence/0.1.4). 실제 Vault·다른 플러그인 조합은 변경하거나 검증하지 않았다. BRAT 업데이트와 개인 Vault에서의 최종 확인은 기존 합의대로 사용자가 담당한다.

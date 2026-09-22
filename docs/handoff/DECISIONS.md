@@ -6,6 +6,7 @@
 
 | 시점 | 이전 방식 → 최종 결정 | 기록된 맥락·이유 | 근거 |
 |---|---|---|---|
+| 0.1.4 | 고정 글자 크기 → Ctrl+휠 조절·저장; Sub 드래그 첫 진입 수용·위치 표시 재사용 | 사용자 글자 크기 요청 및 “sub 본문이 안되고 그리고 동작에 버벅임이 생김” | METADATA_FONT_DRAG_VALIDATION.md |
 | 0.1.3 | 메타데이터 일반 텍스트 → Markdown 서식 표시 | 사용자 이미지의 각주·문맥 가독성 지적 후 “수정해줘” | METADATA_MARKDOWN_VALIDATION.md, src/metadata-view.ts |
 | 0.0.3 | 연결 저장 위치 선택 → Main `link note` 속성 | 사용자 “문서방식으로 진행” | 계획 보관본 진행 원칙, STAGE2_VALIDATION.md |
 | 0.0.4 | 카드 이동 반응 개선 → 안내선·DOM 재사용·안정된 카드 이동 | Canvas Palette 방식의 드래그 개선 요청 | STAGE2_DRAG_VALIDATION.md |

@@ -1,8 +1,10 @@
 # MD Palette 현재 진행 계획
 
-갱신일: 2026-09-22. 공개 0.1.3, 브랜치 codex/planning.
+갱신일: 2026-09-22. 공개 0.1.4, 브랜치 codex/planning.
 
-0.1.3: 사용자 수정 요청에 따라 각주 본문·문맥 및 메타데이터 Markdown 표시를 적용했다. 41개 테스트·빌드·Sandbox UI·재시작·공개 자산 검증 완료, 사용자 BRAT 확인 대기. METADATA_MARKDOWN_VALIDATION.md 참고.
+0.1.4: Ctrl+휠 글자 크기 조절·저장 및 Sub 본문 드래그 실패·반복 처리 개선. 41개 테스트·빌드·Sandbox UI·긴 문서 드래그·재시작·공개 자산 검증 완료. 사용자 BRAT 확인 대기. METADATA_FONT_DRAG_VALIDATION.md 참고.
+
+0.1.3: 사용자 수정 요청에 따라 각주 본문·문맥 및 메타데이터 Markdown 표시를 적용했다. 41개 테스트·빌드·Sandbox UI·재시작·공개 자산 검증 및 사용자 확인 완료. METADATA_MARKDOWN_VALIDATION.md 참고.
 
 0.1.2: 드롭 대상 줄 전체의 옅은 강조 배경과 글자 사이 세로 커서. 실제 Sandbox·재시작·공개 자산 검증 및 2026-09-22 사용자 정상 작동 확인 완료. LINE_HIGHLIGHT_VALIDATION.md 참고.
 

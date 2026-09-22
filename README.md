@@ -4,9 +4,11 @@ Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 �
 
 다른 PC에서 개발을 이어가려면 [HANDOFF.md](HANDOFF.md)부터 읽으세요. [현재 확정 사양](docs/handoff/CURRENT_SPEC.md) · [기획 변경 이력](docs/handoff/DECISIONS.md) · [새 PC 준비](docs/handoff/NEW_PC.md).
 
-## 공개 버전: 0.1.3
+## 공개 버전: 0.1.4
 
-Metadata View의 각주 본문·문맥과 메타데이터 내용이 굵게·강조·목록·링크 등 Markdown 서식으로 보입니다. 각주 편집은 원문으로 하고, 저장하면 서식이 적용됩니다. [0.1.3 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.3) · [검증 결과](METADATA_MARKDOWN_VALIDATION.md). BRAT 업데이트 후 사용자 확인 대기입니다.
+Metadata View 본문 위에서 Ctrl+마우스 휠로 글자 크기를 10~32px로 조절합니다. 선택한 크기는 재시작 후에도 유지됩니다. Sub 본문 새 줄에 놓을 때 드래그가 누락되는 문제를 수정하고 반복 처리를 줄였습니다. [0.1.4 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.4) · [검증 결과](METADATA_FONT_DRAG_VALIDATION.md). BRAT 업데이트 후 사용자 확인 대기입니다.
+
+각주 본문·문맥과 메타데이터는 Markdown 서식으로 표시합니다. 각주 편집은 원문으로 하고 저장하면 서식이 적용됩니다.
 
 Main이 영상 등 다른 탭 그룹과 위아래로 놓여 있어도 Sub는 그 묶음 전체의 오른쪽에서 전체 높이로 열립니다. 왼쪽의 영상·Main 배치와 기존 탭은 유지하며, 이미 아래쪽에 열려 있던 Sub도 업데이트 후 오른쪽 전체 높이로 정리합니다. 기본 더블클릭·Ctrl·Ctrl+Shift 열기 동작은 그대로입니다.
 

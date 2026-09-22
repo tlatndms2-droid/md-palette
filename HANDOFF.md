@@ -1,11 +1,14 @@
 # MD Palette 작업 인계 — 다른 PC 재개 시작점
 
 갱신일: 2026-09-22. 저장소: https://github.com/tlatndms2-droid/md-palette
-기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.3**.
+기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.4**.
 
 ## 현재 상태
 
-**현재 재개 기준은 공개 0.1.3이다. 각주·메타데이터 Markdown 표시 수정, 실제 Sandbox UI·재시작·공개 자산 SHA-256 검증 완료. 사용자 BRAT 확인 대기이며 자동으로 시작할 다음 기능은 없다. 0.1.2는 이전에 사용자 정상 작동 확인을 받았다.**
+**현재 재개 기준은 공개 0.1.4이다. Ctrl+휠 메타데이터 글자 크기 조절과 Sub 드래그 실패·반복 처리 개선을 실제 Sandbox UI·재시작·공개 자산 SHA-256까지 검증했다. 0.1.4 사용자 BRAT 확인 대기이며 자동으로 시작할 다음 기능은 없다. 0.1.3 Markdown 표시는 사용자 확인을 받았다.**
+
+- 0.1.4 소스: `f2cc389`. [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.4), [검증 보고서](METADATA_FONT_DRAG_VALIDATION.md), [증거](docs/handoff/evidence/0.1.4).
+- Metadata View 본문 위에서 Ctrl+휠로 10~32px 조절, 재시작 후 복원. Sub 새 줄 진입 직후 놓기와 긴 문서 드래그를 검증했다. 개인 Vault에서의 체감과 BRAT 확인은 사용자가 담당한다.
 
 - 0.1.3 소스: `b7791cc`. [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.3), [검증 보고서](METADATA_MARKDOWN_VALIDATION.md), [화면·실행·자산 증거](docs/handoff/evidence/0.1.3).
 - 각주 본문·문맥과 메타데이터를 Markdown 서식으로 표시한다. 원문 편집·원문 이동·Task 체크·드래그는 유지한다.
