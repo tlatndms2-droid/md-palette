@@ -1,13 +1,17 @@
 # MD Palette 작업 인계 — 다른 PC 재개 시작점
 
 갱신일: 2026-09-22. 저장소: https://github.com/tlatndms2-droid/md-palette
-기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.2**.
+기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.3**.
 
 ## 현재 상태
 
-**현재 재개 기준은 공개 0.1.2다. Sandbox 실제 드래그·재시작·공개 자산 SHA-256 검증 완료. 2026-09-22 사용자가 “구현됬어”라고 정상 작동을 확인했다. 현재 확인 대기 중인 수정이나 자동으로 시작할 다음 기능은 없다.**
+**현재 재개 기준은 공개 0.1.3이다. 각주·메타데이터 Markdown 표시 수정, 실제 Sandbox UI·재시작·공개 자산 SHA-256 검증 완료. 사용자 BRAT 확인 대기이며 자동으로 시작할 다음 기능은 없다. 0.1.2는 이전에 사용자 정상 작동 확인을 받았다.**
 
-- 배포 소스 커밋: `0863eb8` (태그 `0.1.2`). 이후 커밋은 인계 문서 갱신을 포함하므로 새 PC에서는 태그에 머무르지 말고 `codex/planning` 최신 커밋을 받는다.
+- 0.1.3 소스: `b7791cc`. [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.3), [검증 보고서](METADATA_MARKDOWN_VALIDATION.md), [화면·실행·자산 증거](docs/handoff/evidence/0.1.3).
+- 각주 본문·문맥과 메타데이터를 Markdown 서식으로 표시한다. 원문 편집·원문 이동·Task 체크·드래그는 유지한다.
+- 이번 검증 Sandbox: `C:\Users\tlatn\AppData\Local\Temp\MDPalette-Metadata-Sandbox-20260922`, 전용 프로필 `MDPalette-Metadata-Profile-20260922`, 당시 CDP 19330. 사용자 확인용으로 열어 두었다. 다른 PC에서는 실행 상태를 새로 확인한다.
+
+- 이전 배포 소스 커밋: `0863eb8` (태그 `0.1.2`). 새 PC에서는 태그에 머무르지 말고 `codex/planning` 최신 커밋을 받는다.
 - 새 PC에서 [NEW_PC.md](docs/handoff/NEW_PC.md)의 복제 절차와 시작 메시지를 사용한다. 먼저 현재 상태를 파악하고 사용자가 지정하는 다음 작업을 진행한다.
 
 - [0.1.2 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.2), [줄 강조 검증](LINE_HIGHLIGHT_VALIDATION.md). 현재 대상 줄 전체를 옅은 강조색으로 표시하고 메뉴 선택 중에도 유지한다.
@@ -66,13 +70,14 @@
 | 7 최종 통합 | 0.1.0 | 통합·업데이트·재시작·공개 자산 검증 완료, STAGE7_VALIDATION.md |
 | 글자 사이 드롭 커서 | 0.1.1 | 검증·배포 완료, 사용자 화면 확인 후 줄 강조 추가 요청, CARET_VALIDATION.md |
 | 드롭 대상 줄 강조 | 0.1.2 | 검증·배포·사용자 정상 작동 확인 완료, LINE_HIGHLIGHT_VALIDATION.md |
+| 각주·메타데이터 Markdown 표시 | 0.1.3 | Sandbox UI·재시작·공개 자산 검증 완료, 사용자 BRAT 확인 대기, METADATA_MARKDOWN_VALIDATION.md |
 
 각 버전의 자동·Sandbox 검증은 사용자 직접 확인과 별개다. 0.0.12/13의 개별 사용자 확인 문장을 추정해서 추가하지 않는다. 코드가 배포되어 있다는 사실만으로 최종 통합 완료를 선언하지 않는다.
 
 ## 다음 작업
 
-1. 다른 PC에서 `codex/planning` 최신 상태를 받아 manifest `0.1.2`와 Git 변경사항을 확인한다.
-2. 이 문서·현재 사양·새 PC 안내를 읽고, 사용자가 지정한 후속 작업을 진행한다. 새 기능은 아직 지정되지 않았다.
+1. 다른 PC에서 `codex/planning` 최신 상태를 받아 manifest `0.1.3`과 Git 변경사항을 확인한다.
+2. 0.1.3 사용자 BRAT 확인은 대기 중이다. 새 후속 기능은 아직 지정되지 않았다.
 3. 이미 완료한 통합 검증과 배포를 인계만을 이유로 반복하지 않는다. 후속 코드 변경에는 변경 범위에 맞는 검증·배포 절차를 적용한다.
 
 별도 팝아웃 창 배치는 0.0.15 검증 범위에 포함되지 않았다. 지원 확대를 이번 인계로 승인받은 것으로 간주하지 않는다. 미검증·미수행은 통합 완료 보고에서 구분한다.

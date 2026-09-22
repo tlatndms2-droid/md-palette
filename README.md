@@ -4,9 +4,9 @@ Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 �
 
 다른 PC에서 개발을 이어가려면 [HANDOFF.md](HANDOFF.md)부터 읽으세요. [현재 확정 사양](docs/handoff/CURRENT_SPEC.md) · [기획 변경 이력](docs/handoff/DECISIONS.md) · [새 PC 준비](docs/handoff/NEW_PC.md).
 
-## 공개 버전: 0.0.15 / 로컬 통합 후보: 0.1.0
+## 공개 버전: 0.1.3
 
-0.1.0은 로컬 통합·업데이트·재시작 검증을 통과했으며 아직 GitHub Release로 배포하지 않았습니다. 현재 BRAT 배포 버전은 0.0.15입니다. [7단계 검증 결과](STAGE7_VALIDATION.md).
+Metadata View의 각주 본문·문맥과 메타데이터 내용이 굵게·강조·목록·링크 등 Markdown 서식으로 보입니다. 각주 편집은 원문으로 하고, 저장하면 서식이 적용됩니다. [0.1.3 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.3) · [검증 결과](METADATA_MARKDOWN_VALIDATION.md). BRAT 업데이트 후 사용자 확인 대기입니다.
 
 Main이 영상 등 다른 탭 그룹과 위아래로 놓여 있어도 Sub는 그 묶음 전체의 오른쪽에서 전체 높이로 열립니다. 왼쪽의 영상·Main 배치와 기존 탭은 유지하며, 이미 아래쪽에 열려 있던 Sub도 업데이트 후 오른쪽 전체 높이로 정리합니다. 기본 더블클릭·Ctrl·Ctrl+Shift 열기 동작은 그대로입니다.
 

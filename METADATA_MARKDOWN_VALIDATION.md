@@ -2,6 +2,8 @@
 
 2026-09-22. Obsidian 1.13.7, 최종 빌드 0.1.3.
 
+[0.1.3 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.3) 공개 완료. 공개 다운로드의 `main.js`, `manifest.json`, `styles.css` SHA-256이 각각 최종 빌드·Sandbox 설치본과 일치한다. [자산 확인 기록](docs/handoff/evidence/0.1.3/release-verification.json).
+
 - 0.1.2에서 각주·본문 문맥의 Markdown 기호가 그대로 표시되는 현상을 격리 Sandbox에서 재현했다.
 - 41개 기존 테스트, TypeScript 검사, 빌드 통과.
 - 최종 0.1.3 설치 파일 3개의 SHA-256이 빌드와 일치한다.
