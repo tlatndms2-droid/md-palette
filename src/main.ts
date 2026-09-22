@@ -1,12 +1,13 @@
 import { FuzzySuggestModal, MarkdownView, Menu, Notice, Plugin, TFile, TextFileView, WorkspaceLeaf, parseLinktext, setIcon } from 'obsidian';
-import { activeIn, arrange, fileIn, groupOf, groupsIn, isCentral, newTab, type Group } from './workspace-adapter';
+import { activeIn, fileIn, groupOf, groupsIn, isCentral, newTab, type Group } from './workspace-adapter';
 import { PaletteView, VIEW_TYPE } from './sidebar';
-import { readSpaces, subOpenMode, type SubOpenMode, type LinkView, type SavedSpaces, type TopView } from './state';
+import { readSpaces, subOpenMode, subRestoreCandidates, type SubOpenMode, type LinkView, type SavedSpaces, type TopView } from './state';
 import { readCards, pruneLabels, type CardState } from './cards-state';
 import { readConnections } from './connections-state';
 import { readFolders, readDocumentFolders, fileKey, type FolderState } from './folders-state';
 import { ReuseDrag } from './reuse-drag';
 import { newNoteName, type NewNoteFormat } from './new-note-name';
+import { SubDesignationModal } from './sub-designation-modal';
 
 type Role = 'sub';
 class SpaceFilePicker extends FuzzySuggestModal<TFile> {
@@ -25,7 +26,7 @@ export default class MDPalettePlugin extends Plugin {
   metadataFontSize?: number;
   subGroup?: Group;
   subGroups: Group[] = [];
-  isSub(group?: Group): boolean { return !!group && this.subGroups.includes(group); }
+  isSub(group?: Group): boolean { return !!group && group === this.subGroup; }
   openFileGesture(file: TFile, event?: MouseEvent): void { this.run(() => this.openIn('sub', file, '', subOpenMode(event))); }
   topView: TopView = 'link';
   linkView: LinkView = 'card';
@@ -86,6 +87,7 @@ export default class MDPalettePlugin extends Plugin {
     this.addRibbonIcon('panels-top-left', 'MD Palette 열기', () => this.run(() => this.openSidebar()));
     this.addCommand({ id: 'open-sidebar', name: '사이드바 열기', callback: () => this.run(() => this.openSidebar()) });
     this.addCommand({ id: 'set-main', name: '메인 스페이스 지정/해제', callback: () => this.run(() => this.toggleMain(this.app.workspace.getMostRecentLeaf())) });
+    this.addCommand({ id: 'set-sub', name: '서브 스페이스 지정/해제', callback: () => this.run(() => this.toggleSub(this.app.workspace.getMostRecentLeaf())) });
     for (const role of ['sub'] as const) this.addCommand({ id: `open-${role}`, name: `Sub Space에서 파일 열기`, callback: () => {
       if (!this.mainFile) { new Notice('메인 스페이스를 먼저 지정해주세요.'); return; }
       new SpaceFilePicker(this, role).open();
@@ -95,6 +97,10 @@ export default class MDPalettePlugin extends Plugin {
       if (source === 'tab-header' && leaf) {
         if (file.extension === 'md' && !this.isSub(groupOf(leaf)) && leaf !== this.mainLeaf) menu.addItem(item => item.setTitle('메인 스페이스로 지정').setIcon('book-open').onClick(() => this.run(() => this.setMain(leaf))));
         if (leaf === this.mainLeaf) menu.addItem(item => item.setTitle('메인 스페이스 지정 해제').setIcon('book-open').onClick(() => this.run(() => this.unsetMain())));
+        const group = groupOf(leaf);
+        if (this.mainFile && group && group !== this.mainGroup && isCentral(this.app, group)) menu.addItem(item => item
+          .setTitle(this.isSub(group) ? '서브 스페이스 지정 해제' : '서브 스페이스로 지정').setIcon('link')
+          .onClick(() => this.run(() => this.toggleSub(leaf))));
       }
       if (this.mainFile) {
         menu.addSeparator();
@@ -192,13 +198,49 @@ export default class MDPalettePlugin extends Plugin {
     this.clearIcons(); this.render();
   }
 
+  private assignSub(group?: Group): void {
+    this.subGroup = group; this.subGroups = group ? [group] : [];
+    this.updateIcons(); this.persist();
+  }
+  async toggleSub(leaf: WorkspaceLeaf | null): Promise<void> {
+    const group = groupOf(leaf);
+    if (this.isSub(group)) { this.assignSub(); return; }
+    const main = this.mainFile, mainLeaf = this.mainLeaf, file = fileIn(this.app, leaf ?? undefined);
+    if (!main) { new Notice('메인 스페이스를 먼저 지정해주세요.'); return; }
+    if (!leaf || !group || !isCentral(this.app, group) || group === this.mainGroup || !file) { new Notice('Main과 다른 파일 탭 그룹에서 지정해주세요.'); return; }
+    const valid = () => !this.stopped && this.mainFile === main && this.mainLeaf === mainLeaf && this.app.vault.getAbstractFileByPath(file.path) === file
+      && groupOf(leaf) === group && groupsIn(this.app).includes(group) && group !== this.mainGroup && isCentral(this.app, group) && fileIn(this.app, leaf) === file;
+    const assign = async (connect: boolean) => {
+      if (!valid()) throw Error('Main 또는 대상 탭이 변경되었습니다. 다시 지정해주세요.');
+      const link = `[[${file.path}]]`;
+      let added = false;
+      if (connect) {
+        // Re-check at the actual frontmatter transaction, before any link is written.
+        added = await this.addConnection(main, file, true, valid);
+      }
+      if (!valid()) {
+        if (added && this.app.vault.getAbstractFileByPath(main.path) === main) await this.app.fileManager.processFrontMatter(main, frontmatter => {
+          const values: unknown = frontmatter['link note'];
+          if (Array.isArray(values)) {
+            const remaining = values.filter(v => v !== link);
+            if (remaining.length) frontmatter['link note'] = remaining; else delete frontmatter['link note'];
+          }
+        });
+        throw Error('대상 탭이 변경되어 연결과 Sub 지정을 취소했습니다. 다시 지정해주세요.');
+      }
+      this.assignSub(group);
+    };
+    if (file === main || this.connectedFiles(main).includes(file)) await assign(false);
+    else new SubDesignationModal(this, main, file, () => assign(true)).open();
+  }
+
   async openIn(_role: Role, file: TFile, subpath = '', mode: SubOpenMode = 'replace'): Promise<void> {
     if (!this.mainFile || !this.mainGroup) { new Notice('메인 스페이스를 먼저 지정해주세요.'); return; }
     if (this.app.vault.getAbstractFileByPath(file.path) !== file) return;
     const previous = this.app.workspace.getMostRecentLeaf();
     let group = this.subGroup;
     if (group && !groupsIn(this.app).includes(group)) group = undefined;
-    const existing = mode !== 'group' ? group?.children.find(leaf => fileIn(this.app, leaf)?.path === file.path) : undefined;
+    const existing = mode !== 'normal-group' ? group?.children.find(leaf => fileIn(this.app, leaf)?.path === file.path) : undefined;
     if (existing) {
       if (subpath) await existing.openFile(file, { active: true, eState: { subpath } });
       await this.app.workspace.revealLeaf(existing); this.app.workspace.setActiveLeaf(existing, { focus: true }); return;
@@ -206,15 +248,14 @@ export default class MDPalettePlugin extends Plugin {
     const anchor = this.mainLeaf;
     if (!anchor) return;
     const replacing = mode === 'replace' && group ? activeIn(group) : undefined;
-    const leaf = replacing ?? (mode !== 'group' && group ? newTab(this.app, group) : this.app.workspace.createLeafBySplit(activeIn(group) ?? anchor, 'vertical'));
+    const leaf = replacing ?? (mode !== 'normal-group' && group ? newTab(this.app, group) : this.app.workspace.createLeafBySplit(activeIn(group) ?? anchor, 'vertical'));
     const oldState = replacing?.getViewState();
     if (replacing?.view instanceof TextFileView) await replacing.view.save();
     try { await leaf.openFile(file, { active: true, eState: subpath ? { subpath } : undefined }); }
     catch (error) { if (oldState) await leaf.setViewState(oldState); else leaf.detach(); if (previous) this.app.workspace.setActiveLeaf(previous, { focus: false }); throw error; }
-    this.subGroup = groupOf(leaf);
-    if (this.subGroup && !this.isSub(this.subGroup)) this.subGroups.push(this.subGroup);
+    if (mode !== 'normal-group') this.assignSub(groupOf(leaf));
     this.app.workspace.setActiveLeaf(leaf, { focus: true });
-    this.enforceOrder(false);
+    this.updateIcons(); this.persist();
   }
 
   private routeMainLinks(): void {
@@ -313,9 +354,7 @@ export default class MDPalettePlugin extends Plugin {
     if (replacing?.view instanceof TextFileView) await replacing.view.save();
     try { await leaf.setViewState({ type, active: true, state: { url, title: url, navigate: true } }); }
     catch (error) { if (oldState) await leaf.setViewState(oldState); else leaf.detach(); throw error; }
-    this.subGroup = groupOf(leaf);
-    if (this.subGroup && !this.isSub(this.subGroup)) this.subGroups.push(this.subGroup);
-    this.enforceOrder(false);
+    this.assignSub(groupOf(leaf));
   }
   async commitFolders(next: FolderState, main: TFile): Promise<void> {
     if (!this.saveAllowed) throw Error('저장 상태를 읽지 못해 가상 폴더를 변경할 수 없습니다.');
@@ -394,13 +433,14 @@ export default class MDPalettePlugin extends Plugin {
     const rank = new Map(this.cards.order.map((p, i) => [p, i]));
     return files.sort((a, b) => rank.get(a.path)! - rank.get(b.path)!);
   }
-  async addConnection(main: TFile, file: TFile, strict = false): Promise<void> {
-    if (this.mainFile !== main || this.app.vault.getAbstractFileByPath(main.path) !== main || this.app.vault.getAbstractFileByPath(file.path) !== file) { if (strict) throw Error('메인 또는 선택 파일이 변경되었습니다.'); new Notice('메인 또는 선택 파일이 변경되어 연결을 취소했습니다.'); return; }
-    if (main === file || this.connectedFiles(main).some(f => f.path === file.path)) { new Notice('이미 메인 스페이스와 연결된 파일입니다.'); return; }
+  async addConnection(main: TFile, file: TFile, strict = false, valid?: () => boolean): Promise<boolean> {
+    if (this.mainFile !== main || this.app.vault.getAbstractFileByPath(main.path) !== main || this.app.vault.getAbstractFileByPath(file.path) !== file) { if (strict) throw Error('메인 또는 선택 파일이 변경되었습니다.'); new Notice('메인 또는 선택 파일이 변경되어 연결을 취소했습니다.'); return false; }
+    if (main === file || this.connectedFiles(main).some(f => f.path === file.path)) { new Notice('이미 메인 스페이스와 연결된 파일입니다.'); return false; }
     // Properties resolve wikilinks independently of the editor's Markdown-link preference.
     const link = `[[${file.path}]]`;
+    let added = false;
     await this.app.fileManager.processFrontMatter(main, frontmatter => {
-      if (this.mainFile !== main) throw Error('Main changed before connection write');
+      if (this.mainFile !== main || (valid && !valid())) throw Error('Main 또는 대상 탭이 변경되어 연결을 취소했습니다.');
       const current: unknown = frontmatter['link note'];
       if (current != null && typeof current !== 'string' && !Array.isArray(current)) throw Error('link note must be text or a list');
       const values: unknown[] = current == null ? [] : Array.isArray(current) ? current : [current];
@@ -412,9 +452,10 @@ export default class MDPalettePlugin extends Plugin {
         let decoded = path; try { decoded = decodeURIComponent(path); } catch {}
         return this.app.metadataCache.getFirstLinkpathDest(decoded, main.path)?.path === file.path;
       });
-      if (!already) frontmatter['link note'] = [...values, link];
+      if (!already) { frontmatter['link note'] = [...values, link]; added = true; }
     });
     this.render();
+    return added;
   }
   private render(): void {
     this.lastContentKey = this.contentKey();
@@ -432,14 +473,9 @@ export default class MDPalettePlugin extends Plugin {
     const pinnedGroup = groupOf(this.mainLeaf ?? null);
     if (this.mainGroup && (!pinnedGroup || !live.includes(pinnedGroup) || !pinnedGroup.children.includes(this.mainLeaf!) || !isCentral(this.app, pinnedGroup) || !this.mainFile)) { this.mainGroup = this.subGroup = undefined; this.subGroups = []; this.mainLeaf = undefined; this.pinnedMain = undefined; }
     else if (this.mainLeaf) this.mainGroup = pinnedGroup;
-    this.subGroups = this.subGroups.filter(g => live.includes(g) && g !== this.mainGroup && isCentral(this.app, g) && g.children.some(l => fileIn(this.app, l) || l.getViewState().type === 'webviewer'));
-    if (!this.isSub(this.subGroup)) this.subGroup = this.subGroups[0];
-    if (this.mainGroup) {
-      this.busy = true;
-      try { this.enforceOrder(notify); }
-      catch (error) { console.error('MD Palette layout:', error); }
-      finally { this.busy = false; }
-    }
+    // A role belongs to its group, even while a view is loading or showing an empty tab.
+    if (this.subGroup && (!live.includes(this.subGroup) || this.subGroup === this.mainGroup || !isCentral(this.app, this.subGroup))) this.subGroup = undefined;
+    this.subGroups = this.subGroup ? [this.subGroup] : [];
     const leaf = activeIn(this.mainGroup);
     const invalid = this.mainGroup && !this.mainFile ? `${this.mainGroup.currentTab}:${leaf?.getViewState().type}:${fileIn(this.app, leaf)?.path ?? ''}` : '';
     if (invalid && invalid !== this.invalidMainKey) new Notice('메인 스페이스에서는 Markdown 파일을 활성화해주세요.');
@@ -448,11 +484,6 @@ export default class MDPalettePlugin extends Plugin {
     const key = `${this.mainGroup?.id}:${this.mainFile?.path}:${this.topView}:${this.linkView}`;
     if (key !== this.lastRenderKey) { this.lastRenderKey = key; this.render(); }
     this.persist();
-  }
-  private enforceOrder(notify: boolean): void {
-    if (!this.mainGroup) return;
-    const followers = this.subGroups;
-    if (arrange(this.app, this.mainGroup, followers) && notify) new Notice('스페이스 순서는 변경할 수 없습니다.');
   }
   private clearIcons(): void {
     for (const el of this.decorated) el.remove();
@@ -481,11 +512,8 @@ export default class MDPalettePlugin extends Plugin {
     const file = fileIn(this.app, leaf);
     if (!leaf || file?.extension !== 'md' || file.path !== saved.main?.activeFile || leaf.getViewState().type !== 'markdown') return;
     this.mainGroup = main; this.mainLeaf = leaf; this.pinnedMain = file;
-    this.subGroups = (saved.subs ?? (saved.sub ? [saved.sub] : [])).flatMap(s => {
-      const sub = find(s.groupId);
-      return sub && sub !== main && sub.children.some(l => fileIn(this.app, l) || l.getViewState().type === 'webviewer') ? [sub] : [];
-    });
-    this.subGroup = this.subGroups.find(g => g.id === saved.sub?.groupId) ?? this.subGroups[0];
+    this.subGroup = subRestoreCandidates(saved).map(s => find(s.groupId)).find(g => g && g !== main);
+    this.subGroups = this.subGroup ? [this.subGroup] : [];
   }
   private persist(): void {
     if (this.stopped || !this.ready || !this.saveAllowed) return;

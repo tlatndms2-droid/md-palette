@@ -23,7 +23,15 @@ export function readSpaces(value: unknown): SavedSpaces {
   }
   return result;
 }
-export type SubOpenMode = 'replace' | 'tab' | 'group';
+/** Prefer the last-used legacy Sub, then a surviving legacy group. Never close tabs. */
+export function subRestoreCandidates(saved: SavedSpaces): SavedSpace[] {
+  const seen = new Set<string>();
+  return [...(saved.sub ? [saved.sub] : []), ...(saved.subs ?? [])].filter(s => {
+    if (s.groupId === saved.main?.groupId || seen.has(s.groupId)) return false;
+    seen.add(s.groupId); return true;
+  });
+}
+export type SubOpenMode = 'replace' | 'tab' | 'normal-group';
 export function subOpenMode(event?: { ctrlKey: boolean; metaKey: boolean; shiftKey: boolean }): SubOpenMode {
-  return event && (event.ctrlKey || event.metaKey) ? event.shiftKey ? 'group' : 'tab' : 'replace';
+  return event && (event.ctrlKey || event.metaKey) ? event.shiftKey ? 'normal-group' : 'tab' : 'replace';
 }
