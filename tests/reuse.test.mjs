@@ -21,7 +21,7 @@ test('URL reuse preserves HTTP(S) URLs and safely escapes link labels',()=>{
  assert.equal(webReuseText('https://example.com/a?q=1#s','참고',false),'https://example.com/a?q=1#s');
  assert.equal(webReuseText('https://example.com','A [B]',true),'[A \\[B\\]](<https://example.com/>)');
  assert.throws(()=>webReuseText('javascript:alert(1)','제목',true));
- assert.deepEqual(reuseOptions('footnote',true,false).map(x=>x.mode),['text','footnote']);
+ assert.deepEqual(reuseOptions('footnote',true,false).map(x=>x.mode),['text','footnote-context','footnote']);
  assert.deepEqual(reuseOptions('url',true,true).map(x=>x.mode),['address','named-url']);
 });
 test('drop choices exclude file-body insertion for non-Markdown and block-content insertion into Markdown',()=>{
@@ -49,4 +49,14 @@ test('Canvas disk conflicts distinguish changed data from harmless JSON key orde
 test('Windows body newlines use the same text representation as the editor rollback snapshot',()=>{
  assert.equal(reuseText('body','[[자료]]','# 제목\r\n\r\n본문\r\n'),'# 제목\n\n본문\n');
  assert.equal(reuseText('source','[[자료]]','첫 줄\r\n둘째 줄'),'첫 줄\n둘째 줄\n\n출처: [[자료]]');
+});
+
+test('footnote choices separate body and definition and combine into one atomic linked insertion',()=>{
+ for(const canvas of [false,true])assert.deepEqual(reuseOptions('footnote',true,canvas).map(x=>x.title),['각주만','본문만','각주와 본문']);
+ const original='앞 뒤\n\n[^mdp-1]: 기존';
+ const r=footnoteInsertion(original,2,'각주 **설명**\r\n둘째 줄','본문 ==강조==');
+ assert.equal(r.value,'앞 본문 ==강조==[^mdp-2]뒤\n\n[^mdp-1]: 기존\n\n[^mdp-2]: 각주 **설명**\n    둘째 줄\n');
+ let applied=original;for(const c of [...r.changes].reverse())applied=applied.slice(0,c.offset)+c.text+applied.slice(c.offset);assert.equal(applied,r.value);
+ assert.equal(footnoteInsertion('',0,'설명','본문').value,'본문[^mdp-1]\n\n[^mdp-1]: 설명\n');
+ assert.equal(reuseText('footnote-context','','본문 **서식**'),'본문 **서식**');
 });

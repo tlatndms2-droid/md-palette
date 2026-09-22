@@ -4,7 +4,9 @@ Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 �
 
 다른 PC에서 개발을 이어가려면 [HANDOFF.md](HANDOFF.md)부터 읽으세요. [현재 확정 사양](docs/handoff/CURRENT_SPEC.md) · [기획 변경 이력](docs/handoff/DECISIONS.md) · [새 PC 준비](docs/handoff/NEW_PC.md).
 
-## 공개 버전: 0.1.4
+## 공개 버전: 0.1.5
+
+각주를 끌어 놓으면 `각주만 / 본문만 / 각주와 본문`을 고릅니다. `각주와 본문`은 본문 뒤에 새 각주 번호를 붙이고 각주 설명을 문서 아래에 연결합니다. [0.1.5 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.5) · [검증 결과](FOOTNOTE_CHOICE_VALIDATION.md). BRAT 사용자 확인 대기입니다.
 
 Metadata View 본문 위에서 Ctrl+마우스 휠로 글자 크기를 10~32px로 조절합니다. 선택한 크기는 재시작 후에도 유지됩니다. Sub 본문 새 줄에 놓을 때 드래그가 누락되는 문제를 수정하고 반복 처리를 줄였습니다. [0.1.4 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.4) · [검증 결과](METADATA_FONT_DRAG_VALIDATION.md). BRAT 업데이트 후 사용자 확인 대기입니다.
 
@@ -94,7 +96,7 @@ Main 본문 자체의 링크 클릭 팝업은 보류 상태이며, 위 웹 링�
 - 문서는 놓은 위치, Canvas는 확대·이동 상태를 반영한 실제 위치에 추가합니다. 메뉴의 취소, Esc, 메뉴 밖 클릭은 내용을 추가하지 않습니다.
 - 읽기 모드·일반 문서·이미지·PDF·영상 등에는 삽입하지 않습니다. 파일 카드는 Sub Canvas에 삽입하지 않습니다. 메뉴가 열린 사이 원문·대상·Space가 변경되면 다시 끌어 놓도록 안내합니다.
 - 기존 카드 사이 드래그 정렬은 유지합니다. Folder·Connections와 Tasks에는 새 삽입 드래그를 추가하지 않습니다.
-- 각주는 Main/Sub 문서에서 텍스트 또는 실제 각주를 고릅니다. 실제 각주는 놓은 위치의 참조 번호와 문서 끝의 내용을 함께 추가하며 기존 번호와 겹치지 않습니다. Sub Canvas에서는 텍스트·각주 Markdown 카드를 고릅니다. 편집 중인 각주는 드래그하지 않습니다.
+- 각주는 Main/Sub 문서에서 `각주만 / 본문만 / 각주와 본문`을 고릅니다. 본문은 위쪽 본문 문맥, 각주는 아래쪽 설명입니다. 함께 삽입하면 본문 뒤의 참조 번호와 문서 끝의 설명을 연결하며 기존 번호와 겹치지 않습니다. Sub Canvas에서도 같은 선택으로 텍스트 카드를 만듭니다. 편집 중인 각주는 드래그하지 않습니다.
 - URL Links는 Main/Sub 문서에서 주소 그대로 또는 제목 있는 Markdown 링크, Sub Canvas에서 주소 텍스트·제목 링크 카드를 고릅니다.
 
 ## BRAT 설치

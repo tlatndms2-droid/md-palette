@@ -6,6 +6,7 @@
 
 | 시점 | 이전 방식 → 최종 결정 | 기록된 맥락·이유 | 근거 |
 |---|---|---|---|
+| 0.1.5 | 각주 텍스트·실제 각주 → 각주만·본문만·각주와 본문 | 사용자 이미지의 위쪽=본문, 아래쪽=각주. 함께 삽입은 본문에 번호를 붙이고 설명을 문서 아래 연결하도록 명시 승인 | FOOTNOTE_CHOICE_VALIDATION.md |
 | 0.1.4 | 고정 글자 크기 → Ctrl+휠 조절·저장; Sub 드래그 첫 진입 수용·위치 표시 재사용 | 사용자 글자 크기 요청 및 “sub 본문이 안되고 그리고 동작에 버벅임이 생김” | METADATA_FONT_DRAG_VALIDATION.md |
 | 0.1.3 | 메타데이터 일반 텍스트 → Markdown 서식 표시 | 사용자 이미지의 각주·문맥 가독성 지적 후 “수정해줘” | METADATA_MARKDOWN_VALIDATION.md, src/metadata-view.ts |
 | 0.0.3 | 연결 저장 위치 선택 → Main `link note` 속성 | 사용자 “문서방식으로 진행” | 계획 보관본 진행 원칙, STAGE2_VALIDATION.md |

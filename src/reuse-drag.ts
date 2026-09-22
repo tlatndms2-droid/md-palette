@@ -178,10 +178,13 @@ export class ReuseDrag {
     const app = this.plugin.app;
     if (!this.valid(source, target)) throw Error('문서 또는 Space가 변경되었습니다. 다시 끌어 놓아주세요.');
     let content = source.item?.text ?? '';
+    const context = source.kind === 'footnote' ? source.item?.context ?? '' : '';
+    if (mode === 'footnote-context') content = context;
+    if (source.kind === 'footnote' && mode !== 'text' && !context.trim()) throw Error('삽입할 본문 문맥이 없습니다.');
     if (source.original !== undefined && await this.fileText(source.file) !== source.original) throw Error('원문이 변경되었습니다. 최신 항목을 다시 끌어 놓아주세요.');
     if (mode === 'body') content = bodyOnly(await this.fileText(source.file));
     const link = app.fileManager.generateMarkdownLink(source.file, target.file.path, source.kind === 'block' ? '#^' + source.item!.id : undefined);
-    const text = source.kind === 'url' ? webReuseText(source.item!.target!, source.item!.text, mode === 'named-url') : mode === 'footnote' && target.canvas ? footnoteInsertion('', 0, content).value : reuseText(mode, link, content);
+    const text = source.kind === 'url' ? webReuseText(source.item!.target!, source.item!.text, mode === 'named-url') : mode === 'footnote' && target.canvas ? footnoteInsertion('', 0, content, context).value : reuseText(mode, link, content);
     if (!text) throw Error('삽입할 본문이 없습니다.');
     const disk = await app.vault.read(target.file);
     if (!this.valid(source, target)) throw Error('문서 또는 Space가 변경되었습니다. 다시 끌어 놓아주세요.');
@@ -191,7 +194,7 @@ export class ReuseDrag {
       if (view.editor !== editor || editor.getValue() !== target.original) throw Error('삽입 대상이 변경되었습니다. 다시 끌어 놓아주세요.');
       // Refuse an external-disk conflict instead of overwriting newer content.
       if (disk.replace(/\r\n/g, '\n') !== target.original.replace(/\r\n/g, '\n')) throw Error('문서 저장이 끝난 뒤 다시 끌어 놓아주세요.');
-      const insertion = mode === 'footnote' ? footnoteInsertion(target.original, target.offset!, content) : { changes: [{ offset: target.offset!, text }], value: target.original.slice(0, target.offset) + text + target.original.slice(target.offset!) };
+      const insertion = mode === 'footnote' ? footnoteInsertion(target.original, target.offset!, content, context) : { changes: [{ offset: target.offset!, text }], value: target.original.slice(0, target.offset) + text + target.original.slice(target.offset!) };
       const changed = insertion.value;
       editor.transaction({ changes: insertion.changes.map(change => ({ from: editor.offsetToPos(change.offset), text: change.text })) }, 'input.drop');
       try { await view.save(); }
