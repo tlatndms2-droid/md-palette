@@ -1,5 +1,7 @@
 # 0.1.6 새 Canvas 생성·연결 검증
 
+공개 Release 0.1.6, 소스 a970682. main.js·manifest.json·styles.css 공개 다운로드 SHA-256이 최종 검증 빌드와 모두 일치한다. 증거 release-verification.json 참조.
+
 2026-09-22, Obsidian 1.13.7. 사용자가 승인한 범위: 새 링크 파일에서 MD/Canvas 선택, 생성·연결만 수행하고 자동 열기 없음.
 
 ## 결과

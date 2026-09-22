@@ -1,6 +1,8 @@
 # MD Palette 현재 진행 계획
 
-갱신일: 2026-09-22. 공개 0.1.5, 브랜치 codex/planning.
+갱신일: 2026-09-22. 공개 0.1.6, 브랜치 codex/planning.
+
+0.1.6: 새 링크 파일의 MD/Canvas 선택. 생성·연결만 수행하고 자동 열기 없음. 43개 테스트·빌드·Sandbox UI·재시작·Canvas 더블클릭 열기·공개 자산 검증 완료, 사용자 BRAT 확인 대기. NEW_CANVAS_VALIDATION.md 참고.
 
 0.1.5: 각주만·본문만·각주와 본문 선택. 42개 테스트·빌드·Main/Sub/Canvas 실제 UI·재시작·공개 자산 검증 완료, 사용자 BRAT 확인 대기. FOOTNOTE_CHOICE_VALIDATION.md 참고.
 

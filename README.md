@@ -4,7 +4,9 @@ Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 �
 
 다른 PC에서 개발을 이어가려면 [HANDOFF.md](HANDOFF.md)부터 읽으세요. [현재 확정 사양](docs/handoff/CURRENT_SPEC.md) · [기획 변경 이력](docs/handoff/DECISIONS.md) · [새 PC 준비](docs/handoff/NEW_PC.md).
 
-## 공개 버전: 0.1.5
+## 공개 버전: 0.1.6
+
+`새 링크 파일 추가`에서 Markdown 또는 Canvas를 선택할 수 있습니다. 빈 파일을 만들고 Main에 연결하며 자동으로 열지는 않습니다. [0.1.6 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.6) · [검증 결과](NEW_CANVAS_VALIDATION.md). BRAT 사용자 확인 대기입니다.
 
 각주를 끌어 놓으면 `각주만 / 본문만 / 각주와 본문`을 고릅니다. `각주와 본문`은 본문 뒤에 새 각주 번호를 붙이고 각주 설명을 문서 아래에 연결합니다. [0.1.5 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.5) · [검증 결과](FOOTNOTE_CHOICE_VALIDATION.md). BRAT 사용자 확인 대기입니다.
 
@@ -35,7 +37,7 @@ Main이 영상 등 다른 탭 그룹과 위아래로 놓여 있어도 Sub는 그
 Main 지정 → 사이드바 `Link View → Card`에서 나가는 링크와 역링크의 파일을 함께 봅니다. 같은 파일은 한 번만 표시하며 Main 자체는 숨깁니다.
 
 - `연결 파일 추가` → 기존 Vault 파일 선택 → Main 상단 `link note` 속성에 링크를 추가합니다. 본문의 별도 링크 목록은 만들지 않으며, 이미 연결된 파일을 중복 추가하지 않습니다.
-- `새 링크 파일 추가` → 파일 이름 입력 → 저장 위치 확인 → `만들고 연결`. 빈 Markdown 파일을 Obsidian의 새 노트 저장 위치 설정에 따라 만들고 Main에 연결합니다. 같은 이름은 덮어쓰지 않습니다. Connections 상단과 Folder 빈 공간 우클릭에서도 사용할 수 있으며 Folder에서는 현재 가상 폴더에도 배치합니다. 파일을 열려면 생성된 항목을 더블클릭합니다.
+- `새 링크 파일 추가` → Markdown/Canvas 선택 → 파일 이름 입력 → 저장 위치 확인 → `만들고 연결`. 빈 파일을 Obsidian의 새 노트 저장 위치 설정에 따라 만들고 Main에 연결합니다. 동일 형식·이름은 덮어쓰지 않습니다. Connections 상단과 Folder 빈 공간 우클릭에서도 사용할 수 있으며 Folder에서는 현재 가상 폴더에도 배치합니다. 파일을 열려면 생성된 항목을 더블클릭합니다.
 - 한 번 클릭은 선택, Ctrl+클릭은 추가/해제, Shift+클릭은 범위 선택입니다. 더블클릭하면 단일 선택으로 바뀌고 파일 종류와 관계없이 Sub에서 열립니다. 우클릭 메뉴에서도 Sub 열기를 사용할 수 있습니다.
 - 카드 우클릭 → `새 Label 만들기` 또는 `Label 지정/교체`. 여러 카드를 선택하면 한꺼번에 적용하거나 제거합니다. 라벨 관리에서 이름·색을 바꾸면 사용 중인 카드에 함께 반영되며, 마지막 파일에서 제거된 라벨은 사라집니다.
 - 파일 유형과 여러 라벨로 필터링합니다. 라벨의 `All`은 개별 라벨 선택을 해제합니다. 필터를 접어도 선택 조건은 유지됩니다.
