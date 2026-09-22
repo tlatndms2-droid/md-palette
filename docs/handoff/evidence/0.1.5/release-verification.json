@@ -1,0 +1,20 @@
+{
+  "url": "https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.5",
+  "assets": [
+    {
+      "name": "main.js",
+      "sha256": "95c552e49754aa41bd893c9662b9b118ca57d79c9fc09f361394f4d591ae20b3",
+      "url": "https://github.com/tlatndms2-droid/md-palette/releases/download/0.1.5/main.js"
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "a68a1800085f254c605524646ad3fcc98889afd10fd7f1305ebfd17286de58cc",
+      "url": "https://github.com/tlatndms2-droid/md-palette/releases/download/0.1.5/manifest.json"
+    },
+    {
+      "name": "styles.css",
+      "sha256": "3be84fd6f6406036e2742f67a105bb4002651ac9011e169c5595efe53cff0abb",
+      "url": "https://github.com/tlatndms2-droid/md-palette/releases/download/0.1.5/styles.css"
+    }
+  ]
+}

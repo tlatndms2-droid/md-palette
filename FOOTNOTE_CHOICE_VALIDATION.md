@@ -18,3 +18,5 @@
 Sandbox: `C:\Users\tlatn\AppData\Local\Temp\MDPalette-Metadata-Sandbox-20260922`, 별도 Profile, CDP 19330. 재시작 ProcessStartInfo, PID 34332. 실제 사용자 Vault는 변경하거나 검증하지 않았다. 실행 스크립트: scripts/footnote-choice-validation.mjs. 증거: docs/handoff/evidence/0.1.5.
 
 BRAT 업데이트와 개인 Vault 확인은 기존 합의대로 사용자가 담당한다.
+
+공개 Release 0.1.5, 소스 e60fa99. main.js·manifest.json·styles.css 공개 다운로드 SHA-256 모두 최종 검증 빌드와 일치했다. release-verification.json에 기록했다.

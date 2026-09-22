@@ -1,11 +1,13 @@
 # MD Palette 작업 인계 — 다른 PC 재개 시작점
 
 갱신일: 2026-09-22. 저장소: https://github.com/tlatndms2-droid/md-palette
-기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.4**.
+기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.5**.
 
 ## 현재 상태
 
-**현재 재개 기준은 공개 0.1.4이다. Ctrl+휠 메타데이터 글자 크기 조절과 Sub 드래그 실패·반복 처리 개선을 실제 Sandbox UI·재시작·공개 자산 SHA-256까지 검증했다. 0.1.4 사용자 BRAT 확인 대기이며 자동으로 시작할 다음 기능은 없다. 0.1.3 Markdown 표시는 사용자 확인을 받았다.**
+**현재 재개 기준은 공개 0.1.5이다. 각주 드래그의 각주만·본문만·각주와 본문 선택을 Sandbox UI·재시작·공개 자산 SHA-256까지 검증했다. 0.1.5 사용자 BRAT 확인 대기이며 자동으로 시작할 다음 기능은 없다. 0.1.4까지 사용자 확인을 받았다.**
+
+- 0.1.5 소스: `e60fa99`. [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.5), [검증](FOOTNOTE_CHOICE_VALIDATION.md), [증거](docs/handoff/evidence/0.1.5). 본문은 표시된 본문 문맥이며 함께 삽입하면 본문 뒤 번호와 문서 끝 설명을 연결한다.
 
 - 0.1.4 소스: `f2cc389`. [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.4), [검증 보고서](METADATA_FONT_DRAG_VALIDATION.md), [증거](docs/handoff/evidence/0.1.4).
 - Metadata View 본문 위에서 Ctrl+휠로 10~32px 조절, 재시작 후 복원. Sub 새 줄 진입 직후 놓기와 긴 문서 드래그를 검증했다. 개인 Vault에서의 체감과 BRAT 확인은 사용자가 담당한다.
@@ -73,14 +75,16 @@
 | 7 최종 통합 | 0.1.0 | 통합·업데이트·재시작·공개 자산 검증 완료, STAGE7_VALIDATION.md |
 | 글자 사이 드롭 커서 | 0.1.1 | 검증·배포 완료, 사용자 화면 확인 후 줄 강조 추가 요청, CARET_VALIDATION.md |
 | 드롭 대상 줄 강조 | 0.1.2 | 검증·배포·사용자 정상 작동 확인 완료, LINE_HIGHLIGHT_VALIDATION.md |
-| 각주·메타데이터 Markdown 표시 | 0.1.3 | Sandbox UI·재시작·공개 자산 검증 완료, 사용자 BRAT 확인 대기, METADATA_MARKDOWN_VALIDATION.md |
+| 각주·메타데이터 Markdown 표시 | 0.1.3 | 검증·배포·사용자 확인 완료, METADATA_MARKDOWN_VALIDATION.md |
+| 글자 크기·Sub 드래그 개선 | 0.1.4 | 검증·배포·사용자 확인 완료, METADATA_FONT_DRAG_VALIDATION.md |
+| 각주 드래그 내용 선택 | 0.1.5 | 검증·배포 완료, 사용자 확인 대기, FOOTNOTE_CHOICE_VALIDATION.md |
 
 각 버전의 자동·Sandbox 검증은 사용자 직접 확인과 별개다. 0.0.12/13의 개별 사용자 확인 문장을 추정해서 추가하지 않는다. 코드가 배포되어 있다는 사실만으로 최종 통합 완료를 선언하지 않는다.
 
 ## 다음 작업
 
-1. 다른 PC에서 `codex/planning` 최신 상태를 받아 manifest `0.1.3`과 Git 변경사항을 확인한다.
-2. 0.1.3 사용자 BRAT 확인은 대기 중이다. 새 후속 기능은 아직 지정되지 않았다.
+1. 다른 PC에서 `codex/planning` 최신 상태를 받아 manifest `0.1.5`와 Git 변경사항을 확인한다.
+2. 0.1.5 사용자 BRAT 확인은 대기 중이다. 새 후속 기능은 아직 지정되지 않았다.
 3. 이미 완료한 통합 검증과 배포를 인계만을 이유로 반복하지 않는다. 후속 코드 변경에는 변경 범위에 맞는 검증·배포 절차를 적용한다.
 
 별도 팝아웃 창 배치는 0.0.15 검증 범위에 포함되지 않았다. 지원 확대를 이번 인계로 승인받은 것으로 간주하지 않는다. 미검증·미수행은 통합 완료 보고에서 구분한다.

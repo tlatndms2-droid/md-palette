@@ -8,7 +8,7 @@ Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 �
 
 각주를 끌어 놓으면 `각주만 / 본문만 / 각주와 본문`을 고릅니다. `각주와 본문`은 본문 뒤에 새 각주 번호를 붙이고 각주 설명을 문서 아래에 연결합니다. [0.1.5 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.5) · [검증 결과](FOOTNOTE_CHOICE_VALIDATION.md). BRAT 사용자 확인 대기입니다.
 
-Metadata View 본문 위에서 Ctrl+마우스 휠로 글자 크기를 10~32px로 조절합니다. 선택한 크기는 재시작 후에도 유지됩니다. Sub 본문 새 줄에 놓을 때 드래그가 누락되는 문제를 수정하고 반복 처리를 줄였습니다. [0.1.4 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.4) · [검증 결과](METADATA_FONT_DRAG_VALIDATION.md). BRAT 업데이트 후 사용자 확인 대기입니다.
+Metadata View 본문 위에서 Ctrl+마우스 휠로 글자 크기를 10~32px로 조절합니다. 선택한 크기는 재시작 후에도 유지됩니다. Sub 본문 새 줄에 놓을 때 드래그가 누락되는 문제를 수정하고 반복 처리를 줄였습니다. [0.1.4 검증 결과](METADATA_FONT_DRAG_VALIDATION.md), 사용자 확인 완료.
 
 각주 본문·문맥과 메타데이터는 Markdown 서식으로 표시합니다. 각주 편집은 원문으로 하고 저장하면 서식이 적용됩니다.
 
