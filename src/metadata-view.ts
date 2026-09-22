@@ -1,4 +1,4 @@
-import { Menu, Notice, TFile, setIcon } from 'obsidian';
+import { Component, MarkdownRenderer, Menu, Notice, TFile, setIcon } from 'obsidian';
 import type MDPalettePlugin from './main';
 import { footnoteReplacement, metadataSections, parseMetadata, type MetadataItem, type MetadataKind, type MetadataResult } from './metadata-model';
 
@@ -16,9 +16,35 @@ export class MetadataView {
   private draft = false;
   private pending = false;
   private limits: Partial<Record<MetadataKind, number>> = {};
+  private markdown?: Component;
   constructor(private plugin: MDPalettePlugin) {}
   isMounted(): boolean { return !!this.host?.isConnected; }
-  destroy(): void { this.serial++; this.host = undefined; this.list = undefined; this.file = undefined; this.result = undefined; this.draft = false; }
+  destroy(): void { this.clearMarkdown(); this.serial++; this.host = undefined; this.list = undefined; this.file = undefined; this.result = undefined; this.draft = false; }
+  private clearMarkdown(): void {
+    if (this.markdown) this.plugin.removeChild(this.markdown);
+    this.markdown = undefined;
+  }
+  private markdownText(parent: HTMLElement, value: string, activate: (event: MouseEvent) => void, extraClass = ''): HTMLElement {
+    const owner = this.markdown!;
+    const el = parent.createDiv({ cls: `mdp-metadata-text mdp-metadata-markdown markdown-rendered ${extraClass}`, attr: { role: 'button', tabindex: '0' } });
+    // Preserve the existing row action, even when the preview contains a link.
+    el.addEventListener('click', event => { event.preventDefault(); event.stopPropagation(); activate(event); }, true);
+    el.addEventListener('keydown', event => {
+      if (event.target === el && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); el.click(); }
+    });
+    // As in Card previews, show embeds as links instead of loading nested notes/media.
+    const preview = value.replace(/!\[\[/g, '[[').replace(/!\[([^\]]*)\]\(/g, '[$1](');
+    void MarkdownRenderer.render(this.plugin.app, preview, el, this.file!.path, owner).then(() => {
+      if (this.markdown !== owner) { owner.unload(); return; }
+      el.querySelectorAll('input').forEach(input => { input.disabled = true; });
+      el.querySelectorAll('a').forEach(link => { link.draggable = false; link.tabIndex = -1; });
+    }).catch(error => {
+      if (this.markdown !== owner) { owner.unload(); return; }
+      el.setText(value);
+      console.error('MD Palette: metadata Markdown rendering failed', error);
+    });
+    return el;
+  }
   render(host: HTMLElement): void {
     this.destroy(); this.host = host; host.className = 'mdp-metadata';
     const search = host.createDiv({ cls: 'mdp-metadata-search' }); setIcon(search.createSpan(), 'search');
@@ -63,6 +89,7 @@ export class MetadataView {
   private draw(): void {
     if (!this.list || !this.result || !this.file) return;
     const scroll = this.host?.closest('.view-content')?.scrollTop ?? 0;
+    this.clearMarkdown(); this.markdown = this.plugin.addChild(new Component());
     this.list.empty(); const query = this.query.trim().toLocaleLowerCase();
     for (const [kind, label] of metadataSections) {
       const all = this.result[kind];
@@ -115,9 +142,7 @@ export class MetadataView {
     const content = row.createDiv({ cls: 'mdp-metadata-content' });
     if (item.kind === 'links') {
       const target = this.resolve(item);
-      const button = content.createEl('button', { cls: 'mdp-metadata-text', text: item.text });
-      content.createDiv({ cls: 'mdp-muted mdp-metadata-source', text: target.url ? '웹 링크' : target.file ? target.file.extension.toUpperCase() : '대상 파일 없음' });
-      button.onclick = event => {
+      this.markdownText(content, item.text, event => {
         if (this.plugin.mainFile !== file) return;
         if (target.url) {
           const menu = new Menu();
@@ -126,12 +151,13 @@ export class MetadataView {
           menu.showAtMouseEvent(event);
         } else if (target.file) this.plugin.run(() => this.plugin.openMetadataFile(target.file!, target.subpath));
         else new Notice('대상 파일을 찾을 수 없습니다. 원래 링크를 확인해주세요.');
-      };
+      });
+      content.createDiv({ cls: 'mdp-muted mdp-metadata-source', text: target.url ? '웹 링크' : target.file ? target.file.extension.toUpperCase() : '대상 파일 없음' });
       return;
     }
     if (item.id) { const line = content.createDiv({ cls: 'mdp-metadata-id' }); line.createEl('code', { text: item.kind === 'blocks' ? '^' + item.id : '[^' + item.id + ']' }); if (item.duplicate) line.createSpan({ text: '중복 ID', cls: 'mdp-metadata-duplicate' }); }
-    if (item.context) { const context = content.createEl('button', { text: item.context, cls: 'mdp-metadata-text mdp-footnote-context' }); context.onclick = go; content.createDiv({ text: '본문 문맥', cls: 'mdp-muted mdp-metadata-source' }); }
-    const text = content.createEl('button', { cls: 'mdp-metadata-text', text: item.text }); text.onclick = go;
+    if (item.context) { this.markdownText(content, item.context, go, 'mdp-footnote-context'); content.createDiv({ text: '본문 문맥', cls: 'mdp-muted mdp-metadata-source' }); }
+    const text = this.markdownText(content, item.text, go);
     if (item.kind === 'highlights') content.createDiv({ cls: 'mdp-muted mdp-metadata-source', text: `${file.name} · ${original.slice(0, item.offset).split('\n').length}번째 줄` });
     if (item.kind === 'footnotes') {
       const edit = content.createEl('button', { text: '편집', cls: 'mdp-footnote-edit' }); edit.disabled = !!item.duplicate;

@@ -167,15 +167,22 @@
 .mdp-metadata-item { display: flex; gap: 9px; padding: 9px 5px; border-bottom: 1px solid var(--background-modifier-border); }
 .mdp-metadata-item:last-child { border-bottom: 0; }
 .mdp-metadata-content { flex: 1; min-width: 0; }
-.mdp-metadata button.mdp-metadata-text { display: block; width: 100%; height: auto; white-space: pre-wrap; overflow-wrap: anywhere; text-align: left; padding: 0; background: transparent; color: var(--text-normal); border: 0; box-shadow: none; line-height: var(--line-height-normal); user-select: text; }
-.mdp-metadata button.mdp-metadata-text:hover { background: var(--background-modifier-hover); }
+.mdp-metadata .mdp-metadata-text { display: block; width: 100%; height: auto; overflow-wrap: anywhere; text-align: left; padding: 0; background: transparent; color: var(--text-normal); border: 0; box-shadow: none; line-height: var(--line-height-normal); user-select: text; }
+.mdp-metadata .mdp-metadata-text:hover { background: var(--background-modifier-hover); }
+.mdp-metadata-markdown:focus-visible { outline: 2px solid var(--interactive-accent); outline-offset: 2px; }
+.mdp-metadata-markdown > :first-child { margin-top: 0; }
+.mdp-metadata-markdown > :last-child { margin-bottom: 0; }
+.mdp-metadata-markdown p { margin-block: 0.4em; }
+.mdp-metadata-markdown ul, .mdp-metadata-markdown ol { padding-inline-start: 1.5em; }
+.mdp-metadata-markdown pre, .mdp-metadata-markdown table { max-width: 100%; overflow-x: auto; }
+.mdp-metadata-markdown img { max-width: 100%; }
 .mdp-metadata-source { font-size: var(--font-smallest); margin-top: 4px; overflow-wrap: anywhere; }
 .mdp-meta-highlights { border-left: 3px solid var(--interactive-accent); margin: 8px 0; padding-left: 10px; }
 .mdp-metadata-id { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 6px; }
 .mdp-metadata-id code { color: var(--text-accent); font-size: var(--font-small); }
 .mdp-metadata-duplicate { color: var(--text-warning); font-size: var(--font-smallest); }
 .mdp-meta-tasks input { flex-shrink: 0; margin-top: 3px; }
-.mdp-metadata .mdp-meta-tasks.is-complete button.mdp-metadata-text { color: var(--text-muted); text-decoration: line-through; }
+.mdp-metadata .mdp-meta-tasks.is-complete .mdp-metadata-text { color: var(--text-muted); text-decoration: line-through; }
 .mdp-task-filters { margin: 2px 0 7px; }
 .mdp-task-filters button { font-size: var(--font-smallest); padding: 5px; min-width: 0; }
 .mdp-footnote-context { font-weight: var(--font-medium); }
