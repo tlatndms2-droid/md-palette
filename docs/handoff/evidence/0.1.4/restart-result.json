@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "version": "0.1.4",
+  "checks": [
+    "font size automatically restored after full process restart",
+    "Ctrl+wheel remains active after restart",
+    "all Sandbox source-file hashes unchanged"
+  ],
+  "assets": [
+    {
+      "name": "main.js",
+      "sha256": "d1ce7e12854dbb2b13a46abe15a4090c9070e472940bfb9b1777e28cd1252024"
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "eaaacc91b937557d445379465d128ea54eaf61f2f3db9918d45ba52fcb9a943d"
+    },
+    {
+      "name": "styles.css",
+      "sha256": "3be84fd6f6406036e2742f67a105bb4002651ac9011e169c5595efe53cff0abb"
+    }
+  ],
+  "errors": []
+}

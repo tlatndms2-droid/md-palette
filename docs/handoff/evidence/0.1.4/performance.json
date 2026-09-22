@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "version": "0.1.4",
+  "targetCharacters": 805407,
+  "metadata": {
+    "items": 100,
+    "total": "1503"
+  },
+  "events": 121,
+  "reads": 1,
+  "markerObjects": 2,
+  "meanMs": 0.08677685753373075,
+  "maxMs": 0.5,
+  "documentChangeInvalidatesCache": true,
+  "cancelPreservesDocument": true
+}

@@ -1,0 +1,322 @@
+[
+  {
+    "name": "context",
+    "start": {
+      "kind": "footnote",
+      "selection": ""
+    },
+    "to": {
+      "x": 591,
+      "y": 166.078125
+    },
+    "events": [
+      {
+        "type": "dragstart",
+        "x": 1171,
+        "y": 308,
+        "target": "mdp-metadata-item mdp-meta-footnotes"
+      },
+      {
+        "type": "dragenter",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "footnote"
+      },
+      {
+        "type": "drop",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "footnote"
+      },
+      {
+        "type": "dragend",
+        "x": 591,
+        "y": 166,
+        "target": "mdp-metadata-item mdp-meta-footnotes"
+      }
+    ],
+    "marked": true,
+    "offset": 2,
+    "caret": true,
+    "line": true,
+    "menu": [
+      "텍스트로 삽입",
+      "실제 각주로 추가",
+      "취소"
+    ],
+    "value": "앞부**각주 굵게**와 *기울임*, ==중요 강조==, ~~취소선~~, `코드` 및 [[Related|연결 문서]]\n다음 줄도 **서식 유지**\n\n- 첫 번째 **항목**\n- 두 번째 항목분 뒤쪽\n\n끝\n",
+    "notices": []
+  },
+  {
+    "name": "footnote",
+    "start": {
+      "kind": "footnote",
+      "selection": ""
+    },
+    "to": {
+      "x": 591,
+      "y": 166.078125
+    },
+    "events": [
+      {
+        "type": "dragstart",
+        "x": 1045,
+        "y": 386,
+        "target": "mdp-metadata-item mdp-meta-footnotes"
+      },
+      {
+        "type": "dragenter",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "footnote"
+      },
+      {
+        "type": "drop",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "footnote"
+      },
+      {
+        "type": "dragend",
+        "x": 591,
+        "y": 166,
+        "target": "mdp-metadata-item mdp-meta-footnotes"
+      }
+    ],
+    "marked": true,
+    "offset": 2,
+    "caret": true,
+    "line": true,
+    "menu": [
+      "텍스트로 삽입",
+      "실제 각주로 추가",
+      "취소"
+    ],
+    "value": "앞부**각주 굵게**와 *기울임*, ==중요 강조==, ~~취소선~~, `코드` 및 [[Related|연결 문서]]\n다음 줄도 **서식 유지**\n\n- 첫 번째 **항목**\n- 두 번째 항목분 뒤쪽\n\n끝\n",
+    "notices": []
+  },
+  {
+    "name": "highlight",
+    "start": {
+      "kind": "highlight",
+      "selection": ""
+    },
+    "to": {
+      "x": 591,
+      "y": 166.078125
+    },
+    "events": [
+      {
+        "type": "dragstart",
+        "x": 1053,
+        "y": 569,
+        "target": "mdp-metadata-item mdp-meta-highlights"
+      },
+      {
+        "type": "dragenter",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "highlight"
+      },
+      {
+        "type": "drop",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "highlight"
+      },
+      {
+        "type": "dragend",
+        "x": 591,
+        "y": 166,
+        "target": "mdp-metadata-item mdp-meta-highlights"
+      }
+    ],
+    "marked": true,
+    "offset": 2,
+    "caret": true,
+    "line": true,
+    "menu": [
+      "텍스트 삽입",
+      "출처 링크 포함 삽입",
+      "취소"
+    ],
+    "value": "앞부자신의 사고력을 확장하기분 뒤쪽\n\n끝\n",
+    "notices": []
+  },
+  {
+    "name": "block",
+    "start": {
+      "kind": "block",
+      "selection": ""
+    },
+    "to": {
+      "x": 591,
+      "y": 166.078125
+    },
+    "events": [
+      {
+        "type": "dragstart",
+        "x": 1045,
+        "y": 843,
+        "target": "mdp-metadata-item mdp-meta-blocks"
+      },
+      {
+        "type": "dragenter",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "block"
+      },
+      {
+        "type": "drop",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "block"
+      },
+      {
+        "type": "dragend",
+        "x": 591,
+        "y": 166,
+        "target": "mdp-metadata-item mdp-meta-blocks"
+      }
+    ],
+    "marked": true,
+    "offset": 2,
+    "caret": true,
+    "line": true,
+    "menu": [
+      "블록 링크 삽입",
+      "블록 임베드 삽입",
+      "취소"
+    ],
+    "value": "앞부[[Metadata Review#^sample-block]]분 뒤쪽\n\n끝\n",
+    "notices": []
+  },
+  {
+    "name": "url",
+    "start": {
+      "kind": "url",
+      "selection": ""
+    },
+    "to": {
+      "x": 591,
+      "y": 166.078125
+    },
+    "events": [
+      {
+        "type": "dragstart",
+        "x": 1045,
+        "y": 1013,
+        "target": "mdp-metadata-item mdp-meta-links"
+      },
+      {
+        "type": "dragenter",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "url"
+      },
+      {
+        "type": "drop",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "url"
+      },
+      {
+        "type": "dragend",
+        "x": 591,
+        "y": 166,
+        "target": "mdp-metadata-item mdp-meta-links"
+      }
+    ],
+    "marked": true,
+    "offset": 2,
+    "caret": true,
+    "line": true,
+    "menu": [
+      "주소 그대로 삽입",
+      "제목이 있는 링크 삽입",
+      "취소"
+    ],
+    "value": "앞부https://example.com/metadata분 뒤쪽\n\n끝\n",
+    "notices": []
+  }
+]

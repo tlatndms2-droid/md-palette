@@ -17,9 +17,23 @@ export class MetadataView {
   private pending = false;
   private limits: Partial<Record<MetadataKind, number>> = {};
   private markdown?: Component;
+  private onWheel = (event: WheelEvent): void => {
+    if (!event.ctrlKey || !event.deltaY || !this.host) return;
+    // Consume Ctrl+wheel here so it cannot also zoom Obsidian or scroll the list.
+    event.preventDefault(); event.stopPropagation();
+    const sample = this.host.querySelector('.mdp-metadata-text') ?? this.host;
+    const current = this.plugin.metadataFontSize ?? parseFloat(this.host.ownerDocument.defaultView!.getComputedStyle(sample).fontSize);
+    const next = Math.max(10, Math.min(32, Math.round(current) + (event.deltaY < 0 ? 1 : -1)));
+    if (next === this.plugin.metadataFontSize) return;
+    this.plugin.metadataFontSize = next;
+    this.applyFontSize(); this.plugin.saveMetadata();
+  };
   constructor(private plugin: MDPalettePlugin) {}
   isMounted(): boolean { return !!this.host?.isConnected; }
-  destroy(): void { this.clearMarkdown(); this.serial++; this.host = undefined; this.list = undefined; this.file = undefined; this.result = undefined; this.draft = false; }
+  destroy(): void { this.host?.removeEventListener('wheel', this.onWheel, true); this.host?.style.removeProperty('--mdp-metadata-font-size'); this.clearMarkdown(); this.serial++; this.host = undefined; this.list = undefined; this.file = undefined; this.result = undefined; this.draft = false; }
+  private applyFontSize(): void {
+    if (this.plugin.metadataFontSize !== undefined) this.host?.style.setProperty('--mdp-metadata-font-size', `${this.plugin.metadataFontSize}px`);
+  }
   private clearMarkdown(): void {
     if (this.markdown) this.plugin.removeChild(this.markdown);
     this.markdown = undefined;
@@ -47,6 +61,7 @@ export class MetadataView {
   }
   render(host: HTMLElement): void {
     this.destroy(); this.host = host; host.className = 'mdp-metadata';
+    this.applyFontSize(); host.addEventListener('wheel', this.onWheel, { capture: true, passive: false });
     const search = host.createDiv({ cls: 'mdp-metadata-search' }); setIcon(search.createSpan(), 'search');
     this.input = search.createEl('input', { type: 'search', placeholder: '메타데이터 검색…', attr: { 'aria-label': '메타데이터 전체 검색' } });
     this.input.value = this.query;

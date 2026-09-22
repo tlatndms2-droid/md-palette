@@ -1,0 +1,1197 @@
+[
+  {
+    "name": "context",
+    "start": {
+      "kind": "footnote",
+      "selection": ""
+    },
+    "to": {
+      "x": 591,
+      "y": 166.078125
+    },
+    "events": [
+      {
+        "type": "dragstart",
+        "x": 1171,
+        "y": 308,
+        "target": "mdp-metadata-item mdp-meta-footnotes"
+      },
+      {
+        "type": "dragenter",
+        "x": 1166,
+        "y": 310,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1166,
+        "y": 310,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1161,
+        "y": 312,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1156,
+        "y": 314,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 1151,
+        "y": 316,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1146,
+        "y": 318,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1141,
+        "y": 320,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 1136,
+        "y": 322,
+        "target": "internal-link",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1131,
+        "y": 324,
+        "target": "internal-link",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1126,
+        "y": 326,
+        "target": "internal-link",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 1121,
+        "y": 328,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1116,
+        "y": 330,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1111,
+        "y": 332,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1133,
+        "y": 298,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 1094,
+        "y": 289,
+        "target": "mdp-metadata-content",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 1055,
+        "y": 280,
+        "target": "mdp-metadata-id",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 1017,
+        "y": 270,
+        "target": "view-content mdp-sidebar",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 978,
+        "y": 261,
+        "target": "cm-scroller",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 939,
+        "y": 251,
+        "target": "cm-content cm-lineWrapping",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 900,
+        "y": 242,
+        "target": "cm-line",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 862,
+        "y": 232,
+        "target": "cm-line",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 823,
+        "y": 223,
+        "target": "cm-line",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 784,
+        "y": 213,
+        "target": "cm-line",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 745,
+        "y": 204,
+        "target": "cm-line",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 707,
+        "y": 194,
+        "target": "cm-line",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 668,
+        "y": 185,
+        "target": "cm-line",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 629,
+        "y": 175,
+        "target": "cm-line cm-active",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "footnote"
+      },
+      {
+        "type": "drop",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "footnote"
+      },
+      {
+        "type": "dragend",
+        "x": 591,
+        "y": 166,
+        "target": "mdp-metadata-item mdp-meta-footnotes"
+      }
+    ],
+    "marked": true,
+    "offset": 2,
+    "caret": true,
+    "line": true,
+    "menu": [
+      "텍스트로 삽입",
+      "실제 각주로 추가",
+      "취소"
+    ],
+    "value": "앞부**각주 굵게**와 *기울임*, ==중요 강조==, ~~취소선~~, `코드` 및 [[Related|연결 문서]]\n다음 줄도 **서식 유지**\n\n- 첫 번째 **항목**\n- 두 번째 항목분 뒤쪽\n\n끝\n",
+    "notices": []
+  },
+  {
+    "name": "footnote",
+    "start": {
+      "kind": "footnote",
+      "selection": ""
+    },
+    "to": {
+      "x": 591,
+      "y": 166.078125
+    },
+    "events": [
+      {
+        "type": "dragstart",
+        "x": 1045,
+        "y": 386,
+        "target": "mdp-metadata-item mdp-meta-footnotes"
+      },
+      {
+        "type": "dragenter",
+        "x": 1040,
+        "y": 388,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1040,
+        "y": 388,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1035,
+        "y": 390,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1030,
+        "y": 392,
+        "target": "",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 1025,
+        "y": 394,
+        "target": "mdp-metadata-item mdp-meta-footnotes",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 1020,
+        "y": 396,
+        "target": "view-content mdp-sidebar",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1015,
+        "y": 398,
+        "target": "view-content mdp-sidebar",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 1010,
+        "y": 400,
+        "target": "workspace-leaf-resize-handle tappable",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 1005,
+        "y": 402,
+        "target": "cm-scroller",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 1000,
+        "y": 404,
+        "target": "cm-scroller",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 995,
+        "y": 406,
+        "target": "cm-scroller",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 990,
+        "y": 408,
+        "target": "cm-scroller",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 985,
+        "y": 410,
+        "target": "cm-scroller",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 1014,
+        "y": 371,
+        "target": "view-content mdp-sidebar",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 984,
+        "y": 356,
+        "target": "cm-scroller",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 954,
+        "y": 342,
+        "target": "cm-content cm-lineWrapping",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 923,
+        "y": 327,
+        "target": "cm-content cm-lineWrapping",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 893,
+        "y": 312,
+        "target": "cm-content cm-lineWrapping",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 863,
+        "y": 298,
+        "target": "cm-content cm-lineWrapping",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 833,
+        "y": 283,
+        "target": "cm-content cm-lineWrapping",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 802,
+        "y": 268,
+        "target": "cm-content cm-lineWrapping",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 772,
+        "y": 254,
+        "target": "cm-content cm-lineWrapping",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 742,
+        "y": 239,
+        "target": "cm-line",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 712,
+        "y": 224,
+        "target": "cm-line",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 681,
+        "y": 210,
+        "target": "cm-line",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 651,
+        "y": 195,
+        "target": "cm-line",
+        "source": "footnote"
+      },
+      {
+        "type": "dragover",
+        "x": 621,
+        "y": 180,
+        "target": "cm-line",
+        "source": "footnote"
+      },
+      {
+        "type": "dragenter",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "footnote"
+      },
+      {
+        "type": "drop",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "footnote"
+      },
+      {
+        "type": "dragend",
+        "x": 591,
+        "y": 166,
+        "target": "mdp-metadata-item mdp-meta-footnotes"
+      }
+    ],
+    "marked": true,
+    "offset": 2,
+    "caret": true,
+    "line": true,
+    "menu": [
+      "텍스트로 삽입",
+      "실제 각주로 추가",
+      "취소"
+    ],
+    "value": "앞부**각주 굵게**와 *기울임*, ==중요 강조==, ~~취소선~~, `코드` 및 [[Related|연결 문서]]\n다음 줄도 **서식 유지**\n\n- 첫 번째 **항목**\n- 두 번째 항목분 뒤쪽\n\n끝\n",
+    "notices": []
+  },
+  {
+    "name": "highlight",
+    "start": {
+      "kind": "highlight",
+      "selection": ""
+    },
+    "to": {
+      "x": 591,
+      "y": 166.078125
+    },
+    "events": [
+      {
+        "type": "dragstart",
+        "x": 1053,
+        "y": 569,
+        "target": "mdp-metadata-item mdp-meta-highlights"
+      },
+      {
+        "type": "dragenter",
+        "x": 1048,
+        "y": 571,
+        "target": "",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 1048,
+        "y": 571,
+        "target": "",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 1043,
+        "y": 573,
+        "target": "",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 1038,
+        "y": 575,
+        "target": "",
+        "source": "highlight"
+      },
+      {
+        "type": "dragenter",
+        "x": 1033,
+        "y": 577,
+        "target": "mdp-metadata-item mdp-meta-highlights",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 1028,
+        "y": 579,
+        "target": "mdp-metadata-item mdp-meta-highlights",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 1023,
+        "y": 581,
+        "target": "mdp-metadata-item mdp-meta-highlights",
+        "source": "highlight"
+      },
+      {
+        "type": "dragenter",
+        "x": 1018,
+        "y": 583,
+        "target": "view-content mdp-sidebar",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 1013,
+        "y": 585,
+        "target": "view-content mdp-sidebar",
+        "source": "highlight"
+      },
+      {
+        "type": "dragenter",
+        "x": 1008,
+        "y": 587,
+        "target": "cm-scroller",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 1003,
+        "y": 589,
+        "target": "cm-scroller",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 998,
+        "y": 591,
+        "target": "cm-scroller",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 993,
+        "y": 593,
+        "target": "cm-scroller",
+        "source": "highlight"
+      },
+      {
+        "type": "dragenter",
+        "x": 1022,
+        "y": 542,
+        "target": "mdp-metadata-section",
+        "source": "highlight"
+      },
+      {
+        "type": "dragenter",
+        "x": 991,
+        "y": 515,
+        "target": "cm-scroller",
+        "source": "highlight"
+      },
+      {
+        "type": "dragenter",
+        "x": 960,
+        "y": 488,
+        "target": "cm-content cm-lineWrapping",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 929,
+        "y": 461,
+        "target": "cm-content cm-lineWrapping",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 899,
+        "y": 434,
+        "target": "cm-content cm-lineWrapping",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 868,
+        "y": 407,
+        "target": "cm-content cm-lineWrapping",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 837,
+        "y": 381,
+        "target": "cm-content cm-lineWrapping",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 806,
+        "y": 354,
+        "target": "cm-content cm-lineWrapping",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 775,
+        "y": 327,
+        "target": "cm-content cm-lineWrapping",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 745,
+        "y": 300,
+        "target": "cm-content cm-lineWrapping",
+        "source": "highlight"
+      },
+      {
+        "type": "dragover",
+        "x": 714,
+        "y": 273,
+        "target": "cm-content cm-lineWrapping",
+        "source": "highlight"
+      },
+      {
+        "type": "dragenter",
+        "x": 683,
+        "y": 246,
+        "target": "cm-line",
+        "source": "highlight"
+      },
+      {
+        "type": "dragenter",
+        "x": 652,
+        "y": 219,
+        "target": "cm-line",
+        "source": "highlight"
+      },
+      {
+        "type": "dragenter",
+        "x": 621,
+        "y": 192,
+        "target": "cm-line",
+        "source": "highlight"
+      },
+      {
+        "type": "dragenter",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "highlight"
+      },
+      {
+        "type": "drop",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "highlight"
+      },
+      {
+        "type": "dragend",
+        "x": 591,
+        "y": 166,
+        "target": "mdp-metadata-item mdp-meta-highlights"
+      }
+    ],
+    "marked": true,
+    "offset": 2,
+    "caret": true,
+    "line": true,
+    "menu": [
+      "텍스트 삽입",
+      "출처 링크 포함 삽입",
+      "취소"
+    ],
+    "value": "앞부자신의 사고력을 확장하기분 뒤쪽\n\n끝\n",
+    "notices": []
+  },
+  {
+    "name": "block",
+    "start": {
+      "kind": "block",
+      "selection": ""
+    },
+    "to": {
+      "x": 591,
+      "y": 166.078125
+    },
+    "events": [
+      {
+        "type": "dragstart",
+        "x": 1045,
+        "y": 843,
+        "target": "mdp-metadata-item mdp-meta-blocks"
+      },
+      {
+        "type": "dragenter",
+        "x": 1040,
+        "y": 845,
+        "target": "",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 1040,
+        "y": 845,
+        "target": "",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 1035,
+        "y": 847,
+        "target": "",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 1030,
+        "y": 849,
+        "target": "",
+        "source": "block"
+      },
+      {
+        "type": "dragenter",
+        "x": 1025,
+        "y": 851,
+        "target": "mdp-metadata-item mdp-meta-blocks",
+        "source": "block"
+      },
+      {
+        "type": "dragenter",
+        "x": 1020,
+        "y": 853,
+        "target": "view-content mdp-sidebar",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 1015,
+        "y": 855,
+        "target": "view-content mdp-sidebar",
+        "source": "block"
+      },
+      {
+        "type": "dragenter",
+        "x": 1010,
+        "y": 857,
+        "target": "workspace-leaf-resize-handle tappable",
+        "source": "block"
+      },
+      {
+        "type": "dragenter",
+        "x": 1005,
+        "y": 859,
+        "target": "cm-scroller",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 1000,
+        "y": 861,
+        "target": "cm-scroller",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 995,
+        "y": 863,
+        "target": "cm-scroller",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 990,
+        "y": 865,
+        "target": "cm-scroller",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 985,
+        "y": 867,
+        "target": "cm-scroller",
+        "source": "block"
+      },
+      {
+        "type": "dragenter",
+        "x": 1014,
+        "y": 798,
+        "target": "view-content mdp-sidebar",
+        "source": "block"
+      },
+      {
+        "type": "dragenter",
+        "x": 984,
+        "y": 753,
+        "target": "cm-scroller",
+        "source": "block"
+      },
+      {
+        "type": "dragenter",
+        "x": 954,
+        "y": 707,
+        "target": "cm-content cm-lineWrapping",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 923,
+        "y": 662,
+        "target": "cm-content cm-lineWrapping",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 893,
+        "y": 617,
+        "target": "cm-content cm-lineWrapping",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 863,
+        "y": 572,
+        "target": "cm-content cm-lineWrapping",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 833,
+        "y": 527,
+        "target": "cm-content cm-lineWrapping",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 802,
+        "y": 482,
+        "target": "cm-content cm-lineWrapping",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 772,
+        "y": 437,
+        "target": "cm-content cm-lineWrapping",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 742,
+        "y": 391,
+        "target": "cm-content cm-lineWrapping",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 712,
+        "y": 346,
+        "target": "cm-content cm-lineWrapping",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 681,
+        "y": 301,
+        "target": "cm-content cm-lineWrapping",
+        "source": "block"
+      },
+      {
+        "type": "dragover",
+        "x": 651,
+        "y": 256,
+        "target": "cm-content cm-lineWrapping",
+        "source": "block"
+      },
+      {
+        "type": "dragenter",
+        "x": 621,
+        "y": 211,
+        "target": "cm-line",
+        "source": "block"
+      },
+      {
+        "type": "dragenter",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "block"
+      },
+      {
+        "type": "drop",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "block"
+      },
+      {
+        "type": "dragend",
+        "x": 591,
+        "y": 166,
+        "target": "mdp-metadata-item mdp-meta-blocks"
+      }
+    ],
+    "marked": true,
+    "offset": 2,
+    "caret": true,
+    "line": true,
+    "menu": [
+      "블록 링크 삽입",
+      "블록 임베드 삽입",
+      "취소"
+    ],
+    "value": "앞부[[Metadata Review#^sample-block]]분 뒤쪽\n\n끝\n",
+    "notices": []
+  },
+  {
+    "name": "url",
+    "start": {
+      "kind": "url",
+      "selection": ""
+    },
+    "to": {
+      "x": 591,
+      "y": 166.078125
+    },
+    "events": [
+      {
+        "type": "dragstart",
+        "x": 1045,
+        "y": 1013,
+        "target": "mdp-metadata-item mdp-meta-links"
+      },
+      {
+        "type": "dragenter",
+        "x": 1040,
+        "y": 1015,
+        "target": "",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 1040,
+        "y": 1015,
+        "target": "",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 1035,
+        "y": 1017,
+        "target": "",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 1030,
+        "y": 1019,
+        "target": "",
+        "source": "url"
+      },
+      {
+        "type": "dragenter",
+        "x": 1025,
+        "y": 1021,
+        "target": "mdp-metadata-item mdp-meta-links",
+        "source": "url"
+      },
+      {
+        "type": "dragenter",
+        "x": 1020,
+        "y": 1023,
+        "target": "view-content mdp-sidebar",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 1015,
+        "y": 1025,
+        "target": "view-content mdp-sidebar",
+        "source": "url"
+      },
+      {
+        "type": "dragenter",
+        "x": 1010,
+        "y": 1027,
+        "target": "workspace-leaf-resize-handle tappable",
+        "source": "url"
+      },
+      {
+        "type": "dragenter",
+        "x": 1005,
+        "y": 1029,
+        "target": "cm-scroller",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 1000,
+        "y": 1031,
+        "target": "cm-scroller",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 995,
+        "y": 1033,
+        "target": "cm-scroller",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 990,
+        "y": 1035,
+        "target": "cm-scroller",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 985,
+        "y": 1037,
+        "target": "cm-scroller",
+        "source": "url"
+      },
+      {
+        "type": "dragenter",
+        "x": 1014,
+        "y": 957,
+        "target": "view-content mdp-sidebar",
+        "source": "url"
+      },
+      {
+        "type": "dragenter",
+        "x": 984,
+        "y": 900,
+        "target": "cm-scroller",
+        "source": "url"
+      },
+      {
+        "type": "dragenter",
+        "x": 954,
+        "y": 844,
+        "target": "cm-content cm-lineWrapping",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 923,
+        "y": 787,
+        "target": "cm-content cm-lineWrapping",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 893,
+        "y": 731,
+        "target": "cm-content cm-lineWrapping",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 863,
+        "y": 674,
+        "target": "cm-content cm-lineWrapping",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 833,
+        "y": 618,
+        "target": "cm-content cm-lineWrapping",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 802,
+        "y": 561,
+        "target": "cm-content cm-lineWrapping",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 772,
+        "y": 505,
+        "target": "cm-content cm-lineWrapping",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 742,
+        "y": 448,
+        "target": "cm-content cm-lineWrapping",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 712,
+        "y": 392,
+        "target": "cm-content cm-lineWrapping",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 681,
+        "y": 335,
+        "target": "cm-content cm-lineWrapping",
+        "source": "url"
+      },
+      {
+        "type": "dragover",
+        "x": 651,
+        "y": 279,
+        "target": "cm-content cm-lineWrapping",
+        "source": "url"
+      },
+      {
+        "type": "dragenter",
+        "x": 621,
+        "y": 222,
+        "target": "cm-line",
+        "source": "url"
+      },
+      {
+        "type": "dragenter",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "url"
+      },
+      {
+        "type": "drop",
+        "x": 591,
+        "y": 166,
+        "target": "cm-line cm-active",
+        "source": "url"
+      },
+      {
+        "type": "dragend",
+        "x": 591,
+        "y": 166,
+        "target": "mdp-metadata-item mdp-meta-links"
+      }
+    ],
+    "marked": true,
+    "offset": 2,
+    "caret": true,
+    "line": true,
+    "menu": [
+      "주소 그대로 삽입",
+      "제목이 있는 링크 삽입",
+      "취소"
+    ],
+    "value": "앞부https://example.com/metadata분 뒤쪽\n\n끝\n",
+    "notices": []
+  }
+]

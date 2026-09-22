@@ -22,6 +22,7 @@ export default class MDPalettePlugin extends Plugin {
   mainLeaf?: WorkspaceLeaf;
   private pinnedMain?: TFile;
   metadataCollapsed: string[] = [];
+  metadataFontSize?: number;
   subGroup?: Group;
   subGroups: Group[] = [];
   isSub(group?: Group): boolean { return !!group && this.subGroups.includes(group); }
@@ -70,6 +71,8 @@ export default class MDPalettePlugin extends Plugin {
     this.cards = readCards(this.data.cards);
     this.connections = readConnections(this.data.connections);
     this.metadataCollapsed = Array.isArray(this.data.metadataCollapsed) ? this.data.metadataCollapsed.filter((v): v is string => typeof v === 'string') : [];
+    const metadataFontSize = this.data.metadataFontSize;
+    if (typeof metadataFontSize === 'number' && Number.isFinite(metadataFontSize)) this.metadataFontSize = Math.max(10, Math.min(32, Math.round(metadataFontSize)));
     this.foldersByMain = readDocumentFolders(this.data.foldersByMain);
     // Keep display preferences while discarding only the old test folder organization.
     const legacy = readFolders(this.data.folderDefaults ?? this.data.folders);
@@ -490,7 +493,7 @@ export default class MDPalettePlugin extends Plugin {
     if (!this.ready || !this.saveAllowed || this.folderSaving) return;
     const space = (g?: Group) => g ? { groupId: g.id, activeFile: fileIn(this.app, activeIn(g))?.path ?? null } : undefined;
     const spaces: SavedSpaces = { main: this.mainGroup && this.mainFile ? { groupId: this.mainGroup.id, activeFile: this.mainFile.path, leafId: (this.mainLeaf as WorkspaceLeaf & { id: string }).id } : undefined, sub: space(this.subGroup), subs: this.subGroups.map(g => space(g)!) };
-    const next = { ...this.data, spaces, metadataCollapsed: this.metadataCollapsed.slice(), topView: this.topView, linkView: this.linkView, cards: structuredClone(this.cards), connections: structuredClone(this.connections), foldersByMain: structuredClone(this.foldersByMain), folderDefaults: structuredClone(this.folderDefaults) };
+    const next = { ...this.data, spaces, metadataCollapsed: this.metadataCollapsed.slice(), metadataFontSize: this.metadataFontSize, topView: this.topView, linkView: this.linkView, cards: structuredClone(this.cards), connections: structuredClone(this.connections), foldersByMain: structuredClone(this.foldersByMain), folderDefaults: structuredClone(this.folderDefaults) };
     const serialized = JSON.stringify(next);
     if (serialized === this.persistedJSON) return;
     this.data = next;

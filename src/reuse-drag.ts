@@ -7,7 +7,7 @@ import { canReuse, footnoteInsertion, webReuseText, reuseOptions, reuseText, sam
 
 const MIME = 'application/x-md-palette-reuse';
 interface Source { token: string; kind: ReuseKind; file: TFile; path: string; main: WorkspaceLeaf; mainFile: TFile; original?: string; item?: MetadataItem }
-type NativeEditor = Editor & { posAtMouse?: (event: MouseEvent) => EditorPosition | null; cm?: { coordsAtPos(pos: number): { left: number; top: number; bottom: number } | null } };
+type NativeEditor = Editor & { posAtMouse?: (event: MouseEvent) => EditorPosition | null; cm?: { state?: { doc: object }; coordsAtPos(pos: number): { left: number; top: number; bottom: number } | null } };
 interface CanvasNode { id: string }
 interface NativeCanvas {
   wrapperEl: HTMLElement;
@@ -18,7 +18,7 @@ interface NativeCanvas {
   getData(): unknown;
 }
 interface CanvasView { file: TFile; canvas: NativeCanvas; save(): Promise<void> }
-type Target = { leaf: WorkspaceLeaf; file: TFile; path: string; destination: ReuseDestination; editor?: NativeEditor; offset?: number; original: string; canvas?: NativeCanvas; point?: { x: number; y: number } };
+type Target = { leaf: WorkspaceLeaf; file: TFile; path: string; destination: ReuseDestination; editor?: NativeEditor; document?: object; offset?: number; original: string; canvas?: NativeCanvas; point?: { x: number; y: number } };
 
 /** Only accepts an in-memory, same-plugin drag. No OS file paths or native text fallback. */
 export class ReuseDrag {
@@ -60,42 +60,43 @@ export class ReuseDrag {
     const clear = () => { this.source = undefined; if (!this.menu) this.clearHighlight(); };
     const leave = (event: DragEvent) => { if (!event.relatedTarget) this.clearHighlight(); };
     const escape = (event: KeyboardEvent) => { if (event.key === 'Escape') { clear(); this.menu?.hide(); } };
-    const reposition = () => { const target = this.markedTarget; if (target) { this.clearHighlight(); this.showTarget(target); } };
+    const reposition = () => { const target = this.markedTarget; if (target) this.showTarget(target); };
     doc.addEventListener('scroll', reposition, true);
     doc.defaultView?.addEventListener('resize', reposition);
-    doc.addEventListener('dragover', drag, true); doc.addEventListener('drop', drag, true);
+    doc.addEventListener('dragenter', drag, true); doc.addEventListener('dragover', drag, true); doc.addEventListener('drop', drag, true);
     doc.addEventListener('dragend', clear, true); doc.addEventListener('dragleave', leave, true); doc.addEventListener('keydown', escape, true);
-    this.cleanup.push(() => { doc.removeEventListener('dragover', drag, true); doc.removeEventListener('drop', drag, true); doc.removeEventListener('dragend', clear, true); doc.removeEventListener('dragleave', leave, true); doc.removeEventListener('keydown', escape, true); });
+    this.cleanup.push(() => { doc.removeEventListener('dragenter', drag, true); doc.removeEventListener('dragover', drag, true); doc.removeEventListener('drop', drag, true); doc.removeEventListener('dragend', clear, true); doc.removeEventListener('dragleave', leave, true); doc.removeEventListener('keydown', escape, true); });
     this.cleanup.push(() => { doc.removeEventListener('scroll', reposition, true); doc.defaultView?.removeEventListener('resize', reposition); });
   }
-  private clearHighlight(): void { this.highlight?.classList.remove('mdp-reuse-target'); this.highlight = undefined; this.caret?.remove(); this.caret = undefined; this.lineHighlight?.remove(); this.lineHighlight = undefined; this.markedTarget = undefined; }
+  private clearMarkers(): void { this.caret?.remove(); this.caret = undefined; this.lineHighlight?.remove(); this.lineHighlight = undefined; }
+  private clearHighlight(): void { this.highlight?.classList.remove('mdp-reuse-target'); this.highlight = undefined; this.clearMarkers(); this.markedTarget = undefined; }
   private showTarget(target: Target): void {
     this.markedTarget = target;
-    this.highlight = target.canvas?.wrapperEl ?? target.leaf.view.containerEl;
-    this.highlight.classList.add('mdp-reuse-target');
-    if (!target.editor || target.offset === undefined) return;
-    if (target.editor.getValue() !== target.original) return;
+    const highlight = target.canvas?.wrapperEl ?? target.leaf.view.containerEl;
+    if (this.highlight !== highlight) { this.highlight?.classList.remove('mdp-reuse-target'); this.highlight = highlight; highlight.classList.add('mdp-reuse-target'); }
+    if (!target.editor || target.offset === undefined) { this.clearMarkers(); return; }
+    if (target.document ? target.editor.cm?.state?.doc !== target.document : target.editor.getValue() !== target.original) { this.clearHighlight(); return; }
     const rect = target.editor.cm?.coordsAtPos(target.offset);
-    if (!rect) return;
+    if (!rect) { this.clearMarkers(); return; }
     const viewport = target.leaf.view.containerEl.querySelector('.cm-scroller')?.getBoundingClientRect();
-    if (viewport && (rect.top < viewport.top || rect.bottom > viewport.bottom || rect.left < viewport.left || rect.left > viewport.right)) return;
+    if (viewport && (rect.top < viewport.top || rect.bottom > viewport.bottom || rect.left < viewport.left || rect.left > viewport.right)) { this.clearMarkers(); return; }
     const doc = target.leaf.view.containerEl.ownerDocument;
     const content = target.leaf.view.containerEl.querySelector('.cm-content')?.getBoundingClientRect();
     if (content && viewport) {
       const left = Math.max(content.left, viewport.left), right = Math.min(content.right, viewport.right);
       if (right > left) {
-        this.lineHighlight = doc.createElement('div');
-        this.lineHighlight.className = 'mdp-reuse-line';
-        this.lineHighlight.setAttribute('aria-hidden', 'true');
+        if (!this.lineHighlight || this.lineHighlight.ownerDocument !== doc) {
+          this.lineHighlight?.remove(); this.lineHighlight = doc.createElement('div');
+          this.lineHighlight.className = 'mdp-reuse-line'; this.lineHighlight.setAttribute('aria-hidden', 'true'); doc.body.appendChild(this.lineHighlight);
+        }
         Object.assign(this.lineHighlight.style, { left: `${left}px`, top: `${rect.top}px`, width: `${right - left}px`, height: `${rect.bottom - rect.top}px` });
-        doc.body.appendChild(this.lineHighlight);
       }
     }
-    this.caret = doc.createElement('div');
-    this.caret.className = 'mdp-reuse-caret';
-    this.caret.setAttribute('aria-hidden', 'true');
+    if (!this.caret || this.caret.ownerDocument !== doc) {
+      this.caret?.remove(); this.caret = doc.createElement('div');
+      this.caret.className = 'mdp-reuse-caret'; this.caret.setAttribute('aria-hidden', 'true'); doc.body.appendChild(this.caret);
+    }
     Object.assign(this.caret.style, { left: `${rect.left}px`, top: `${rect.top}px`, height: `${rect.bottom - rect.top}px` });
-    doc.body.appendChild(this.caret);
   }
   private destination(leaf: WorkspaceLeaf): ReuseDestination {
     if (!this.plugin.mainFile) return 'unsupported';
@@ -118,7 +119,10 @@ export class ReuseDrag {
       if (!path.some(el => (el as HTMLElement)?.classList?.contains('cm-content'))) return null;
       const editor = leaf.view.editor as NativeEditor, pos = editor.posAtMouse?.(event);
       if (!pos || !leaf.view.file) return null;
-      return { leaf, destination, file: leaf.view.file, path: leaf.view.file.path, editor, offset: editor.posToOffset(pos), original: editor.getValue() };
+      // CM documents are immutable. Reuse the snapshot while the document is unchanged.
+      const document = editor.cm?.state?.doc, previous = this.markedTarget;
+      const original = document && previous?.editor === editor && previous.document === document ? previous.original : editor.getValue();
+      return { leaf, destination, file: leaf.view.file, path: leaf.view.file.path, editor, document, offset: editor.posToOffset(pos), original };
     }
     const view = leaf.view as unknown as CanvasView, canvas = view.canvas;
     if (!view.file || !canvas || !path.includes(canvas.wrapperEl) || typeof canvas.posFromEvt !== 'function' || typeof canvas.createTextNode !== 'function' || typeof canvas.removeNode !== 'function' || typeof view.save !== 'function') return null;
@@ -130,14 +134,16 @@ export class ReuseDrag {
     if (!event.dataTransfer?.types.includes(MIME)) return;
     // Existing card-grid reordering owns its own drag/drop events.
     if (event.composedPath().some(el => (el as HTMLElement)?.classList?.contains('mdp-card-grid'))) { this.clearHighlight(); return; }
-    event.preventDefault(); event.stopImmediatePropagation(); this.clearHighlight();
+    event.preventDefault(); event.stopImmediatePropagation();
     const source = this.source;
     const target = source && !this.pending ? this.target(event, source) : null;
     event.dataTransfer.dropEffect = target ? 'copy' : 'none';
-    if (event.type === 'dragover') {
+    if (event.type !== 'drop') {
       if (target) this.showTarget(target);
+      else this.clearHighlight();
       return;
     }
+    this.clearHighlight();
     this.source = undefined;
     if (!source || event.dataTransfer.getData(MIME) !== source.token) return;
     if (!target) { new Notice(source.kind === 'file' ? '파일 카드 한 개를 Main/Sub 문서의 편집 영역에 놓아주세요.' : 'Main/Sub 문서의 편집 영역 또는 Sub Canvas에 놓아주세요.'); return; }
