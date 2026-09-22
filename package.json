@@ -1,6 +1,6 @@
 {
   "name": "md-palette",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "description": "MD Palette for Obsidian — Spaces and linked file cards",
   "scripts": {

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {mkdir,cp,readFile,writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {c,p,js,pause,wait,point,tap,key} from './stage4-helpers.mjs';
-const dir='.artifacts/caret', checks=[], hash=b=>createHash('sha256').update(b).digest('hex');
+const dir='.artifacts/caret-line', checks=[], hash=b=>createHash('sha256').update(b).digest('hex');
 const fixture='앞부분 원하는 위치 뒷부분\n\n빈 줄 다음\n'+('긴 문장 가운데 정확한 위치 확인 '.repeat(18))+'\n\n끝';
 const check=s=>{checks.push(s);console.log('PASS',s)};
 async function menu(name){await tap(await js(`(()=>{const e=[...document.querySelectorAll('.menu-item-title')].find(e=>e.textContent===${JSON.stringify(name)});if(!e)throw Error('Missing menu');const r=e.getBoundingClientRect();return{x:r.x+r.width/2,y:r.y+r.height/2}})()`));await wait(`!${p}.reuseDrag.pending`)}
@@ -16,9 +16,12 @@ async function drag(pt,finish=true){
  for(const type of ['dragEnter','dragOver'])await c.send('Input.dispatchDragEvent',{type,x:pt.x,y:pt.y,data});await pause(80);
  const state=await js(`(()=>{const d=${p}.reuseDrag,t=d.markedTarget,r=t.editor.cm.coordsAtPos(t.offset),e=document.querySelector('.mdp-reuse-caret'),b=e?.getBoundingClientRect();return{url:d.source.item.target,offset:t.offset,shown:!!e,left:b?.left,top:b?.top,expectedLeft:r.left,expectedTop:r.top}})()`);
  assert.equal(state.shown,true);assert.ok(Math.abs(state.left-state.expectedLeft)<1);assert.ok(Math.abs(state.top-state.expectedTop)<1);assert.equal(state.offset,pt.offset);
+ const band=await js(`(()=>{const e=document.querySelector('.mdp-reuse-line'),b=e?.getBoundingClientRect(),caret=document.querySelector('.mdp-reuse-caret').getBoundingClientRect(),v=caretLeaf.view.containerEl.querySelector('.cm-scroller').getBoundingClientRect();return{shown:!!e,top:b?.top,height:b?.height,width:b?.width,left:b?.left,right:b?.right,caretTop:caret.top,caretHeight:caret.height,viewportLeft:v.left,viewportRight:v.right,events:e&&getComputedStyle(e).pointerEvents}})()`);
+ assert.equal(band.shown,true);assert.equal(band.top,band.caretTop);assert.equal(band.height,band.caretHeight);assert.ok(band.width>100);assert.ok(band.left>=band.viewportLeft&&band.right<=band.viewportRight);assert.equal(band.events,'none');
  if(finish){await c.send('Input.dispatchDragEvent',{type:'drop',x:pt.x,y:pt.y,data});await c.send('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,x:pt.x,y:pt.y});await pause(80);assert.equal(await js(`!!document.querySelector('.mdp-reuse-caret')`),true)}
  else {await c.screenshot(dir+'/caret.png');await key('Escape','Escape',27);await c.send('Input.dispatchDragEvent',{type:'dragCancel',x:pt.x,y:pt.y,data});await c.send('Input.dispatchMouseEvent',{type:'mouseReleased',button:'left',clickCount:1,x:pt.x,y:pt.y})}
  await c.send('Input.setInterceptDrags',{enabled:false});
+ assert.equal(await js(`!!document.querySelector('.mdp-reuse-line')`),finish);
  return state.url;
 }
 try {
@@ -31,7 +34,7 @@ try {
   for(const name of ['main.js','manifest.json','styles.css']){await cp(name,vault+'/.obsidian/plugins/md-palette/'+name);assert.equal(hash(await readFile(name)),hash(await readFile(vault+'/.obsidian/plugins/md-palette/'+name)))}
   await js(`app.plugins.loadManifests().then(()=>app.plugins.enablePluginAndSave('md-palette')).then(()=>true)`);await wait(`${p}?.mainFile?.path==='Review/Main.md'`);
  }
- assert.equal(await js(`${p}.manifest.version`),'0.1.1');
+ assert.equal(await js(`${p}.manifest.version`),'0.1.2');
  await c.send('Emulation.setFocusEmulationEnabled',{enabled:true});await c.send('Emulation.setDeviceMetricsOverride',{width:1700,height:1100,deviceScaleFactor:1,mobile:false});
  await js(`(async()=>{window.caretLeaf=${p}.subGroups[0].children.find(l=>l.view.file?.path==='Review/B.md');await app.workspace.revealLeaf(caretLeaf);await caretLeaf.setViewState({...caretLeaf.getViewState(),state:{...caretLeaf.getViewState().state,mode:'source',source:true}});${p}.metadataCollapsed=[];${p}.selectView('metadata');return true})()`);await pause(350);
  const original=await js('caretLeaf.view.editor.getValue()');
@@ -42,12 +45,12 @@ try {
    const target=await js(`${p}.reuseDrag.markedTarget.offset`);assert.equal(target,offset);
    await menu('주소 그대로 삽입');const value=await js('caretLeaf.view.editor.getValue()');
    assert.equal(value,fixture.slice(0,offset)+url+fixture.slice(offset));
-   assert.equal(await js(`!!document.querySelector('.mdp-reuse-caret')`),false);check('caret and insertion match character offset '+offset);
+   assert.equal(await js(`!!document.querySelector('.mdp-reuse-caret, .mdp-reuse-line')`),false);check('line highlight, caret and insertion match character offset '+offset);
   }
   await js(`caretLeaf.setViewState({...caretLeaf.getViewState(),state:{...caretLeaf.getViewState().state,mode:'source',source:false}}).then(()=>true)`);await pause(150);
   await reset();const liveUrl=await drag(await location(8));await menu('주소 그대로 삽입');assert.equal(await js('caretLeaf.view.editor.getValue()'),fixture.slice(0,8)+liveUrl+fixture.slice(8));check('Live Preview exact insertion');
   await reset();await drag(await location(5),false);assert.equal(await js('caretLeaf.view.editor.getValue()'),fixture);assert.equal(await js(`!!document.querySelector('.mdp-reuse-caret')`),false);check('Escape cancels drag and removes caret');
-  await drag(await location(5));await menu('취소');assert.equal(await js('caretLeaf.view.editor.getValue()'),fixture);assert.equal(await js(`!!document.querySelector('.mdp-reuse-caret')`),false);check('menu cancel removes caret without inserting');
+  await drag(await location(5));await menu('취소');assert.equal(await js('caretLeaf.view.editor.getValue()'),fixture);assert.equal(await js(`!!document.querySelector('.mdp-reuse-caret, .mdp-reuse-line')`),false);check('menu cancel removes both indicators without inserting');
   await drag(await location(5));await js(`caretLeaf.view.editor.replaceRange('새 편집',{line:0,ch:0});true`);await menu('주소 그대로 삽입');assert.equal(await js('caretLeaf.view.editor.getValue()'),'새 편집'+fixture);check('stale insertion refused after intervening edit');
   assert.equal(await js(`app.vault.read(${p}.mainFile)`),sourceBefore);check('source unchanged');
  } finally {await js(`caretLeaf.view.editor.setValue(${JSON.stringify(original)});caretLeaf.view.save().then(()=>true)`)}

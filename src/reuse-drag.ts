@@ -28,6 +28,7 @@ export class ReuseDrag {
   private pending = false;
   private highlight?: HTMLElement;
   private caret?: HTMLElement;
+  private lineHighlight?: HTMLElement;
   private markedTarget?: Target;
   private documents = new Set<Document>();
   private cleanup: Array<() => void> = [];
@@ -67,17 +68,29 @@ export class ReuseDrag {
     this.cleanup.push(() => { doc.removeEventListener('dragover', drag, true); doc.removeEventListener('drop', drag, true); doc.removeEventListener('dragend', clear, true); doc.removeEventListener('dragleave', leave, true); doc.removeEventListener('keydown', escape, true); });
     this.cleanup.push(() => { doc.removeEventListener('scroll', reposition, true); doc.defaultView?.removeEventListener('resize', reposition); });
   }
-  private clearHighlight(): void { this.highlight?.classList.remove('mdp-reuse-target'); this.highlight = undefined; this.caret?.remove(); this.caret = undefined; this.markedTarget = undefined; }
+  private clearHighlight(): void { this.highlight?.classList.remove('mdp-reuse-target'); this.highlight = undefined; this.caret?.remove(); this.caret = undefined; this.lineHighlight?.remove(); this.lineHighlight = undefined; this.markedTarget = undefined; }
   private showTarget(target: Target): void {
     this.markedTarget = target;
     this.highlight = target.canvas?.wrapperEl ?? target.leaf.view.containerEl;
     this.highlight.classList.add('mdp-reuse-target');
     if (!target.editor || target.offset === undefined) return;
+    if (target.editor.getValue() !== target.original) return;
     const rect = target.editor.cm?.coordsAtPos(target.offset);
     if (!rect) return;
     const viewport = target.leaf.view.containerEl.querySelector('.cm-scroller')?.getBoundingClientRect();
     if (viewport && (rect.top < viewport.top || rect.bottom > viewport.bottom || rect.left < viewport.left || rect.left > viewport.right)) return;
     const doc = target.leaf.view.containerEl.ownerDocument;
+    const content = target.leaf.view.containerEl.querySelector('.cm-content')?.getBoundingClientRect();
+    if (content && viewport) {
+      const left = Math.max(content.left, viewport.left), right = Math.min(content.right, viewport.right);
+      if (right > left) {
+        this.lineHighlight = doc.createElement('div');
+        this.lineHighlight.className = 'mdp-reuse-line';
+        this.lineHighlight.setAttribute('aria-hidden', 'true');
+        Object.assign(this.lineHighlight.style, { left: `${left}px`, top: `${rect.top}px`, width: `${right - left}px`, height: `${rect.bottom - rect.top}px` });
+        doc.body.appendChild(this.lineHighlight);
+      }
+    }
     this.caret = doc.createElement('div');
     this.caret.className = 'mdp-reuse-caret';
     this.caret.setAttribute('aria-hidden', 'true');

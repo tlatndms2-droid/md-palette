@@ -1,0 +1,33 @@
+name: Publish MD Palette 0.1.2
+on:
+  push:
+    branches: [codex/planning]
+    paths: [.github/workflows/publish-0.1.2.yml]
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify the Sandbox-tested assets
+        run: |
+          cd .github/release-assets/0.1.2
+          sha256sum --check SHA256SUMS
+      - name: Publish verified assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create 0.1.2 --target "$GITHUB_SHA" --title 'MD Palette 0.1.2' --notes-file RELEASE_NOTES.md
+          for asset in main.js manifest.json styles.css; do
+            gh release upload 0.1.2 ".github/release-assets/0.1.2/$asset"
+          done
+      - name: Download and verify published assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download 0.1.2 --dir downloaded --pattern main.js --pattern manifest.json --pattern styles.css
+          cp .github/release-assets/0.1.2/SHA256SUMS downloaded/
+          cd downloaded
+          sha256sum --check SHA256SUMS
