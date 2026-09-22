@@ -21,7 +21,7 @@
 .mdp-connection-actions { display: flex; flex-wrap: wrap; gap: 6px; flex-shrink: 0; }
 .mdp-connection-actions > button { flex: 1 1 155px; width: auto; }
 .mdp-new-note label { display: block; margin-top: 16px; }
-.mdp-new-note input { display: block; width: 100%; margin: 6px 0 12px; }
+.mdp-new-note input, .mdp-new-note select { display: block; width: 100%; margin: 6px 0 12px; }
 .mdp-new-note-path { overflow-wrap: anywhere; margin-bottom: 6px; }
 .mdp-new-note-error { color: var(--text-error); margin-top: 12px; overflow-wrap: anywhere; }
 .mdp-filter-section { border: 1px solid var(--background-modifier-border); border-radius: 8px; padding: 6px 8px; flex-shrink: 0; }

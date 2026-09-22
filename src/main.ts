@@ -6,7 +6,7 @@ import { readCards, pruneLabels, type CardState } from './cards-state';
 import { readConnections } from './connections-state';
 import { readFolders, readDocumentFolders, fileKey, type FolderState } from './folders-state';
 import { ReuseDrag } from './reuse-drag';
-import { newNoteName } from './new-note-name';
+import { newNoteName, type NewNoteFormat } from './new-note-name';
 
 type Role = 'sub';
 class SpaceFilePicker extends FuzzySuggestModal<TFile> {
@@ -346,21 +346,24 @@ export default class MDPalettePlugin extends Plugin {
     } catch (error) { await this.commitFolders(previous, main); this.render(); throw error; }
     this.render();
   }
-  newLinkedNotePath(main: TFile, input: string): string {
-    const name = newNoteName(input);
-    const parent = this.app.fileManager.getNewFileParent(main.path, name);
+  newLinkedNotePath(main: TFile, input: string, format: NewNoteFormat = 'md'): string {
+    const name = newNoteName(input, format);
+    // Obsidian treats non-Markdown extensions as attachments. Resolve using a
+    // Markdown name so both creation choices honor the new-note location.
+    const parent = this.app.fileManager.getNewFileParent(main.path, newNoteName(input));
     return parent.isRoot() ? name : `${parent.path}/${name}`;
   }
-  async createLinkedNote(main: TFile, input: string, folder?: string): Promise<TFile> {
+  async createLinkedNote(main: TFile, input: string, folder?: string, format: NewNoteFormat = 'md'): Promise<TFile> {
     if (this.creatingNote) throw Error('새 파일을 만드는 중입니다. 잠시 기다려주세요.');
     if (this.mainFile !== main || this.app.vault.getAbstractFileByPath(main.path) !== main) throw Error('Main이 변경되었습니다. 창을 다시 열어주세요.');
     if (folder !== undefined && folder && !this.folders.folders.some(f => f.id === folder)) throw Error('대상 가상 폴더가 없습니다.');
-    const path = this.newLinkedNotePath(main, input);
+    const path = this.newLinkedNotePath(main, input, format);
+    const initialContent = format === 'canvas' ? JSON.stringify({ nodes: [], edges: [] }) : '';
     if (this.app.vault.getAllLoadedFiles().some(f => f.path.toLocaleLowerCase() === path.toLocaleLowerCase())) throw Error('같은 이름의 파일 또는 폴더가 있습니다. 다른 이름을 입력해주세요.');
     this.creatingNote = true;
     let created: TFile | undefined;
     try {
-      created = await this.app.vault.create(path, '');
+      created = await this.app.vault.create(path, initialContent);
       if (folder === undefined) await this.addConnection(main, created, true);
       else await this.addFolderConnection(main, created, folder);
       return created;
@@ -369,7 +372,7 @@ export default class MDPalettePlugin extends Plugin {
         // Only undo our own empty new file; never remove a file edited during the operation.
         const body = await this.app.vault.read(created);
         const mainBody = this.app.vault.getAbstractFileByPath(main.path) === main ? await this.app.vault.read(main) : '';
-        if (body === '' && !mainBody.includes(`[[${path}]]`)) {
+        if (body === initialContent && !mainBody.includes(`[[${path}]]`)) {
           await this.app.vault.delete(created);
           this.cards.order = this.cards.order.filter(p => p !== path);
         } else throw Error(`연결 작업을 마치지 못했습니다. 변경된 파일은 보존했습니다: ${created.path}`);
