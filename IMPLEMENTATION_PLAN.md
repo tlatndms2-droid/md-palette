@@ -1,6 +1,8 @@
 # MD Palette 현재 진행 계획
 
-갱신일: 2026-09-22. 공개 0.1.6, 브랜치 codex/planning.
+갱신일: 2026-09-22. 공개 0.1.7, 브랜치 codex/planning.
+
+0.1.7: 단일 Sub·파일 전환 유지·지정/해제·미연결 파일 연결 승인·Ctrl+Shift 새 일반 그룹·Sub 아래 분할. 44개 테스트·빌드·격리 Sandbox UI·업데이트·재시작·공개 자산 검증 통과. 사용자 BRAT 확인 대기. SUB_RULES_VALIDATION.md 참고. 과거 다중 Sub/전체 높이 강제 규칙을 재적용하지 않는다.
 
 0.1.6: 새 링크 파일의 MD/Canvas 선택. 생성·연결만 수행하고 자동 열기 없음. 43개 테스트·빌드·Sandbox UI·재시작·Canvas 더블클릭 열기·공개 자산 검증 완료, 사용자 BRAT 확인 대기. NEW_CANVAS_VALIDATION.md 참고.
 

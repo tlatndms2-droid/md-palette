@@ -1,5 +1,7 @@
 # 0.1.7 Sub 규칙·지정·배치 검증
 
+공개 Release 0.1.7, 소스 1e61c27. main.js·manifest.json·styles.css를 공개 다운로드하여 최종 검증 빌드의 SHA-256과 모두 일치함을 확인했다. release-verification.json 참조.
+
 2026-09-22, Obsidian 1.13.7. 현재 사용자 결정이 과거 여러 Sub·전체 높이 고정 규칙을 대체한다.
 
 ## 범위와 원인 확인

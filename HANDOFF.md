@@ -1,11 +1,13 @@
 # MD Palette 작업 인계 — 다른 PC 재개 시작점
 
 갱신일: 2026-09-22. 저장소: https://github.com/tlatndms2-droid/md-palette
-기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.6**.
+기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.7**.
 
 ## 현재 상태
 
-**현재 재개 기준은 공개 0.1.6이다. 새 링크 파일의 Markdown/Canvas 선택·생성·연결·자동 열기 없음 동작을 Sandbox UI·재시작·공개 자산 SHA-256까지 검증했다. 0.1.6 사용자 BRAT 확인 대기이며 자동으로 시작할 다음 기능은 없다. 0.1.4까지 명시적 사용자 확인을 받았다. 0.1.5 이후 사용자가 새 Canvas 생성을 별도 승인했다.**
+**현재 재개 기준은 공개 0.1.7이다. 단일 Sub 지정·해제, 미연결 파일 연결 팝업, Ctrl+Shift 새 일반 그룹, 자유 분할을 Sandbox UI·업데이트·재시작·공개 자산 SHA-256까지 검증했다. 사용자 BRAT 확인 대기이며 자동으로 시작할 다음 기능은 없다. 과거 여러 Sub·전체 높이 강제 규칙은 최신 사용자 승인으로 폐기됐다.**
+
+- 0.1.7 소스: `1e61c27`. [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.7), [검증](SUB_RULES_VALIDATION.md), [증거](docs/handoff/evidence/0.1.7). 미연결 지정은 연결하고 지정/취소. 기존 여러 그룹은 마지막 사용 Sub 하나만 남기며 다른 그룹·파일은 보존한다.
 
 - 0.1.6 소스: `a970682`. [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.6), [검증](NEW_CANVAS_VALIDATION.md), [증거](docs/handoff/evidence/0.1.6). 기본 Markdown, Canvas 선택 가능. 두 형식 모두 새 노트 위치 설정을 따르고 생성·연결 후 자동으로 열지 않는다.
 
@@ -51,8 +53,8 @@
 ## 기능을 되돌리지 않기 위한 핵심
 
 - Main/Sub만 사용. Reference와 활성 파일 교환 없음. Main 변경·해제는 탭 보존·역할 해제.
-- 지정 Main 문서 고정. 기본 더블클릭은 마지막 Sub 탭 교체, Ctrl은 새 탭, Ctrl+Shift는 새 그룹.
-- Sub는 Main을 포함한 위아래 묶음의 오른쪽 전체 높이.
+- 지정 Main 문서 고정. 기본 더블클릭은 단일 Sub 현재 탭 교체, Ctrl은 Sub 새 탭, Ctrl+Shift는 새 일반 그룹.
+- Sub는 그룹에 지정하며 파일 종류·로딩 중 빈 탭과 무관하게 유지한다. Sub 아래 일반 그룹 분할을 허용하고 배치를 강제하지 않는다. 탭 우클릭/명령으로 지정·해제하며 미연결 파일은 연결 승인 또는 취소.
 - 가상 폴더는 Main 문서별. 0.0.8의 테스트용 전역 데이터 초기화는 일회성 승인이다.
 - Connections는 모든 속성의 Markdown 연결과 기본 Local Graph. 별도 검색·필터 제외.
 - Metadata는 URL Links 포함 다섯 구역. Main 본문 별도 링크 선택 팝업은 보류.
@@ -80,13 +82,15 @@
 | 각주·메타데이터 Markdown 표시 | 0.1.3 | 검증·배포·사용자 확인 완료, METADATA_MARKDOWN_VALIDATION.md |
 | 글자 크기·Sub 드래그 개선 | 0.1.4 | 검증·배포·사용자 확인 완료, METADATA_FONT_DRAG_VALIDATION.md |
 | 각주 드래그 내용 선택 | 0.1.5 | 검증·배포 완료, 사용자 확인 대기, FOOTNOTE_CHOICE_VALIDATION.md |
+| MD/Canvas 새 링크 파일 | 0.1.6 | 검증·배포 완료, NEW_CANVAS_VALIDATION.md |
+| 단일 Sub·토글·일반 그룹·자유 배치 | 0.1.7 | 검증·배포 완료, 사용자 확인 대기, SUB_RULES_VALIDATION.md |
 
 각 버전의 자동·Sandbox 검증은 사용자 직접 확인과 별개다. 0.0.12/13의 개별 사용자 확인 문장을 추정해서 추가하지 않는다. 코드가 배포되어 있다는 사실만으로 최종 통합 완료를 선언하지 않는다.
 
 ## 다음 작업
 
-1. 다른 PC에서 `codex/planning` 최신 상태를 받아 manifest `0.1.6`과 Git 변경사항을 확인한다.
-2. 0.1.6 사용자 BRAT 확인은 대기 중이다. 새 후속 기능은 아직 지정되지 않았다.
+1. 다른 PC에서 `codex/planning` 최신 상태를 받아 manifest `0.1.7`과 Git 변경사항을 확인한다.
+2. 0.1.7 사용자 BRAT 확인은 대기 중이다. 새 후속 기능은 아직 지정되지 않았다.
 3. 이미 완료한 통합 검증과 배포를 인계만을 이유로 반복하지 않는다. 후속 코드 변경에는 변경 범위에 맞는 검증·배포 절차를 적용한다.
 
 별도 팝아웃 창 배치는 0.0.15 검증 범위에 포함되지 않았다. 지원 확대를 이번 인계로 승인받은 것으로 간주하지 않는다. 미검증·미수행은 통합 완료 보고에서 구분한다.
