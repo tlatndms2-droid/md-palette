@@ -5,18 +5,21 @@
 
 ## 현재 상태
 
-**0.1.2 드롭 대상 줄의 옅은 강조 배경과 글자 사이 세로 커서를 함께 표시한다. Sandbox 실제 드래그·재시작·공개 자산 SHA-256 검증 완료. 사용자 BRAT 확인 대기.**
+**현재 재개 기준은 공개 0.1.2다. Sandbox 실제 드래그·재시작·공개 자산 SHA-256 검증 완료. 2026-09-22 사용자가 “구현됬어”라고 정상 작동을 확인했다. 현재 확인 대기 중인 수정이나 자동으로 시작할 다음 기능은 없다.**
+
+- 배포 소스 커밋: `0863eb8` (태그 `0.1.2`). 이후 커밋은 인계 문서 갱신을 포함하므로 새 PC에서는 태그에 머무르지 말고 `codex/planning` 최신 커밋을 받는다.
+- 새 PC에서 [NEW_PC.md](docs/handoff/NEW_PC.md)의 복제 절차와 시작 메시지를 사용한다. 먼저 현재 상태를 파악하고 사용자가 지정하는 다음 작업을 진행한다.
 
 - [0.1.2 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.2), [줄 강조 검증](LINE_HIGHLIGHT_VALIDATION.md). 현재 대상 줄 전체를 옅은 강조색으로 표시하고 메뉴 선택 중에도 유지한다.
 
 - [0.1.1 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.1), [이번 변경 검증](CARET_VALIDATION.md). 세로 커서는 실제 글자 사이 삽입 위치를 표시하며, 삽입 메뉴가 열린 동안에도 유지된다.
 
-- 최신 실행 결과는 [7단계 검증 보고서](STAGE7_VALIDATION.md)를 따른다. 기능 소스 변경 없이 최종 버전을 검증·공개했다.
-- 다음 작업은 사용자의 0.1.2 BRAT 업데이트·정상 작동 확인이다. 통과한 검증 빌드가 바뀌면 관련 재검증이 필요하다.
+- 통합 검증은 [7단계 보고서](STAGE7_VALIDATION.md), 이후 드롭 위치 개선은 [0.1.1](CARET_VALIDATION.md)·[0.1.2](LINE_HIGHLIGHT_VALIDATION.md) 보고서를 따른다. 과거 보고서의 당시 확인 대기 문구를 현재 대기 상태로 해석하지 않는다.
+- 장시간 사용·다른 플러그인 충돌·개인 Vault·모바일·별도 창은 사용자가 사용 중 문제를 알려주기로 했다. 이를 추가 배포 전 검증이나 자동 구현 작업으로 확장하지 않는다.
 
-- 구현 커밋: `9761cff`. 이전 배포 기록 커밋: `fbd11ad`.
+- 0.0.15 당시 구현 커밋: `9761cff`. 당시 배포 기록 커밋: `fbd11ad`.
 - [0.1.0 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.0). 공개 자산 `main.js`, `manifest.json`, `styles.css`의 SHA-256은 검증 빌드와 각각 일치한다.
-- 최신 수정: 영상과 Main의 위아래 묶음을 왼쪽에 보존하고 Sub를 오른쪽 전체 높이에 배치. 여러 Sub와 기존 더블클릭 조합 유지.
+- 0.0.15 수정: 영상과 Main의 위아래 묶음을 왼쪽에 보존하고 Sub를 오른쪽 전체 높이에 배치. 여러 Sub와 기존 더블클릭 조합 유지.
 - 당시 41개 테스트·빌드·Sandbox 실제 UI·재시작·기존 파일 2,065개 보존·공개 자산 3개 SHA-256 일치 통과 기록. [검증 보고서](SUB_HEIGHT_VALIDATION.md).
 - 0.0.15 사용자 정상 작동 확인을 2026-09-22에 받았다.
 - BRAT 설치·업데이트 확인은 사용자가 담당한다. Codex가 대신 수행하는 것으로 되돌리지 않는다.
@@ -44,6 +47,7 @@
 - Metadata는 URL Links 포함 다섯 구역. Main 본문 별도 링크 선택 팝업은 보류.
 - Folder 제목 카드 기본값·기존 보기 보존. 파일 카드와 Metadata의 드래그는 현재 사양의 대상표를 따른다.
 - 새 링크 파일은 Obsidian 새 노트 저장 설정에 따라 생성·연결하고 자동으로 열지 않는다.
+- 문서 드래그: 화면상 대상 줄 전체의 옅은 강조 배경 + 글자 사이 세로 커서. 메뉴 선택 중에도 유지하며 삽입·취소 시 함께 제거한다. 문서 아래 빈 공간에 새 빈 줄을 자동 생성하지 않는다.
 
 ## 단계별 진행과 증거
 
@@ -59,13 +63,17 @@
 | 6 드래그 재사용·여러 Sub·각주·URL 확장 | 0.0.12~13 | 구현·검증·배포 기록, STAGE6_VALIDATION.md / REVISION4_VALIDATION.md |
 | 새 링크 파일 | 0.0.14 | 사용자 정상 작동 확인, NEW_NOTE_VALIDATION.md |
 | Sub 전체 높이 | 0.0.15 | 검증·배포·사용자 정상 작동 확인, SUB_HEIGHT_VALIDATION.md |
-| 7 최종 통합 | 0.1.0 | 공개 Release·자산 해시 확인 완료, 사용자 BRAT 확인 대기, STAGE7_VALIDATION.md |
+| 7 최종 통합 | 0.1.0 | 통합·업데이트·재시작·공개 자산 검증 완료, STAGE7_VALIDATION.md |
+| 글자 사이 드롭 커서 | 0.1.1 | 검증·배포 완료, 사용자 화면 확인 후 줄 강조 추가 요청, CARET_VALIDATION.md |
+| 드롭 대상 줄 강조 | 0.1.2 | 검증·배포·사용자 정상 작동 확인 완료, LINE_HIGHLIGHT_VALIDATION.md |
 
 각 버전의 자동·Sandbox 검증은 사용자 직접 확인과 별개다. 0.0.12/13의 개별 사용자 확인 문장을 추정해서 추가하지 않는다. 코드가 배포되어 있다는 사실만으로 최종 통합 완료를 선언하지 않는다.
 
 ## 다음 작업
 
-1. 사용자의 0.1.2 BRAT 업데이트·정상 작동 확인을 기다린다.
+1. 다른 PC에서 `codex/planning` 최신 상태를 받아 manifest `0.1.2`와 Git 변경사항을 확인한다.
+2. 이 문서·현재 사양·새 PC 안내를 읽고, 사용자가 지정한 후속 작업을 진행한다. 새 기능은 아직 지정되지 않았다.
+3. 이미 완료한 통합 검증과 배포를 인계만을 이유로 반복하지 않는다. 후속 코드 변경에는 변경 범위에 맞는 검증·배포 절차를 적용한다.
 
 별도 팝아웃 창 배치는 0.0.15 검증 범위에 포함되지 않았다. 지원 확대를 이번 인계로 승인받은 것으로 간주하지 않는다. 미검증·미수행은 통합 완료 보고에서 구분한다.
 
@@ -76,6 +84,7 @@
 - [최신 배치 시안](docs/handoff/references/sub-full-height-comparison.html), [수정 전](docs/handoff/evidence/before.png), [수정 후](docs/handoff/evidence/after.png), [재시작 후](docs/handoff/evidence/restart.png), [릴리즈 해시 확인 기록](docs/handoff/evidence/release-verification.json)을 선별 보관한다. 화면은 당시 증거이며 이번에 앱을 재검증한 결과가 아니다.
 - [전달 파일 목록·SHA-256](docs/handoff/TRANSFER_MANIFEST.json)은 원본과 선별 자료의 목록이다.
 - 새 PC의 실행 절차와 스크립트 이식 제한은 [NEW_PC.md](docs/handoff/NEW_PC.md)를 따른다. 기존 개인 스킬과 전역 설정은 자동으로 복제되지 않는다.
+- 0.1.2 최신 화면·UI 및 재시작 결과는 `docs/handoff/evidence/0.1.2/`에 선별 보관한다. `.github/release-assets/0.1.2/`에는 검증한 배포 파일 세 개와 SHA256SUMS가 있다. 설치는 공개 Release를 기준으로 한다.
 
 기존 PC의 Sandbox 위치는 `C:\Users\tlatn\AppData\Local\Temp\MDPalette-Stage0-Sandbox-20260918`, 별도 프로필은 `MDPalette-Stage0-Profile-20260918`, 당시 포트는 19273이다. 현재 실행 여부는 이번에 확인하지 않았다. 새 PC에서 이 경로·포트·PID를 그대로 사용하지 않는다. 기존 Sandbox는 사용자 확인용으로 유지하는 상태이며 이번 인계에서 종료·정리하지 않았다.
 

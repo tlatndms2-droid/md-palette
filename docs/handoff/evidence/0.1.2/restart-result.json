@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "checks": [
+    "line highlight, caret and insertion match character offset 4",
+    "line highlight, caret and insertion match character offset 8",
+    "line highlight, caret and insertion match character offset 15",
+    "line highlight, caret and insertion match character offset 93",
+    "line highlight, caret and insertion match character offset 368",
+    "Live Preview exact insertion",
+    "Escape cancels drag and removes caret",
+    "menu cancel removes both indicators without inserting",
+    "stale insertion refused after intervening edit",
+    "source unchanged"
+  ],
+  "assets": [
+    {
+      "name": "main.js",
+      "sha256": "68cf30acb4aa1a70f6f433efe14b0ce7c7eebb6b2810a928920c87c9525d5713"
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "5c83236b02516d44bd3a7cbbecc6d2540721d880eda03452beec294685240bc1"
+    },
+    {
+      "name": "styles.css",
+      "sha256": "9334c7d6df06a74cc3eba043b518325dcc74f68df5c4db4586693c24d392bd03"
+    }
+  ]
+}

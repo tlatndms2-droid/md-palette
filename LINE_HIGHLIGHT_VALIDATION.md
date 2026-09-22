@@ -12,4 +12,5 @@
 - Sandbox 프로세스를 종료·재시작한 뒤 0.1.2로 동일 시험 통과. TypeScript·빌드·41개 테스트 통과, 런타임 예외 없음.
 - 시험 전 설정·문서 백업을 보관했다. 대상 문서 내용은 시험 후 복원했고 원본 Main 변경 없음도 확인했다.
 - 증거: `.artifacts/caret-line/ui-result.json`, `restart-result.json`, `caret.png`.
-- 사용자 BRAT 업데이트 확인은 기존 합의대로 사용자가 수행한다.
+- 2026-09-22 사용자가 “구현됬어”라고 정상 작동을 확인했다. 사용자 확인 완료로 인계한다.
+- 다른 PC용 선별 증거: `docs/handoff/evidence/0.1.2/`의 `caret.png`, `ui-result.json`, `restart-result.json`.
