@@ -1,16 +1,18 @@
 # MD Palette 작업 인계 — 다른 PC 재개 시작점
 
 갱신일: 2026-09-22. 저장소: https://github.com/tlatndms2-droid/md-palette
-기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.1**.
+기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.2**.
 
 ## 현재 상태
 
-**0.1.1 글자 사이 드롭 커서 표시를 구현·Sandbox 실제 드래그·재시작 검증 후 공개했다. 공개 자산 세 개의 SHA-256이 검증본과 일치한다. 사용자 BRAT 업데이트·정상 작동 확인은 대기 중이다.**
+**0.1.2 드롭 대상 줄의 옅은 강조 배경과 글자 사이 세로 커서를 함께 표시한다. Sandbox 실제 드래그·재시작·공개 자산 SHA-256 검증 완료. 사용자 BRAT 확인 대기.**
+
+- [0.1.2 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.2), [줄 강조 검증](LINE_HIGHLIGHT_VALIDATION.md). 현재 대상 줄 전체를 옅은 강조색으로 표시하고 메뉴 선택 중에도 유지한다.
 
 - [0.1.1 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.1), [이번 변경 검증](CARET_VALIDATION.md). 세로 커서는 실제 글자 사이 삽입 위치를 표시하며, 삽입 메뉴가 열린 동안에도 유지된다.
 
 - 최신 실행 결과는 [7단계 검증 보고서](STAGE7_VALIDATION.md)를 따른다. 기능 소스 변경 없이 최종 버전을 검증·공개했다.
-- 다음 작업은 사용자의 0.1.1 BRAT 업데이트·정상 작동 확인이다. 통과한 검증 빌드가 바뀌면 관련 재검증이 필요하다.
+- 다음 작업은 사용자의 0.1.2 BRAT 업데이트·정상 작동 확인이다. 통과한 검증 빌드가 바뀌면 관련 재검증이 필요하다.
 
 - 구현 커밋: `9761cff`. 이전 배포 기록 커밋: `fbd11ad`.
 - [0.1.0 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.0). 공개 자산 `main.js`, `manifest.json`, `styles.css`의 SHA-256은 검증 빌드와 각각 일치한다.
@@ -63,7 +65,7 @@
 
 ## 다음 작업
 
-1. 사용자의 0.1.1 BRAT 업데이트·정상 작동 확인을 기다린다.
+1. 사용자의 0.1.2 BRAT 업데이트·정상 작동 확인을 기다린다.
 
 별도 팝아웃 창 배치는 0.0.15 검증 범위에 포함되지 않았다. 지원 확대를 이번 인계로 승인받은 것으로 간주하지 않는다. 미검증·미수행은 통합 완료 보고에서 구분한다.
 

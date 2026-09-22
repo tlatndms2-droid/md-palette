@@ -1,6 +1,8 @@
 # MD Palette 현재 진행 계획
 
-갱신일: 2026-09-22. 공개 0.1.1, 브랜치 codex/planning.
+갱신일: 2026-09-22. 공개 0.1.2, 브랜치 codex/planning.
+
+0.1.2: 사용자 요청으로 드롭 대상 줄 전체의 옅은 강조 배경을 세로 커서에 추가했다. 실제 Sandbox·재시작·공개 자산 검증 완료. LINE_HIGHLIGHT_VALIDATION.md 참고.
 
 최신 상태: 0.1.0 통합 버전 공개 후, 사용자 요청으로 0.1.1 글자 사이 드롭 커서를 추가했다. Sandbox 실제 UI·재시작 및 공개 자산 검증 완료. 사용자 BRAT 확인 대기. 상세 상태는 HANDOFF.md와 CARET_VALIDATION.md를 우선한다. 아래 7단계 계획의 배포 전 문구는 이전 계획 기록이다.
 
