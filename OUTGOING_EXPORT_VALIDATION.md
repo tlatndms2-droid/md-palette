@@ -20,4 +20,4 @@ Obsidian 1.13.7, MDPalette-Link-Sandbox-20260924, 전용 프로필 MDPalette-Lin
 
 [검증 자료](docs/handoff/evidence/0.1.12). 백업은 .artifacts/outgoing-export/before에 유지합니다.
 
-공개 Release 및 Sandbox BRAT: 아직 진행 전. 사용자 본인의 BRAT 확인은 대기.
+[공개 Release 0.1.12](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.12)의 세 자산을 다시 다운로드해 SHA-256 일치를 확인했습니다. Sandbox BRAT 2.2.0의 공개 다운로드로 0.1.11→0.1.12 업데이트·활성화·기존 설정 보존을 확인했습니다. 최초 시도에서는 0.1.11이 내려왔고 재시도 후 0.1.12가 정상 설치됐습니다. BRAT의 manifest는 JSON 서식만 달라 내용 비교로 확인했습니다. 사용자 본인의 BRAT 확인은 대기.

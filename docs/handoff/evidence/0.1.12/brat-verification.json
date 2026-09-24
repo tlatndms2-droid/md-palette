@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "from": "0.1.11",
+  "version": "0.1.12",
+  "through": "BRAT 2.2.0 public download and reload",
+  "priorSettingsPreserved": true,
+  "assets": [
+    {
+      "name": "main.js",
+      "sha256": "b7faf13f007e48ce58e1916abc7cef320b25cf02e4138c0de8cc1c08511e61bd",
+      "contentIdentical": true
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "4eb567e33e71fe4f5fd50125f954ca865f58c41ce60f7a2fa69b140316679003",
+      "contentIdentical": true
+    },
+    {
+      "name": "styles.css",
+      "sha256": "82a104a5324c1d8a78df7e8f82496d93207979df9349b3ed8562c5b8828c6c01",
+      "contentIdentical": true
+    }
+  ]
+}
