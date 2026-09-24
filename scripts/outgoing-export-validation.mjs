@@ -1,0 +1,76 @@
+import assert from 'node:assert/strict';
+import {mkdir,readFile,writeFile,cp} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {c,p,js,pause,click,textClick,key,wait,tap} from './stage4-helpers.mjs';
+const dir='.artifacts/outgoing-export',checks=[];
+const pass=s=>{checks.push(s);console.log('PASS',s)};
+try {
+ const vault=await js('app.vault.adapter.getBasePath()');assert.ok(vault.endsWith('MDPalette-Link-Sandbox-20260924'));
+ await mkdir(dir+'/before',{recursive:true});
+ if(!process.argv.includes('--resume')) {
+ await js(`(async()=>{${p}.flushState();await ${p}.saveChain;return true})()`);
+ for(const name of ['data.json','main.js','manifest.json','styles.css'])await cp(vault+'/.obsidian/plugins/md-palette/'+name,dir+'/before/'+name,{errorOnExist:true,force:false});
+ await cp(vault+'/.obsidian/workspace.json',dir+'/before/workspace.json',{errorOnExist:true,force:false});
+ const originals={};for(const f of await js('app.vault.getFiles().map(f=>f.path)'))originals[f]=await readFile(vault+'/'+f,'utf8');
+ await writeFile(dir+'/originals.json',JSON.stringify(originals,null,2));
+ }
+ const originals=JSON.parse(await readFile(dir+'/originals.json','utf8'));
+ await js(`app.plugins.disablePlugin('md-palette').then(()=>true)`);
+ for(const name of ['main.js','manifest.json','styles.css'])await cp(name,vault+'/.obsidian/plugins/md-palette/'+name);
+ await js(`(async()=>{await app.plugins.loadManifests();await app.plugins.enablePlugin('md-palette');return true})()`);
+ await wait(`${p}?.mainFile?.path==='나의 글쓰기.md'`);assert.equal(await js(`${p}.manifest.version`),'0.1.12');
+ await c.send('Emulation.setFocusEmulationEnabled',{enabled:true});
+ await c.send('Emulation.setDeviceMetricsOverride',{width:1600,height:1000,deviceScaleFactor:1,mobile:false});
+ const folders=await js(`JSON.stringify(${p}.folders)`);
+ await js(`${p}.explorer.depth=2;${p}.explorer.expanded=[];${p}.selectView('link','card');true`);await pause(400);
+ await click('.mdp-card[data-path="관찰의 기록.md"] .mdp-link-expand');
+ await click('.mdp-card[data-path="문장 수집.md"] .mdp-link-expand');
+ assert.equal(await js(`document.querySelectorAll('[data-link-path="산책 메모.md"]').length`),2);
+ assert.equal(await js(`document.querySelectorAll('[data-link-path="글쓰기 아이디어.md"]').length`),0);
+ assert.equal(await js(`${p}.linkedPaths().has('글쓰기 아이디어.md')`),false);
+ assert.ok(await js(`!!document.querySelector('.mdp-card[data-path="초안.md"]')`));
+ await c.screenshot(dir+'/card.png');pass('Only outgoing children; shared child under both parents; direct Main backlink remains');
+ await textClick('.mdp-tab','Metadata View');await click('.mdp-source-toggle');
+ assert.equal(await js(`document.querySelectorAll('.mdp-source-tree [data-link-path="글쓰기 아이디어.md"]').length`),0);
+ await click('.mdp-source-tree [data-link-path="산책 메모.md"] .mdp-linked-name');
+ await wait(`${p}.metadataFile?.path==='산책 메모.md'`);pass('Metadata picker follows outgoing hierarchy');
+ await js(`(async()=>{await ${p}.openIn('sub',app.vault.getAbstractFileByPath('자료.canvas'),'','normal-group');return true})()`);await pause(600);
+ await js(`${p}.selectView('link','folder');true`);await pause(400);
+ assert.equal(await js(`document.querySelectorAll('.mdp-folder-tree [data-link-path="글쓰기 아이디어.md"]').length`),0);
+ assert.ok(await js(`document.querySelectorAll('.mdp-folder-tree [data-link-path="산책 메모.md"]').length>=2`));
+ await c.screenshot(dir+'/folder.png');
+ // Use the actual context menu and pointer placement, with branches collapsed.
+ await js(`${p}.explorer.expanded=[];${p}.selectView('link','folder');true`);await pause(300);
+ await click('.mdp-folder-tree [data-key="d:writing"]','right');
+ console.log('menu',await js(`[...document.querySelectorAll('.menu-item-title')].map(e=>e.textContent)`));
+ await textClick('.menu-item-title','폴더를 현재 Canvas에 삽입…');
+ await wait(`!!document.querySelector('.mdp-canvas-insert-bar')`);
+ const preview=await js(`${p}.canvasInsert.session.source.layout`);
+ assert.deepEqual(preview.nodes.filter(n=>n.file).map(n=>n.file).sort(),['관찰의 기록.md','문장 수집.md','산책 메모.md','산책 메모.md'].sort());
+ assert.equal(preview.edges.length,4);
+ for(const parentName of ['관찰의 기록.md','문장 수집.md'])assert.ok(preview.edges.some(e=>preview.nodes.find(n=>n.id===e.fromNode)?.file===parentName&&preview.nodes.find(n=>n.id===e.toNode)?.file==='산책 메모.md'));
+ await key('Escape','Escape',27);assert.equal(await js(`!!document.querySelector('.mdp-canvas-preview')`),false);
+ pass('Collapsed descendants included with correct parent edges; Escape leaves Canvas untouched');
+ await click('.mdp-folder-tree [data-key="d:writing"]','right');await textClick('.menu-item-title','폴더를 현재 Canvas에 삽입…');
+ const pt=await js(`(()=>{const r=${p}.canvasInsert.session.view.canvas.wrapperEl.getBoundingClientRect();return{x:r.x+120,y:r.y+r.height*.45}})()`);
+ await tap(pt);await wait(`!document.querySelector('.mdp-canvas-preview')`);
+ const result=await js(`app.workspace.getLeavesOfType('canvas').find(l=>l.view.file.path==='자료.canvas').view.canvas.getData()`);
+ assert.equal(result.nodes.length,5);assert.equal(result.edges.length,4);
+ await js(`app.workspace.getLeavesOfType('canvas').find(l=>l.view.file.path==='자료.canvas').view.canvas.zoomToFit();true`);await pause(500);
+ await c.screenshot(dir+'/export.png');pass('Real menu export creates parent file cards, outgoing child cards and four edges');
+ await js(`app.commands.executeCommandById('md-palette:undo-canvas-insert');true`);await pause(400);
+ assert.equal(await js(`app.workspace.getLeavesOfType('canvas').find(l=>l.view.file.path==='자료.canvas').view.canvas.getData().nodes.length`),0);
+ pass('Undo removes the whole exported tree');
+ await click('.mdp-folder-tree [data-key="d:writing"]','right');await textClick('.menu-item-title','폴더를 현재 Canvas에 삽입…');
+ await js(`${p}.explorer.depth=3;true`);await wait(`!document.querySelector('.mdp-canvas-preview')`);
+ const deep=await js(`${p}.canvasInsert.source(${JSON.stringify(['관찰의 기록.md','문장 수집.md'])},'writing').layout`);
+ assert.equal(deep.nodes.filter(n=>n.file==='빛과 그림자.md').length,2);
+ assert.equal(deep.nodes.some(n=>n.file==='글쓰기 아이디어.md'),false);
+ pass('Depth matches exported descendants and changing it cancels stale preview');
+ await js(`(async()=>{for(const l of app.workspace.getLeavesOfType('canvas'))if(l.view.file.path==='자료.canvas')l.detach();await app.vault.modify(app.vault.getAbstractFileByPath('자료.canvas'),${JSON.stringify(originals['자료.canvas'])});${p}.explorer.depth=2;${p}.explorer.expanded=[JSON.stringify(['나의 글쓰기.md','관찰의 기록.md']),JSON.stringify(['나의 글쓰기.md','문장 수집.md'])];${p}.selectView('link','folder');${p}.flushState();await ${p}.saveChain;app.workspace.requestSaveLayout();return true})()`);await pause(1600);
+ assert.equal(await js(`JSON.stringify(${p}.folders)`),folders);
+ const hashes={};for(const [path,original]of Object.entries(originals)){const actual=await readFile(vault+'/'+path,'utf8');assert.equal(actual,original,path);hashes[path]=createHash('sha256').update(actual).digest('hex');}
+ pass('All source files and virtual folder positions preserved; original Canvas restored');
+ await writeFile(dir+'/restart-expected.json',JSON.stringify(await js(`({explorer:${p}.explorer,folders:${p}.folders,cards:${p}.cards})`),null,2));
+ assert.equal(c.errors.length,0);await writeFile(dir+'/ui-result.json',JSON.stringify({version:'0.1.12',passed:true,checks,hashes},null,2));
+}finally{c.close()}

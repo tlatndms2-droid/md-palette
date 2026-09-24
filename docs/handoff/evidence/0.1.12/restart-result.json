@@ -1,0 +1,23 @@
+{
+  "version": "0.1.12",
+  "passed": true,
+  "processRestart": true,
+  "outgoingOnly": true,
+  "folderExportDescendants": true,
+  "settingsPreserved": true,
+  "sourceFilesPreserved": true,
+  "assets": [
+    {
+      "name": "main.js",
+      "sha256": "b7faf13f007e48ce58e1916abc7cef320b25cf02e4138c0de8cc1c08511e61bd"
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "7e6ab9e2d266dfbd324016183521e9a6435643fe1554bdd07934da7ec851b70a"
+    },
+    {
+      "name": "styles.css",
+      "sha256": "82a104a5324c1d8a78df7e8f82496d93207979df9349b3ed8562c5b8828c6c01"
+    }
+  ]
+}

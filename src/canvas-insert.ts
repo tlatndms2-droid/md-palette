@@ -43,16 +43,20 @@ export class CanvasInsert {
   }
   files(paths:string[]):void { this.begin(paths); }
   folder(folder:string):void { this.begin(this.plugin.connectedFiles().map(f=>f.path),folder); }
+  private folderSignature():string { return JSON.stringify([this.plugin.folders,this.plugin.explorer.depth,this.plugin.linkRevision]); }
   private source(paths:string[],folder?:string):Source {
     const main=this.plugin.mainFile; if(!main)throw Error('Main을 먼저 지정해주세요.');
-    const layout=folder===undefined?fileLayout(paths,()=>crypto.randomUUID()):folderLayout(this.plugin.folders,paths,folder,()=>crypto.randomUUID());
+    const layout=folder===undefined?fileLayout(paths,()=>crypto.randomUUID()):folderLayout(this.plugin.folders,paths,folder,()=>crypto.randomUUID(),{
+      depth:this.plugin.explorer.depth,ancestors:[main.path],
+      children:(path,ancestors)=>this.plugin.linkIndex.children(path,ancestors).filter(e=>this.plugin.app.vault.getAbstractFileByPath(e.path) instanceof TFile).map(e=>e.path)
+    });
     const included=layout.nodes.flatMap(n=>n.file?[n.file]:[]);
     // Only Obsidian's registered file views can render a file node.
     const registry=(this.plugin.app as unknown as {viewRegistry:{getTypeByExtension(ext:string):string|undefined}}).viewRegistry;
     const invalid=included.filter(path=>{const f=this.plugin.app.vault.getAbstractFileByPath(path);return !(f instanceof TFile)||!registry.getTypeByExtension(f.extension);});
     if(invalid.length)throw Error('삽입할 수 없는 파일: '+invalid.join(', '));
     if(!layout.nodes.length)throw Error('삽입할 파일을 선택해주세요.');
-    return {main,signature:folder===undefined?'':JSON.stringify(this.plugin.folders),paths:included,folder,layout};
+    return {main,signature:folder===undefined?'':this.folderSignature(),paths:included,folder,layout};
   }
   private begin(paths:string[],folder?:string,leaf?:WorkspaceLeaf,event?:MouseEvent):void {
     if(this.locked)return;
@@ -74,7 +78,7 @@ export class CanvasInsert {
   private valid(s:Session):boolean {
     return this.plugin.mainFile===s.source.main && this.view(s.leaf)===s.view && s.view.file===s.file && this.plugin.app.workspace.getLeavesOfType('canvas').includes(s.leaf)
       && s.source.paths.every(p=>this.plugin.app.vault.getAbstractFileByPath(p) instanceof TFile)
-      && (s.source.folder===undefined||JSON.stringify(this.plugin.folders)===s.source.signature);
+      && (s.source.folder===undefined||this.folderSignature()===s.source.signature);
   }
   private preview(leaf:WorkspaceLeaf,source:Source,event?:MouseEvent):void {
     if(this.locked)return; this.cancel();
@@ -101,7 +105,7 @@ export class CanvasInsert {
     host.addEventListener('pointermove',move,true);host.addEventListener('pointerdown',place,true);doc.addEventListener('keydown',key,true);
     s.clean=()=>{host.removeEventListener('pointermove',move,true);host.removeEventListener('pointerdown',place,true);doc.removeEventListener('keydown',key,true);};
     let lastPaint=0;
-    const tick=(time=0)=>{if(this.session!==s)return;if(time-lastPaint>=100||!lastPaint){lastPaint=time;if(!this.valid(s)){this.cancel();new Notice('Main·폴더 또는 Canvas가 변경되어 삽입을 취소했습니다.');return;}}this.paint(s);s.frame=doc.defaultView!.requestAnimationFrame(tick);};
+    const tick=(time=0)=>{if(this.session!==s)return;if(time-lastPaint>=100||!lastPaint){lastPaint=time;if(!this.valid(s)){this.cancel();new Notice('Main·폴더·연결 또는 Canvas가 변경되어 삽입을 취소했습니다.');return;}}this.paint(s);s.frame=doc.defaultView!.requestAnimationFrame(tick);};
     tick();
   }
   private paint(s:Session):void {

@@ -1,0 +1,24 @@
+{
+  "version": "0.1.12",
+  "passed": true,
+  "checks": [
+    "Only outgoing children; shared child under both parents; direct Main backlink remains",
+    "Metadata picker follows outgoing hierarchy",
+    "Collapsed descendants included with correct parent edges; Escape leaves Canvas untouched",
+    "Real menu export creates parent file cards, outgoing child cards and four edges",
+    "Undo removes the whole exported tree",
+    "Depth matches exported descendants and changing it cancels stale preview",
+    "All source files and virtual folder positions preserved; original Canvas restored"
+  ],
+  "hashes": {
+    "초안.md": "9ec3d8ba7a4d29648a37fd0c8112c05fbea4ea929c7479e59cfc76fff723aefa",
+    "자료.canvas": "a461bf77bc4e4d732f7afc121c70e7f70ed8bf225a082a4e01951d1eb6b5c278",
+    "빛과 그림자.md": "5ad9d8d6bac222977c2de44218ea22eca407d9ab48931caddef570bf63f53357",
+    "산책 메모.md": "495c72bbd4a611062626d1e295d23b77700b74d2d24fa65e3a6740175502a01a",
+    "미연결.md": "f40d7ac31d86c76ffdc4a36da24e5b61ce11c72c9af36733b501a3e6a439829e",
+    "문장 수집.md": "40eea61e15a59f5bb286c1abed0d97c14c7b868d13bec01defd26bcb17d27adb",
+    "나의 글쓰기.md": "e62c6f39b3a503955a9aef9c2e80cbd399b657a9c461e486d5af649299e9a664",
+    "글쓰기 아이디어.md": "011b11c252f4e765ec89ae47b26d6e94b7a1b310446575c6d554fb3833fc8932",
+    "관찰의 기록.md": "d6b88bb4e0b6638731fcc77a9eaf12de3548fc86242b6ed63e1dce00d4bc0d6c"
+  }
+}

@@ -19,3 +19,19 @@ test('file placement deduplicates, offsets without changing source, and rejects 
  assert.equal(collides(shifted,{nodes:[{...shifted.nodes[0],id:'old'}],edges:[]}),true);
  assert.equal(collides({nodes:[p.nodes[0],{...p.nodes[0],id:'copy'}],edges:[]},{nodes:[],edges:[]}),true);
 });
+test('folder export preserves outgoing file hierarchy, shared occurrences and cycle boundaries',()=>{
+ const graph={'1.md':['shared.md'],'2.md':['shared.md'],'shared.md':['leaf.md','1.md'],'leaf.md':['main.md']};
+ const options={depth:4,ancestors:['main.md'],children:(path)=>graph[path]??[]};
+ const p=folderLayout(state,['1.md','2.md','3.md'],'a',id,options);
+ assert.equal(p.nodes.filter(n=>n.file==='shared.md').length,2);
+ assert.equal(p.nodes.some(n=>n.file==='main.md'),false);
+ assert.equal(p.nodes.some(n=>n.file==='3.md'),false);
+ for(const edge of p.edges){const parent=p.nodes.find(n=>n.id===edge.fromNode),child=p.nodes.find(n=>n.id===edge.toNode);assert.ok(child.x>parent.x);if(parent.file)assert.ok(graph[parent.file].includes(child.file));}
+ assert.equal(p.edges.length,p.nodes.length-1);
+ assert.equal(collides(p,{nodes:[],edges:[]}),false);
+ const shallow=folderLayout(state,['1.md','2.md'],'a',id,{...options,depth:1});
+ assert.deepEqual(shallow.nodes.filter(n=>n.file).map(n=>n.file).sort(),['1.md','2.md']);
+ const two=folderLayout(state,['1.md','2.md'],'a',id,{...options,depth:2});
+ assert.equal(two.nodes.filter(n=>n.file==='shared.md').length,2);
+ assert.equal(two.nodes.some(n=>n.file==='leaf.md'),false);
+});

@@ -12,7 +12,7 @@ export class LinkExplorer {
     for (let n = 1; n <= 5; n++) select.createEl('option', { value: String(n), text: `${n}단계` });
     select.value = String(this.plugin.explorer.depth);
     select.onchange = () => { this.plugin.explorer.depth = Number(select.value); this.plugin.saveMetadata(); changed(); };
-    bar.createSpan({ cls: 'mdp-muted', text: '나가는 링크 · 들어오는 링크' });
+    bar.createSpan({ cls: 'mdp-muted', text: '하위 목록 · 아웃고잉 링크' });
   }
   attach(row: HTMLElement, file: TFile, ancestors = [this.plugin.mainFile!.path], level = 1): void {
     if (level >= this.plugin.explorer.depth) return;
@@ -50,7 +50,7 @@ export class LinkExplorer {
         name.ondblclick = event => { if (!this.pick) this.plugin.openFileGesture(child, event); };
         name.onkeydown = event => { if (event.key === 'Enter' && !this.pick) { event.preventDefault(); this.plugin.openFileGesture(child); } };
         this.plugin.bindFilePreview(name, child);
-        const direction = edge.outgoing && edge.incoming ? `${file.basename} ↔ ${child.basename}` : edge.outgoing ? `${file.basename} → ${child.basename}` : `${child.basename} → ${file.basename}`;
+        const direction = `${file.basename} → ${child.basename}`;
         item.createDiv({ cls: 'mdp-link-direction', text: direction });
         if (!this.pick) {
           item.draggable = true;

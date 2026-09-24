@@ -17,13 +17,15 @@ export class LinkIndex {
   }
   children(path: string, ancestors: readonly string[]): LinkEdge[] {
     const seen = new Set(ancestors);
-    return [...(this.edges.get(path)?.values() ?? [])].filter(e => !seen.has(e.path));
+    return [...(this.edges.get(path)?.values() ?? [])].filter(e => e.outgoing && !seen.has(e.path));
   }
   reachable(root: string, depth: number): Set<string> {
     const seen = new Set([root]); let frontier = [root];
     for (let i = 0; i < depth && frontier.length; i++) {
       const next: string[] = [];
       for (const path of frontier) for (const edge of this.edges.get(path)?.values() ?? []) {
+        // Direct Main connections retain backlinks; nested children follow outgoing links only.
+        if (i > 0 && !edge.outgoing) continue;
         if (!seen.has(edge.path)) { seen.add(edge.path); next.push(edge.path); }
       }
       frontier = next;

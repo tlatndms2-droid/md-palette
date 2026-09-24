@@ -1,6 +1,8 @@
 # MD Palette 현재 진행 계획
 
-갱신일: 2026-09-24. 공개 0.1.11, 브랜치 codex/planning.
+갱신일: 2026-09-24. 검증 0.1.12, 브랜치 codex/planning.
+
+0.1.12: 하위 목록은 아웃고잉 링크만 표시합니다. Folder에서 Canvas로 내보내면 선택한 연결 깊이까지 부모 파일·하위 파일·연결선을 함께 배치합니다. 접힌 항목도 포함하며, 같은 파일은 부모별 카드로 표시하고 원본은 하나로 유지합니다. 53개 테스트·빌드·Sandbox UI·프로세스 재시작 통과. 공개 Release·BRAT 진행 전. 사용자 0.1.11 화면 확인 및 수정 시안 승인에 따라 진행. [검증](OUTGOING_EXPORT_VALIDATION.md).
 
 0.1.11: Card·Connections·Folder에서 양방향 하위 링크를 부모별로 펼치고 1~5단계 깊이를 조절합니다. 같은 파일은 각 부모 아래에 표시하며 원본은 하나로 유지합니다. Metadata View의 파일 선택기로 Main 또는 하위 연결 파일 하나의 정보를 보고 편집·재사용합니다. 검증·재시작 통과, 공개 자산·Sandbox BRAT 0.1.10→0.1.11 확인 통과. 사용자 BRAT 확인 대기. LINK_EXPLORER_VALIDATION.md 참고.
 
