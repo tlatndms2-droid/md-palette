@@ -12,3 +12,5 @@
 - 시험 Canvas·plugin data·workspace 사전 백업 및 복원 SHA-256 일치. 실제 사용자 Vault는 수정하지 않았다.
 
 증거: docs/handoff/evidence/0.1.10. BRAT 사용자 확인은 별도 대기.
+
+공개 Release https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.10 · 소스 7c67974. 공개 자산 세 개의 다운로드 SHA-256이 검증 빌드와 일치합니다.
