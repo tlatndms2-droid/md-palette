@@ -1,0 +1,96 @@
+<div id="palette-proposal">
+<div class="p-caption">MD Palette 0.1.10의 화면 구조를 바탕으로 한 제안 · 예시 노트</div>
+<div class="p-shell">
+ <div class="p-workspace"><div class="p-doc-tab">Main · 나의 글쓰기.md</div><article><div class="p-breadcrumb">글쓰기 / 나의 글쓰기</div><h2>나의 글쓰기</h2><p>작은 관찰을 모아 하나의 이야기로.</p><h3>오늘의 재료</h3><p class="p-link">[[관찰의 기록]]</p><p>연결된 기록을 살펴보고 필요한 정보를 골라 글을 이어갑니다.</p></article><div class="p-sub"><div class="p-doc-tab">Sub · 초안.md</div><article><h3>초안</h3><p>익숙한 길에서 새로운 장면을 발견했다.</p><span class="p-muted">글을 쓰는 공간</span></article></div></div>
+ <aside class="p-sidebar" aria-label="MD Palette 시안">
+  <div class="p-heading"><i data-lucide="panels-top-left" aria-hidden="true"></i> MD Palette</div>
+  <div class="p-context"><i data-lucide="book-open" aria-hidden="true"></i> Main · 나의 글쓰기.md</div>
+  <div class="p-tabs"><button type="button" data-top="link">Link View</button><button type="button" data-top="meta">Metadata View</button></div>
+  <div id="p-content"></div>
+ </aside>
+</div>
+<div class="p-caption" id="p-feedback" aria-live="polite"></div>
+</div>
+<style>
+#palette-proposal{--p-bg:light-dark(#fff,#202020);--p-side:light-dark(#f5f5f5,#262626);--p-card:light-dark(#ededed,#303030);--p-line:light-dark(#d8d8d8,#434343);--p-text:light-dark(#303030,#dfdfdf);--p-muted:light-dark(#686868,#aaa);--p-accent:light-dark(#7951b0,#a579d8);--p-on:#fff;--p-select:light-dark(#eee6f8,#3a3046);--p-gap:8px;color:var(--p-text);font:14px/1.55 system-ui,sans-serif}
+#palette-proposal *{box-sizing:border-box}
+#palette-proposal .p-caption{padding:10px 0;color:var(--p-muted);font-size:12px}
+#palette-proposal .p-shell{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,410px);border:1px solid var(--p-line);border-radius:9px;overflow:hidden;background:var(--p-bg)}
+#palette-proposal .p-workspace{min-width:0}
+#palette-proposal .p-doc-tab{padding:10px 18px;border-bottom:1px solid var(--p-line);background:var(--p-side);font-size:12px}
+#palette-proposal article{padding:28px}
+#palette-proposal article h2{font-size:24px;font-weight:500;margin:12px 0 24px}
+#palette-proposal article h3{font-size:17px;font-weight:500}
+#palette-proposal .p-breadcrumb,#palette-proposal .p-muted{color:var(--p-muted);font-size:12px}
+#palette-proposal .p-link{color:var(--p-accent)}
+#palette-proposal .p-sub{border-top:1px solid var(--p-line);margin-top:28px}
+#palette-proposal .p-sidebar{background:var(--p-side);padding:12px;border-left:1px solid var(--p-line);min-width:0;min-height:680px}
+#palette-proposal .p-heading,#palette-proposal .p-context{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+#palette-proposal .p-heading{font-weight:500}#palette-proposal .p-heading i{color:var(--p-accent)}
+#palette-proposal .p-context{font-size:12px}
+#palette-proposal button,#palette-proposal select,#palette-proposal input{font:inherit;color:var(--p-text);background:var(--p-card);border:1px solid var(--p-line);border-radius:5px;padding:6px 8px;max-width:100%}
+#palette-proposal button:disabled{opacity:.55}
+#palette-proposal button[aria-pressed="true"]{border-color:var(--p-accent);background:var(--p-select)}
+#palette-proposal .p-tabs{display:flex;gap:4px;margin-bottom:10px}
+#palette-proposal .p-tabs button{flex:1;min-width:0;font-size:12px;padding:6px 3px;overflow-wrap:anywhere}
+#palette-proposal .p-tabs button[aria-pressed="true"]{background:var(--p-accent);color:var(--p-on)}
+#palette-proposal .p-actions{display:flex;gap:6px;margin:10px 0;flex-wrap:wrap}
+#palette-proposal .p-actions button{font-size:11px;flex:1}
+#palette-proposal .p-filter{border:1px solid var(--p-line);border-radius:7px;padding:6px 8px;margin:8px 0;font-size:12px}
+#palette-proposal summary{padding:4px 0}
+#palette-proposal .p-chips{display:flex;gap:5px;flex-wrap:wrap;margin:5px 0}
+#palette-proposal .p-chip{font-size:11px;padding:2px 7px;border:1px solid var(--p-line);border-radius:4px;background:var(--p-card)}
+#palette-proposal .p-chip.active{border-color:var(--p-accent);background:var(--p-select)}
+#palette-proposal .p-controls{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0;font-size:12px}
+#palette-proposal .p-controls label{display:flex;align-items:center;gap:6px}
+#palette-proposal .p-new{color:var(--p-accent);font-size:11px}
+#palette-proposal .p-row{display:flex;align-items:center;gap:6px;padding:var(--p-gap);background:var(--p-card);border:1px solid var(--p-line);border-radius:5px;margin-top:6px;min-width:0}
+#palette-proposal .p-row .p-file{background:transparent;border:0;padding:0;text-align:left;min-width:0;flex:1;overflow-wrap:anywhere;font-size:12px}
+#palette-proposal .p-row .p-toggle{border:0;background:transparent;padding:0 3px;flex:none}
+#palette-proposal .p-row .p-tag{font-size:11px;color:var(--p-muted);flex:none}
+#palette-proposal .p-branch{border-left:1px solid var(--p-accent);margin-left:15px;padding:3px 0 5px 13px}
+#palette-proposal .p-relation{font-size:11px;color:var(--p-muted);padding:3px 0 0 9px}
+#palette-proposal .p-selected{border-color:var(--p-accent);background:var(--p-select)}
+#palette-proposal .p-source{border:1px solid var(--p-accent);border-radius:6px;padding:8px;margin:12px 0}
+#palette-proposal .p-source-head{display:flex;justify-content:space-between;gap:8px;font-size:12px;margin-bottom:6px}
+#palette-proposal .p-source button{width:100%;text-align:left;background:transparent;font-size:12px}
+#palette-proposal .p-path{font-size:11px;color:var(--p-muted);margin:6px 0;overflow-wrap:anywhere}
+#palette-proposal .p-search{width:100%;margin:8px 0}
+#palette-proposal .p-section{border-bottom:1px solid var(--p-line);padding:8px 0}
+#palette-proposal .p-section summary{font-weight:500;font-size:12px}
+#palette-proposal .p-meta-item{padding:10px;margin:7px 0;background:var(--p-card);border-radius:5px;font-size:12px}
+#palette-proposal mark{background:var(--p-select);color:var(--p-text)}
+#palette-proposal .p-graph{position:relative;padding:18px 8px;display:grid;gap:10px;text-align:center}
+#palette-proposal .p-graph span{display:inline-block;padding:4px 10px;border:1px solid var(--p-line);border-radius:20px;background:var(--p-card);font-size:12px}
+#palette-proposal .p-folder-label{font-size:12px;margin:12px 0 5px;color:var(--p-muted)}
+@media(max-width:760px){#palette-proposal .p-shell{grid-template-columns:minmax(0,1fr)}#palette-proposal .p-workspace{display:none}#palette-proposal .p-sidebar{border-left:0;min-height:0}}
+</style>
+<script>
+(()=>{
+const root=document.getElementById('palette-proposal'),q=s=>root.querySelector(s);
+const data={main:{name:'나의 글쓰기',path:'Main',text:'작은 관찰을 모아 하나의 이야기로.',task:'첫 문단 작성하기'},a:{name:'관찰의 기록',path:'나의 글쓰기 › 관찰의 기록',text:'관찰은 구체적인 장면에서 시작한다.',task:'오늘의 관찰 정리'},b:{name:'산책 메모',path:'나의 글쓰기 › 관찰의 기록 › 산책 메모',text:'같은 길도 시간과 시선에 따라 다른 장면을 보여준다.',task:'인상적인 장면 하나 고르기'},c:{name:'글쓰기 아이디어',path:'나의 글쓰기 › 관찰의 기록 › 글쓰기 아이디어',text:'작은 변화를 글의 첫 장면으로 사용해 보자.',task:'도입 문장 다듬기'},d:{name:'문장 수집',path:'나의 글쓰기 › 문장 수집',text:'다시 읽고 싶은 문장을 모은다.',task:'문장 세 개 고르기'}};
+let s={top:'link',view:'card',depth:2,expanded:true,source:'main',picker:false};const design={spacing:8};
+function icon(name){return `<i data-lucide="${name}" aria-hidden="true"></i>`}
+function row(id,relation='',parent=false){return `<div class="p-row ${s.top==='meta'&&s.source===id?'p-selected':''}">${parent?`<button class="p-toggle cursor-interaction" data-expand aria-label="관찰의 기록 하위 링크 ${s.expanded?'접기':'펼치기'}" aria-expanded="${s.expanded}">${s.expanded?'▾':'▸'}</button>`:icon('file-text')}<button type="button" class="p-file cursor-interaction" data-file="${id}">${data[id].name}.md</button>${parent?'<span class="p-tag">2개 연결</span>':''}</div>${relation?`<div class="p-relation">${relation}</div>`:''}`}
+function tree(includeMain=false){return (includeMain?row('main'):'')+row('a','',true)+(s.expanded&&s.depth>=2?`<div class="p-branch">${row('b','관찰의 기록 → 산책 메모')}${row('c','글쓰기 아이디어 → 관찰의 기록')}</div>`:'')+row('d');}
+function depth(){return `<div class="p-controls"><label>연결 깊이 <select id="p-depth"><option value="1" ${s.depth===1?'selected':''}>1단계</option><option value="2" ${s.depth===2?'selected':''}>2단계</option></select></label><span class="p-new">추가 제안</span></div>`}
+function actions(){return '<div class="p-actions"><button disabled title="기존 기능 · 시안에서 실행하지 않음">+ 연결 파일 추가</button><button disabled title="기존 기능 · 시안에서 실행하지 않음">+ 새 링크 파일 추가</button></div>'}
+function metadata(){const n=data[s.source];return `<div class="p-source"><div class="p-source-head"><span>정보를 볼 파일</span><span class="p-new">추가 제안</span></div><button id="p-picker" aria-expanded="${s.picker}" class="cursor-interaction">${n.name}.md ▾</button>${s.picker?depth()+tree(true):`<div class="p-path">${n.path}</div>`}</div><input class="p-search" id="p-search" type="search" aria-label="메타데이터 검색" placeholder="메타데이터 검색…"><div id="p-meta-data"></div>`}
+function drawMeta(query=''){const n=data[s.source];const groups=[['각주',`관찰한 장면을 글의 재료로 사용한다.`],['Highlights',n.text],['Tasks','☐ '+n.task],['Block Reference',''],['Links','']];q('#p-meta-data').innerHTML=groups.map(([name,text])=>{const visible=text&&(!query||text.includes(query));return `<details class="p-section" ${text?'open':''}><summary>${name} · ${visible?1:0}</summary>${visible?`<div class="p-meta-item">${name==='Highlights'?'<mark>'+text+'</mark>':text}</div>`:'<div class="p-muted">항목 없음</div>'}</details>`}).join('');}
+function render(){root.style.setProperty('--p-gap',design.spacing+'px');root.querySelectorAll('[data-top]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.top===s.top)));let html='';
+if(s.top==='meta')html=metadata();else{html=`<div class="p-tabs">${['card','connections','folder'].map((v,i)=>`<button data-view="${v}" aria-pressed="${s.view===v}">${['Card','Connections','Folder'][i]}</button>`).join('')}</div>`;
+if(s.view==='card')html+=actions()+'<details class="p-filter" open><summary>파일 유형 필터</summary><div class="p-chips"><span class="p-chip active">전체</span><span class="p-chip">MD</span><span class="p-chip">Canvas</span><span class="p-chip">PDF</span><span class="p-chip">이미지</span><span class="p-chip">영상</span><span class="p-chip">기타</span></div></details><details class="p-filter" open><summary>Label 필터</summary><div class="p-chips"><span class="p-chip active">All</span><span class="p-chip">라벨 관리…</span></div></details><div class="p-controls"><span>텍스트 크기 · 보통</span></div>'+depth()+`<div class="p-muted">직접 연결 2개 · 하위 연결 ${s.depth===2?'2':'0'}개</div>`+tree();
+if(s.view==='folder')html+='<div class="p-actions"><button disabled>파일 유형 ▾</button><button disabled>보기 형식 ▾</button></div>'+depth()+'<div class="p-folder-label">Virtual Folders (MD Palette)</div><details open><summary>글쓰기 자료</summary>'+tree()+'</details><div class="p-folder-label">Folder Contents · 글쓰기 자료</div>'+row('a')+row('d')+'<p class="p-muted">하위 연결 글은 부모 아래에 표시 · 자유 위치 이동 없음</p>';
+if(s.view==='connections')html+=actions()+depth()+'<details class="p-section" open><summary>Backlinks · 0</summary><p class="p-muted">Main을 링크한 글 없음</p></details><details class="p-section" open><summary>Outgoing Links · 2</summary>'+tree()+'</details><details class="p-section" open><summary>Local Graph</summary><div class="p-graph"><div><span>나의 글쓰기</span></div><div>↓</div><div><span>관찰의 기록</span>　<span>문장 수집</span></div>'+(s.depth===2?'<div>↓ 산책 메모　 ↑ 글쓰기 아이디어</div>':'')+'</div></details>';}
+q('#p-content').innerHTML=html;if(s.top==='meta')drawMeta();q('#p-feedback').textContent=s.top==='meta'?'확인할 제안: 파일 선택기를 누르면 연결 트리가 열리고, 고른 파일 하나의 정보를 기존 Metadata 항목에 표시합니다.':'▾로 하위 링크를 접고 펼쳐 보세요. Metadata View에서는 같은 사이드바가 메타데이터 화면으로 전환됩니다.';
+if(globalThis.lucide)lucide.createIcons({attrs:{width:16,height:16}});
+}
+function save(){window.openai?.setWidgetState?.({modelContent:{screen:s.top,linkView:s.view,metadataSource:data[s.source].name,status:'unapproved design proposal'},privateContent:s}).catch(()=>{});}
+root.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||b.disabled)return;if(b.dataset.top)s.top=b.dataset.top;else if(b.dataset.view)s.view=b.dataset.view;else if(b.hasAttribute('data-expand'))s.expanded=!s.expanded;else if(b.id==='p-picker')s.picker=!s.picker;else if(b.dataset.file){if(s.top==='meta'){s.source=b.dataset.file;s.picker=false}else{q('#p-feedback').textContent='선택: '+data[b.dataset.file].name+'.md · 메타데이터는 상단 Metadata View에서 확인합니다.';return}}else return;render();save()});
+root.addEventListener('change',e=>{if(e.target.id==='p-depth'){s.depth=Number(e.target.value);render();save()}});
+root.addEventListener('input',e=>{if(e.target.id==='p-search')drawMeta(e.target.value)});
+function restore(v){const p=v?.privateContent;if(!p)return;if(['link','meta'].includes(p.top))s.top=p.top;if(['card','folder','connections'].includes(p.view))s.view=p.view;if([1,2].includes(p.depth))s.depth=p.depth;if(data[p.source])s.source=p.source;if(typeof p.expanded==='boolean')s.expanded=p.expanded;if(typeof p.picker==='boolean')s.picker=p.picker;}
+restore(window.openai?.widgetState);render();window.addEventListener('openai:set_globals',e=>{if(e.detail?.globals?.widgetState){restore(e.detail.globals.widgetState);render()}});
+if(globalThis.Tweak){const tweak=new Tweak({container:root,onChange:render});tweak.addSlider(design,'spacing',{label:'파일 행 여백',min:5,max:12,step:1,unit:'px'});}
+})();
+</script>

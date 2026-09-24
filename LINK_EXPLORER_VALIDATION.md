@@ -33,3 +33,9 @@
 - `.artifacts/link-explorer`에 원본 백업·해시·상세 결과·스크린샷. 재개용 핵심 증거는 `docs/handoff/evidence/0.1.11`.
 - 검증 빌드의 세 자산 해시는 `restart-result.json`과 `release-ready.json`에 기록한다. 공개 다운로드 및 BRAT 검증은 별도 보고서로 구분한다.
 - 사용자 본인의 BRAT 업데이트 확인은 자동 검증으로 대신하지 않으며 사용자 답변 대기다.
+
+## 공개 및 BRAT 결과
+
+- [0.1.11 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.11)는 공개 일반 릴리즈다. `main.js`, `manifest.json`, `styles.css`를 비인증 공개 URL에서 다시 내려받아 검증 빌드의 SHA-256과 일치함을 확인했다.
+- 별도 Sandbox에서 기존 0.1.10 설치 후 BRAT 2.2.0의 공개 다운로드·재설치·재로드로 0.1.11을 확인했다. 탐색 상태·라벨·Connections 설정·가상 폴더 보존을 대조했다. BRAT이 manifest를 다시 직렬화하므로 JSON 값은 같고 해당 파일 바이트 해시는 다르며, JS/CSS는 바이트까지 같다.
+- 상세 결과: `docs/handoff/evidence/0.1.11/release-verification.json`, `brat-verification.json`. 사용자 본인의 업데이트 확인은 여전히 대기다.

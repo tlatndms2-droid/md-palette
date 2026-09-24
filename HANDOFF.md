@@ -5,7 +5,7 @@
 
 ## 현재 상태
 
-**최신 기준은 0.1.11입니다.** Card·Connections·Folder에서 양방향 하위 링크를 부모별로 펼치고 1~5단계 깊이를 조절합니다. 같은 파일은 각 부모 아래에 표시하며 원본은 하나로 유지합니다. Metadata View의 파일 선택기로 Main 또는 하위 연결 파일 하나의 정보를 보고 편집·재사용합니다. 51개 테스트·빌드·격리 Sandbox UI·드래그·대량 자료·재시작 검증 통과. [검증](LINK_EXPLORER_VALIDATION.md). 사용자 BRAT 확인 대기.
+**최신 기준은 0.1.11입니다.** Card·Connections·Folder에서 양방향 하위 링크를 부모별로 펼치고 1~5단계 깊이를 조절합니다. 같은 파일은 각 부모 아래에 표시하며 원본은 하나로 유지합니다. Metadata View의 파일 선택기로 Main 또는 하위 연결 파일 하나의 정보를 보고 편집·재사용합니다. 51개 테스트·빌드·격리 Sandbox UI·드래그·대량 자료·재시작 검증 통과. [검증](LINK_EXPLORER_VALIDATION.md). 공개 자산·Sandbox BRAT 0.1.10→0.1.11 확인 통과. 사용자 BRAT 확인 대기.
 
 - 현재 Sandbox: `C:\Users\tlatn\AppData\Local\Temp\MDPalette-Link-Sandbox-20260924`, 프로필 `MDPalette-Link-Profile-20260924`, CDP 19361. 최종 빌드와 시연 자료를 유지합니다.
 - 이번 사용자 승인으로 하위 링크 탐색을 진행했습니다. 이전 0.1.10 사용자 BRAT 확인을 대신 완료 처리하지 않습니다.
