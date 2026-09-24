@@ -1,0 +1,78 @@
+{
+  "version": "0.1.10",
+  "passed": true,
+  "checks": [
+    "top-left status and buttons visible; right and bottom native tools do not overlap",
+    "panel remains screen-fixed while Canvas pans and zooms",
+    "top cancel button works without Canvas edits",
+    "top undo button restores last insertion; click-to-place remains functional"
+  ],
+  "geometry": {
+    "bar": {
+      "x": 758,
+      "y": 643.15625,
+      "width": 318,
+      "height": 80.890625,
+      "top": 643.15625,
+      "right": 1076,
+      "bottom": 724.046875,
+      "left": 758
+    },
+    "host": {
+      "x": 742,
+      "y": 627.15625,
+      "width": 398,
+      "height": 472.84375,
+      "top": 627.15625,
+      "right": 1140,
+      "bottom": 1100,
+      "left": 742
+    },
+    "tools": [
+      {
+        "x": 869,
+        "y": 1036,
+        "width": 144,
+        "height": 48,
+        "top": 1036,
+        "right": 1013,
+        "bottom": 1084,
+        "left": 869
+      },
+      {
+        "x": 1098,
+        "y": 635.15625,
+        "width": 34,
+        "height": 292,
+        "top": 635.15625,
+        "right": 1132,
+        "bottom": 927.15625,
+        "left": 1098
+      }
+    ],
+    "buttons": [
+      {
+        "text": "취소",
+        "visible": true
+      },
+      {
+        "text": "마지막 삽입 되돌리기",
+        "visible": true
+      }
+    ]
+  },
+  "assets": [
+    {
+      "name": "main.js",
+      "sha256": "3acc5a00f3f700f88cd0d5afc72b0688a6412629b750b32f8d463e7dec6fcb23"
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "52cbcd49b0db0229010302b9c701f119689817a490e72b86e30bc7137ee83c1e"
+    },
+    {
+      "name": "styles.css",
+      "sha256": "e62206b44bff08c6249b66f1e49bc89371298acce7d3321f0cd500fd91e12dde"
+    }
+  ]
+}

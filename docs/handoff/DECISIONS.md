@@ -6,6 +6,7 @@
 
 | 시점 | 이전 방식 → 최종 결정 | 기록된 맥락·이유 | 근거 |
 |---|---|---|---|
+| 0.1.10 | Canvas 안내/취소/되돌리기를 상단 왼쪽으로 이동 | 사용자 이미지의 하단 도구막대 가림 개선 승인 | CANVAS_TOOLBAR_VALIDATION.md |
 | 0.1.9 | 직접 드롭 즉시 배치, 메뉴 미리보기 이동·클릭 확정, 입력 방식별 겹침 기준 | 사용자 승인 비교 HTML의 Canvas 동작만 반영. Sub·Card 제외 | CANVAS_PLACEMENT_VALIDATION.md |
 | 0.1.8 | 기존 Sub의 미연결 파일 열기 차단, Card 목록 고정·복수 유형, 기존 Canvas 파일/폴더 삽입 | 사용자 HTML 정정 및 열기 차단 선택. 원본 구조·파일 보존, 미리보기 후 확정 | CANVAS_REVISION_VALIDATION.md |
 | 0.1.7 | 여러 Sub·전체 높이 강제 → Sub 하나·지정/해제·자유 분할 | 사용자 명시 승인. Ctrl+Shift는 새 일반 그룹. 미연결 파일은 연결하고 지정 또는 취소 | SUB_RULES_VALIDATION.md |
