@@ -12,14 +12,14 @@ interface Canvas {
 }
 interface View { file:TFile; canvas:Canvas; save():Promise<void> }
 interface Source { main:TFile; signature:string; paths:string[]; folder?:string; layout:Placement }
-interface Session { leaf:WorkspaceLeaf; view:View; file:TFile; source:Source; overlay:HTMLElement; panel:HTMLElement; status:HTMLElement; confirm:HTMLButtonElement; placement?:Placement; frame?:number; clean:()=>void }
+interface Session { leaf:WorkspaceLeaf; view:View; file:TFile; source:Source; overlay:HTMLElement; panel:HTMLElement; status:HTMLElement; avoidOverlap:boolean; placement?:Placement; frame?:number; clean:()=>void }
 class CanvasPicker extends FuzzySuggestModal<WorkspaceLeaf> {
   constructor(private leaves:WorkspaceLeaf[], private choose:(leaf:WorkspaceLeaf)=>void, plugin:MDPalettePlugin) { super(plugin.app); this.setPlaceholder('삽입할 열려 있는 Canvas 선택'); }
   getItems():WorkspaceLeaf[] { return this.leaves; }
   getItemText(leaf:WorkspaceLeaf):string { return (leaf.view as unknown as View).file?.path ?? 'Canvas'; }
   onChooseItem(leaf:WorkspaceLeaf):void { this.choose(leaf); }
 }
-/** Preview is DOM only. The Canvas data is changed once, on explicit confirmation. */
+/** Menu previews are DOM only; a click or direct drop commits one transaction. */
 export class CanvasInsert {
   private session?:Session;
   private drag?:{token:string;paths:string[];main:TFile};
@@ -30,12 +30,15 @@ export class CanvasInsert {
   constructor(private plugin:MDPalettePlugin) {
     this.bind(document);
     plugin.registerEvent(plugin.app.workspace.on('window-open',(_w,win)=>this.bind(win.document)));
+    plugin.registerEvent(plugin.app.workspace.on('file-open',()=>{if(this.session&&!this.valid(this.session))this.cancel();}));
     plugin.addCommand({id:'undo-canvas-insert',name:'마지막 Canvas 삽입 되돌리기',callback:()=>{void this.undo();}});
   }
-  destroy():void { this.cancel(); for(const clean of this.cleanup)clean(); this.drag=undefined; }
+  destroy():void { this.cancel(); for(const clean of this.cleanup)clean(); this.endDrag(); }
+  private endDrag():void {this.drag=undefined;for(const doc of this.docs)doc.documentElement.classList.remove('mdp-canvas-file-drag');}
   startDrag(event:DragEvent,paths:string[]):void {
     if(!event.dataTransfer || !this.plugin.mainFile)return;
     this.drag={token:crypto.randomUUID(),paths:[...paths],main:this.plugin.mainFile};
+    for(const doc of this.docs)doc.documentElement.classList.add('mdp-canvas-file-drag');
     event.dataTransfer.setData(MIME,this.drag.token); event.dataTransfer.effectAllowed='copyMove';
   }
   files(paths:string[]):void { this.begin(paths); }
@@ -79,51 +82,65 @@ export class CanvasInsert {
     if(source.paths.includes(view.file.path)){new Notice('대상 Canvas 자신을 내부에 삽입할 수 없습니다. 다른 Canvas를 선택해주세요.');return;}
     this.plugin.app.workspace.setActiveLeaf(leaf,{focus:false});
     const host=view.canvas.wrapperEl,doc=host.ownerDocument;
-    const overlay=doc.createElement('div');overlay.className='mdp-canvas-preview';host.append(overlay);
-    const panel=doc.createElement('div');panel.className='mdp-canvas-insert-bar';host.append(panel);
-    const status=panel.createDiv({text:'빈 위치 클릭 → 배치 미리보기',attr:{role:'status'}});
-    const confirm=panel.createEl('button',{text:'이 위치에 삽입 확정',cls:'mod-cta'});confirm.disabled=true;
+    const overlay=doc.createElement('div');overlay.className='mdp-canvas-preview';
+    const panel=doc.createElement('div');panel.className='mdp-canvas-insert-bar';
+    const status=panel.createDiv({text:'마우스로 위치 이동 · 클릭하여 삽입 · Esc 취소',attr:{role:'status'}});
+    const s:Session={leaf,view,file:view.file,source,overlay,panel,status,avoidOverlap:!event&&source.layout.nodes.length>1,clean:()=>{}};
+    this.session=s;
+    if(event){
+      const point=view.canvas.posFromEvt(event);
+      if(!Number.isFinite(point.x)||!Number.isFinite(point.y)){this.cancel();return;}
+      s.placement=translate(source.layout,point);void this.commit(s);return;
+    }
+    host.append(overlay,panel);
     panel.createEl('button',{text:'취소'}).onclick=()=>this.cancel();
     const undo=panel.createEl('button',{text:'마지막 삽입 되돌리기'});undo.disabled=!this.last;undo.onclick=()=>{this.cancel();void this.undo();};
-    const place=(e:MouseEvent)=>{if(panel.contains(e.target as Node)||e.button!==0)return;e.preventDefault();e.stopImmediatePropagation();const point=view.canvas.posFromEvt(e);if(Number.isFinite(point.x)&&Number.isFinite(point.y)){s.placement=translate(source.layout,point);this.paint(s);}};
+    const move=(e:MouseEvent)=>{if(panel.contains(e.target as Node)||this.locked)return;const point=view.canvas.posFromEvt(e);if(Number.isFinite(point.x)&&Number.isFinite(point.y))s.placement=translate(source.layout,point);};
+    const place=(e:MouseEvent)=>{if(panel.contains(e.target as Node)||e.button!==0)return;e.preventDefault();e.stopImmediatePropagation();move(e);void this.commit(s);};
     const key=(e:KeyboardEvent)=>{if(e.key==='Escape'){e.preventDefault();this.cancel();}};
-    host.addEventListener('pointerdown',place,true);host.addEventListener('click',place,true);doc.addEventListener('keydown',key,true);
-    const s:Session={leaf,view,file:view.file,source,overlay,panel,status,confirm,clean:()=>{host.removeEventListener('pointerdown',place,true);host.removeEventListener('click',place,true);doc.removeEventListener('keydown',key,true);}};
-    this.session=s; confirm.onclick=()=>{void this.commit(s);};
+    host.addEventListener('pointermove',move,true);host.addEventListener('pointerdown',place,true);doc.addEventListener('keydown',key,true);
+    s.clean=()=>{host.removeEventListener('pointermove',move,true);host.removeEventListener('pointerdown',place,true);doc.removeEventListener('keydown',key,true);};
     let lastPaint=0;
-    const tick=(time=0)=>{if(this.session!==s)return;if(time-lastPaint>=100||!lastPaint){lastPaint=time;if(!this.valid(s)){this.cancel();new Notice('Main·폴더 또는 Canvas가 변경되어 삽입을 취소했습니다.');return;}this.paint(s);}s.frame=doc.defaultView!.requestAnimationFrame(tick);};
-    if(event){s.placement=translate(source.layout,view.canvas.posFromEvt(event));}
+    const tick=(time=0)=>{if(this.session!==s)return;if(time-lastPaint>=100||!lastPaint){lastPaint=time;if(!this.valid(s)){this.cancel();new Notice('Main·폴더 또는 Canvas가 변경되어 삽입을 취소했습니다.');return;}}this.paint(s);s.frame=doc.defaultView!.requestAnimationFrame(tick);};
     tick();
   }
   private paint(s:Session):void {
     const p=s.placement;if(!p)return;
-    const collision=collides(p,s.view.canvas.getData());s.confirm.disabled=collision||this.locked;
-    s.status.setText(collision?'겹침 감지 · 다른 빈 위치를 클릭하세요.':`${p.nodes.length}개 노드 · ${p.edges.length}개 연결선 · 미리보기 확인 후 확정하세요.`);
-    const c=s.view.canvas,rect=c.wrapperEl.getBoundingClientRect(),offset={x:c.canvasRect.cx-rect.left,y:c.canvasRect.cy-rect.top};
-    const screen=(point:{x:number;y:number})=>{const p=c.domFromPos(point);return{x:p.x+offset.x,y:p.y+offset.y};};
-    const points=p.nodes.map(n=>({n,a:screen(n),b:screen({x:n.x+n.width,y:n.y+n.height})}));
-    const key=JSON.stringify([collision,points.map(({a,b})=>[a.x,a.y,b.x,b.y])]);
-    if(s.overlay.dataset.paint===key)return;s.overlay.dataset.paint=key;s.overlay.empty();
-    const svg=s.overlay.ownerDocument.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('mdp-canvas-preview-edges');s.overlay.append(svg);
-    const map=new Map(points.map(p=>[p.n.id,p]));
-    for(const edge of p.edges){const a=map.get(edge.fromNode)!,b=map.get(edge.toNode)!;const line=svg.ownerDocument.createElementNS(svg.namespaceURI,'path');const x=a.b.x,y=(a.a.y+a.b.y)/2,tx=b.a.x,ty=(b.a.y+b.b.y)/2;line.setAttribute('d',`M${x},${y} C${(x+tx)/2},${y} ${(x+tx)/2},${ty} ${tx},${ty}`);svg.append(line);}
-    for(const {n,a,b}of points){const box=s.overlay.createDiv({cls:'mdp-canvas-ghost'+(collision?' is-collision':''),text:n.file?.split('/').pop()??n.text});const scale=(b.x-a.x)/n.width;Object.assign(box.style,{left:a.x+'px',top:a.y+'px',width:(b.x-a.x)+'px',height:(b.y-a.y)+'px',fontSize:16*scale+'px',padding:12*scale+'px'});}
+    const collision=s.avoidOverlap&&collides(p,s.view.canvas.getData());
+    const status=collision?'겹침 감지 · 빈 위치로 이동한 뒤 클릭하세요.':`${p.nodes.length}개 노드 · ${p.edges.length}개 연결선 · 클릭하여 삽입 · Esc 취소`;
+    if(s.status.textContent!==status)s.status.setText(status);
+    const c=s.view.canvas,rect=c.wrapperEl.getBoundingClientRect(),local=s.source.layout;
+    let bundle=s.overlay.firstElementChild as HTMLElement|null;
+    if(!bundle){
+      bundle=s.overlay.createDiv({cls:'mdp-canvas-preview-bundle'});
+      Object.assign(bundle.style,{position:'absolute',inset:'0',transformOrigin:'0 0'});
+      const svg=s.overlay.ownerDocument.createElementNS('http://www.w3.org/2000/svg','svg');svg.classList.add('mdp-canvas-preview-edges');bundle.append(svg);
+      const map=new Map(local.nodes.map(n=>[n.id,n]));
+      for(const edge of local.edges){const a=map.get(edge.fromNode)!,b=map.get(edge.toNode)!;const line=svg.ownerDocument.createElementNS(svg.namespaceURI,'path');const x=a.x+a.width,y=a.y+a.height/2,tx=b.x,ty=b.y+b.height/2;line.setAttribute('d',`M${x},${y} C${(x+tx)/2},${y} ${(x+tx)/2},${ty} ${tx},${ty}`);svg.append(line);}
+      for(const n of local.nodes){const box=bundle.createDiv({cls:'mdp-canvas-ghost',text:n.file?.split('/').pop()??n.text});Object.assign(box.style,{left:n.x+'px',top:n.y+'px',width:n.width+'px',height:n.height+'px',fontSize:'16px'});}
+    }
+    // Move/zoom a single prebuilt layer, rather than rebuilding every card per pointer event.
+    const first=p.nodes[0],origin=c.domFromPos(first),right=c.domFromPos({x:first.x+first.width,y:first.y});
+    const scale=(right.x-origin.x)/first.width,x=origin.x+c.canvasRect.cx-rect.left-local.nodes[0].x*scale,y=origin.y+c.canvasRect.cy-rect.top-local.nodes[0].y*scale;
+    const transform=`translate(${x}px,${y}px) scale(${scale})`;
+    if(bundle.style.transform!==transform)bundle.style.transform=transform;
+    s.overlay.classList.toggle('is-collision',collision);
   }
   private cancel():void { const s=this.session;this.session=undefined;if(!s)return;if(s.frame!==undefined)s.overlay.ownerDocument.defaultView?.cancelAnimationFrame(s.frame);s.clean();s.overlay.remove();s.panel.remove(); }
   private async commit(s:Session):Promise<void> {
     if(this.locked||this.session!==s||!s.placement)return;
     if(!this.valid(s)){this.cancel();return;}
     const before=structuredClone(s.view.canvas.getData()),p=s.placement;
-    if(collides(p,before)){this.paint(s);return;}
+    if(s.avoidOverlap&&collides(p,before)){this.paint(s);return;}
     this.locked=true;
     try {
       // Flush pre-existing native edits before the transaction, then revalidate.
       await s.view.save();
-      if(!this.valid(s)||JSON.stringify(s.view.canvas.getData())!==JSON.stringify(before))throw Error('Canvas가 변경되었습니다. 다시 삽입해주세요.');
+      if(this.session!==s||!this.valid(s)||JSON.stringify(s.view.canvas.getData())!==JSON.stringify(before))throw Error('Canvas 또는 삽입 상태가 변경되었습니다. 다시 삽입해주세요.');
       await this.write(s.view,{...before,nodes:[...before.nodes,...p.nodes],edges:[...before.edges,...p.edges]},before);
       this.last={leaf:s.leaf,view:s.view,file:s.file,placement:structuredClone(p)};this.cancel();
       new Notice('Canvas에 삽입했습니다. 명령 팔레트의 ‘마지막 Canvas 삽입 되돌리기’로 취소할 수 있습니다.');
-    }catch(error){new Notice(String(error instanceof Error?error.message:error));}finally{this.locked=false;}
+    }catch(error){if(!s.panel.isConnected)this.cancel();new Notice(String(error instanceof Error?error.message:error));}finally{this.locked=false;}
   }
   private async write(view:View,next:CanvasData,before:CanvasData):Promise<void> {
     try{view.canvas.importData(next,true);view.canvas.requestSave();await view.save();view.canvas.pushHistory(structuredClone(view.canvas.getData()));}
@@ -144,9 +161,9 @@ export class CanvasInsert {
       if(!this.drag||!event.dataTransfer?.types.includes(MIME))return;
       const leaf=this.plugin.app.workspace.getLeavesOfType('canvas').find(l=>{const v=this.view(l);return v&&event.composedPath().includes(v.canvas.wrapperEl);});
       if(!leaf)return;event.preventDefault();event.stopImmediatePropagation();event.dataTransfer.dropEffect='copy';
-      if(event.type==='drop'){const d=this.drag;this.drag=undefined;if(event.dataTransfer.getData(MIME)===d.token&&this.plugin.mainFile===d.main)this.begin(d.paths,undefined,leaf,event);}
+      if(event.type==='drop'){const d=this.drag;this.endDrag();if(event.dataTransfer.getData(MIME)===d.token&&this.plugin.mainFile===d.main)this.begin(d.paths,undefined,leaf,event);}
     };
-    const end=()=>{this.drag=undefined;};
+    const end=()=>{this.endDrag();};
     for(const type of ['dragenter','dragover','drop'])doc.addEventListener(type,drag as EventListener,true);
     doc.addEventListener('dragend',end,true);
     this.cleanup.push(()=>{for(const type of ['dragenter','dragover','drop'])doc.removeEventListener(type,drag as EventListener,true);doc.removeEventListener('dragend',end,true);});

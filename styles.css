@@ -218,3 +218,9 @@
 .mdp-canvas-ghost.is-collision { border-color: var(--text-error); color: var(--text-error); }
 .mdp-canvas-insert-bar { position: absolute; bottom: 16px; left: 16px; right: 16px; z-index: 30; border: 1px solid var(--interactive-accent); background: var(--background-primary); box-shadow: var(--shadow-s); border-radius: var(--radius-m); padding: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
 .mdp-canvas-insert-bar [role=status] { flex-basis: 100%; font-size: var(--font-ui-small); }
+
+.mdp-canvas-preview.is-collision .mdp-canvas-ghost { border-color: var(--text-error); color: var(--text-error); }
+
+/* Capture placement gestures above Obsidian's embedded node documents. */
+.mdp-canvas-preview { pointer-events: auto; cursor: crosshair; }
+.mdp-canvas-file-drag .canvas-node iframe { pointer-events: none; }

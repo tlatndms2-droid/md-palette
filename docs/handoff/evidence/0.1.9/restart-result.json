@@ -1,0 +1,22 @@
+{
+  "version": "0.1.9",
+  "passed": true,
+  "checks": [
+    "full process restart preserves inserted folder nodes, edges and plugin state at 0.1.9",
+    "affected Sandbox Canvas restored byte-for-byte to pretest backup"
+  ],
+  "assets": [
+    {
+      "name": "main.js",
+      "sha256": "e02c529c6b6a82789dcd2a6d4362ef1d0fcebeff66f8812dee73bf4efeb54592"
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "3e002ef3e8e9f4ac10ef431495b5e53a93a176d40b55849828ec44ebf380e275"
+    },
+    {
+      "name": "styles.css",
+      "sha256": "6744591d95b88d544766c4dbafc13099ac9bb17e2c5956a2b24eb39b4b5c920e"
+    }
+  ]
+}
