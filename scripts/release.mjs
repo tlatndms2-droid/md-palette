@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 const repository = 'tlatndms2-droid/md-palette';
 const manifest = JSON.parse(await readFile('manifest.json', 'utf8'));
 const tag = manifest.version;
-const reportDir = tag === '0.1.10' ? '.artifacts/canvas-toolbar' : tag === '0.1.9' ? '.artifacts/canvas-placement' : tag === '0.1.8' ? '.artifacts/canvas-revision' : tag === '0.1.7' ? '.artifacts/sub-rules' : tag === '0.1.6' ? '.artifacts/new-canvas' : tag === '0.1.5' ? '.artifacts/footnote-choice' : tag === '0.1.4' ? '.artifacts/metadata-font' : tag === '0.1.3' ? '.artifacts/metadata-markdown' : tag === '0.1.0' ? '.artifacts/stage7' : tag === '0.0.15' ? '.artifacts/sub-height' : tag === '0.0.14' ? '.artifacts/new-note' : tag === '0.0.13' ? '.artifacts/revision4' : tag === '0.0.12' ? '.artifacts/stage6' : tag === '0.0.11' ? '.artifacts/revision3' : tag === '0.0.10' ? '.artifacts/revision2' : tag === '0.0.9' ? '.artifacts/stage5' : tag === '0.0.8' ? '.artifacts/revision' : tag === '0.0.7' ? '.artifacts/stage4' : tag === '0.0.1' ? '.artifacts' : tag === '0.0.2' ? '.artifacts/stage1' : tag === '0.0.6' ? '.artifacts/stage3-fix' : tag === '0.0.5' ? '.artifacts/stage3' : tag === '0.0.4' ? '.artifacts/stage2-drag' : '.artifacts/stage2';
+const reportDir = tag === '0.1.11' ? '.artifacts/link-explorer' : tag === '0.1.10' ? '.artifacts/canvas-toolbar' : tag === '0.1.9' ? '.artifacts/canvas-placement' : tag === '0.1.8' ? '.artifacts/canvas-revision' : tag === '0.1.7' ? '.artifacts/sub-rules' : tag === '0.1.6' ? '.artifacts/new-canvas' : tag === '0.1.5' ? '.artifacts/footnote-choice' : tag === '0.1.4' ? '.artifacts/metadata-font' : tag === '0.1.3' ? '.artifacts/metadata-markdown' : tag === '0.1.0' ? '.artifacts/stage7' : tag === '0.0.15' ? '.artifacts/sub-height' : tag === '0.0.14' ? '.artifacts/new-note' : tag === '0.0.13' ? '.artifacts/revision4' : tag === '0.0.12' ? '.artifacts/stage6' : tag === '0.0.11' ? '.artifacts/revision3' : tag === '0.0.10' ? '.artifacts/revision2' : tag === '0.0.9' ? '.artifacts/stage5' : tag === '0.0.8' ? '.artifacts/revision' : tag === '0.0.7' ? '.artifacts/stage4' : tag === '0.0.1' ? '.artifacts' : tag === '0.0.2' ? '.artifacts/stage1' : tag === '0.0.6' ? '.artifacts/stage3-fix' : tag === '0.0.5' ? '.artifacts/stage3' : tag === '0.0.4' ? '.artifacts/stage2-drag' : '.artifacts/stage2';
 const mode = process.argv[2] || 'inspect';
 const credential = execFileSync('git', ['credential', 'fill'], { input: 'protocol=https\nhost=github.com\n\n', encoding: 'utf8', stdio: ['pipe','pipe','pipe'] });
 const token = credential.split(/\r?\n/).find(line => line.startsWith('password='))?.slice(9);
@@ -40,7 +40,7 @@ if (mode === 'publish') {
   const commit = execFileSync('git', ['rev-parse', 'HEAD'], { encoding: 'utf8' }).trim();
   release = await api('/releases', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ tag_name: tag, target_commitish: commit, name: `MD Palette ${tag}`, body: await readFile('RELEASE_NOTES.md', 'utf8'), draft: false, prerelease: false })
+    body: JSON.stringify({ tag_name: tag, target_commitish: commit, name: `MD Palette ${tag}`, body: (await readFile('RELEASE_NOTES.md', 'utf8')).split(/\r?\n---\r?\n/)[0].trim(), draft: false, prerelease: false })
   });
   for (const name of ['main.js', 'manifest.json', 'styles.css']) {
     const current = await api(`/releases/${release.id}`);

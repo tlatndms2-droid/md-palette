@@ -4,7 +4,13 @@ Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 �
 
 다른 PC에서 개발을 이어가려면 [HANDOFF.md](HANDOFF.md)부터 읽으세요. [현재 확정 사양](docs/handoff/CURRENT_SPEC.md) · [기획 변경 이력](docs/handoff/DECISIONS.md) · [새 PC 준비](docs/handoff/NEW_PC.md).
 
-## 공개 버전: 0.1.10
+## 공개 버전: 0.1.11
+
+Card·Connections·Folder에서 양방향 하위 링크를 부모별로 펼치고 1~5단계 깊이를 조절합니다. 같은 파일은 각 부모 아래에 표시하며 원본은 하나로 유지합니다. Metadata View의 파일 선택기로 Main 또는 하위 연결 파일 하나의 정보를 보고 편집·재사용합니다. [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.11) · [검증 결과](LINK_EXPLORER_VALIDATION.md).
+
+사용 순서: `연결 깊이 선택 → 파일 옆 화살표로 하위 링크 펼치기 → 더블클릭으로 Sub 열기`. Metadata는 `Metadata View → 정보를 볼 파일 → 파일 선택`으로 확인합니다.
+
+### 이전 Canvas 개선 (0.1.10)
 
 파일을 Canvas에 드래그하면 놓은 위치에 즉시 배치합니다. 메뉴 삽입은 미리보기가 마우스를 따라 이동하고 첫 클릭으로 배치하며 Esc로 취소합니다. 직접 드래그·메뉴 단일 카드는 기존 내용과 겹침을 허용하고, 메뉴 다중 카드 묶음은 겹침을 차단합니다. Canvas 삽입 안내·겹침 알림과 취소/마지막 삽입 되돌리기를 상단 왼쪽에 고정합니다. 오른쪽 기본 도구막대에 여백을 두며 하단 도구막대를 가리지 않습니다. 드래그·클릭 배치 방식은 유지합니다. [0.1.10 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.10) · [검증 결과](CANVAS_TOOLBAR_VALIDATION.md). BRAT 사용자 확인 대기입니다.
 

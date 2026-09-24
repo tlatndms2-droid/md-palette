@@ -37,6 +37,11 @@ export class NativeLocalGraph {
       view.onOptionsChange = () => {
         if (this.view !== view) return;
         this.plugin.connections.graphOptions = structuredClone(view.engine.getOptions());
+        const jumps = this.plugin.connections.graphOptions.localJumps;
+        if (typeof jumps === 'number' && jumps !== this.plugin.explorer.depth) {
+          this.plugin.explorer.depth = Math.max(1, Math.min(5, Math.round(jumps)));
+          queueMicrotask(() => this.plugin.cardsChanged());
+        }
         this.plugin.saveConnections();
       };
       const nativeClick = view.renderer.onNodeClick;
@@ -56,7 +61,7 @@ export class NativeLocalGraph {
       view.file = main;
       this.opening = view.open(host).then(() => {
         if (this.view !== view) return;
-        view.engine.setOptions(this.plugin.connections.graphOptions ?? { close: true });
+        view.engine.setOptions({ ...(this.plugin.connections.graphOptions ?? { close: true }), localJumps: this.plugin.explorer.depth });
         view.update(); view.onResize();
       }).catch(error => {
         console.error('MD Palette native Local Graph:', error);
@@ -64,6 +69,7 @@ export class NativeLocalGraph {
       });
     } else {
       host.append(this.view.containerEl);
+      this.view.engine.setOptions({ ...this.view.engine.getOptions(), localJumps: this.plugin.explorer.depth });
       if (this.view.file !== main) { this.view.file = main; this.view.update(); }
       this.view.onResize();
     }

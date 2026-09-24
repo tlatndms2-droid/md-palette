@@ -10,6 +10,7 @@ import { newNoteName, type NewNoteFormat } from './new-note-name';
 import { SubDesignationModal } from './sub-designation-modal';
 import { SubOpenGuard } from './sub-open-guard';
 import { CanvasInsert } from './canvas-insert';
+import { LinkIndex, readExplorer } from './link-explorer-model';
 
 type Role = 'sub';
 class SpaceFilePicker extends FuzzySuggestModal<TFile> {
@@ -28,6 +29,22 @@ export default class MDPalettePlugin extends Plugin {
   private pinnedMain?: TFile;
   metadataCollapsed: string[] = [];
   metadataFontSize?: number;
+  explorer = readExplorer(null);
+  linkRevision = 0;
+  private cachedLinkIndex?: LinkIndex;
+  private reachCache?: { main: string; depth: number; revision: number; paths: Set<string> };
+  get linkIndex(): LinkIndex { return this.cachedLinkIndex ??= new LinkIndex(this.app.metadataCache.resolvedLinks); }
+  linkedPaths(): Set<string> {
+    const main = this.mainFile?.path ?? '', depth = this.explorer.depth;
+    if (!this.reachCache || this.reachCache.main !== main || this.reachCache.depth !== depth || this.reachCache.revision !== this.linkRevision)
+      this.reachCache = { main, depth, revision: this.linkRevision, paths: this.linkIndex.reachable(main, depth) };
+    return this.reachCache.paths;
+  }
+  get metadataFile(): TFile | null {
+    const main = this.mainFile; if (!main) return null;
+    const file = this.app.vault.getAbstractFileByPath(this.explorer.sources[main.path] ?? main.path);
+    return file instanceof TFile && file.extension === 'md' && this.linkedPaths().has(file.path) ? file : main;
+  }
   subGroup?: Group;
   subGroups: Group[] = [];
   isSub(group?: Group): boolean { return !!group && group === this.subGroup; }
@@ -75,6 +92,7 @@ export default class MDPalettePlugin extends Plugin {
     if (this.data.linkView === 'connections' || this.data.linkView === 'folder') this.linkView = this.data.linkView;
     this.cards = readCards(this.data.cards);
     this.connections = readConnections(this.data.connections);
+    this.explorer = readExplorer(this.data.explorer);
     this.metadataCollapsed = Array.isArray(this.data.metadataCollapsed) ? this.data.metadataCollapsed.filter((v): v is string => typeof v === 'string') : [];
     const metadataFontSize = this.data.metadataFontSize;
     if (typeof metadataFontSize === 'number' && Number.isFinite(metadataFontSize)) this.metadataFontSize = Math.max(10, Math.min(32, Math.round(metadataFontSize)));
@@ -133,11 +151,13 @@ export default class MDPalettePlugin extends Plugin {
         this.render();
       }, 200);
     };
-    this.registerEvent(this.app.metadataCache.on('resolved', refreshCards));
-    this.registerEvent(this.app.workspace.on('editor-change', (_editor, info) => { if (info.file === this.mainFile && this.topView === 'metadata') refreshCards(); }));
-    this.registerEvent(this.app.vault.on('modify', file => { if (file instanceof TFile && (file === this.mainFile || this.connectedFiles().includes(file))) refreshCards(); }));
+    this.registerEvent(this.app.metadataCache.on('resolved', () => { this.cachedLinkIndex = undefined; this.linkRevision++; refreshCards(); }));
+    this.registerEvent(this.app.workspace.on('editor-change', (_editor, info) => { if (info.file === this.metadataFile && this.topView === 'metadata') refreshCards(); }));
+    this.registerEvent(this.app.vault.on('modify', file => { if (file instanceof TFile && this.linkedPaths().has(file.path)) refreshCards(); }));
     this.registerEvent(this.app.vault.on('rename', (file, oldPath) => {
       const renamed = (p: string) => p === oldPath ? file.path : p.startsWith(oldPath + '/') ? file.path + p.slice(oldPath.length) : p;
+      this.explorer.sources = Object.fromEntries(Object.entries(this.explorer.sources).map(([main, source]) => [renamed(main), renamed(source)]));
+      this.explorer.expanded = []; this.cachedLinkIndex = undefined; this.linkRevision++;
       this.cards.order = this.cards.order.map(renamed);
       const documents: Record<string, FolderState> = Object.create(null);
       for (const [path, state] of Object.entries(this.foldersByMain)) {
@@ -308,14 +328,16 @@ export default class MDPalettePlugin extends Plugin {
   saveConnections(): void { this.persist(); }
   saveMetadata(): void { this.persist(); }
   async mainText(file: TFile): Promise<string> {
-    const view = this.mainLeaf?.view;
-    return this.mainFile === file && view instanceof MarkdownView ? view.editor.getValue() : this.app.vault.read(file);
+    const view = this.mainFile === file ? this.mainLeaf?.view : this.app.workspace.getLeavesOfType('markdown').map(l => l.view).find(v => v instanceof MarkdownView && v.file === file);
+    return view instanceof MarkdownView ? view.editor.getValue() : this.app.vault.read(file);
   }
   async patchMain(file: TFile, original: string, from: number, to: number, replacement: string): Promise<void> {
-    if (this.mainFile !== file) throw Error('Main이 변경되었습니다. 다시 확인해주세요.');
-    const view = this.mainLeaf?.view;
+    const main = this.mainFile;
+    const valid = () => !!main && this.mainFile === main && this.metadataFile === file && this.app.vault.getAbstractFileByPath(file.path) === file;
+    if (!valid()) throw Error('선택한 파일이 변경되었습니다. 다시 확인해주세요.');
+    const view = this.mainFile === file ? this.mainLeaf?.view : this.app.workspace.getLeavesOfType('markdown').map(l => l.view).find(v => v instanceof MarkdownView && v.file === file);
     if (view instanceof MarkdownView) {
-      if (view.editor.getValue() !== original || await this.app.vault.read(file) !== original) throw Error('원문이 변경되었습니다. 최신 내용을 확인한 뒤 다시 편집해주세요.');
+      if (view.editor.getValue() !== original || await this.app.vault.read(file) !== original || !valid()) throw Error('원문이 변경되었습니다. 최신 내용을 확인한 뒤 다시 편집해주세요.');
       view.editor.replaceRange(replacement, view.editor.offsetToPos(from), view.editor.offsetToPos(to));
       try { await view.save(); }
       catch (error) {
@@ -325,15 +347,17 @@ export default class MDPalettePlugin extends Plugin {
       }
     } else {
       await this.app.vault.process(file, current => {
-        if (this.mainFile !== file || current !== original) throw Error('원문이 변경되었습니다. 최신 내용을 확인해주세요.');
+        if (!valid() || current !== original) throw Error('원문이 변경되었습니다. 최신 내용을 확인해주세요.');
         return current.slice(0, from) + replacement + current.slice(to);
       });
     }
     this.render();
   }
   async navigateMain(file: TFile, offset: number): Promise<void> {
-    if (this.mainFile !== file || !this.mainLeaf) return;
-    const leaf = this.mainLeaf;
+    if (this.metadataFile !== file || !this.mainLeaf) return;
+    if (this.mainFile !== file) await this.openIn('sub', file);
+    const leaf = this.mainFile === file ? this.mainLeaf : this.subGroup?.children.find(l => fileIn(this.app, l) === file);
+    if (!leaf) return;
     await this.app.workspace.revealLeaf(leaf);
     await leaf.setViewState({ ...leaf.getViewState(), state: { ...leaf.getViewState().state, mode: 'source' } });
     if (leaf.view instanceof MarkdownView) {
@@ -470,7 +494,7 @@ export default class MDPalettePlugin extends Plugin {
     for (const leaf of this.app.workspace.getLeavesOfType(VIEW_TYPE)) if (leaf.view instanceof PaletteView) leaf.view.render();
   }
   private contentKey(): string {
-    return JSON.stringify([this.mainFile?.path, this.connectedFiles().map(file => [file.path, file.stat.mtime, file.stat.size])]);
+    return JSON.stringify([this.mainFile?.path, this.linkRevision, this.explorer.depth, this.connectedFiles().map(file => [file.path, file.stat.mtime, file.stat.size])]);
   }
   private scheduleSync(): void {
     if (this.stopped || !this.ready || this.busy || this.syncTimer !== undefined) return;
@@ -532,7 +556,7 @@ export default class MDPalettePlugin extends Plugin {
     if (!this.ready || !this.saveAllowed || this.folderSaving) return;
     const space = (g?: Group) => g ? { groupId: g.id, activeFile: fileIn(this.app, activeIn(g))?.path ?? null } : undefined;
     const spaces: SavedSpaces = { main: this.mainGroup && this.mainFile ? { groupId: this.mainGroup.id, activeFile: this.mainFile.path, leafId: (this.mainLeaf as WorkspaceLeaf & { id: string }).id } : undefined, sub: space(this.subGroup), subs: this.subGroups.map(g => space(g)!) };
-    const next = { ...this.data, spaces, metadataCollapsed: this.metadataCollapsed.slice(), metadataFontSize: this.metadataFontSize, topView: this.topView, linkView: this.linkView, cards: structuredClone(this.cards), connections: structuredClone(this.connections), foldersByMain: structuredClone(this.foldersByMain), folderDefaults: structuredClone(this.folderDefaults) };
+    const next = { ...this.data, spaces, explorer: structuredClone(this.explorer), metadataCollapsed: this.metadataCollapsed.slice(), metadataFontSize: this.metadataFontSize, topView: this.topView, linkView: this.linkView, cards: structuredClone(this.cards), connections: structuredClone(this.connections), foldersByMain: structuredClone(this.foldersByMain), folderDefaults: structuredClone(this.folderDefaults) };
     const serialized = JSON.stringify(next);
     if (serialized === this.persistedJSON) return;
     this.data = next;

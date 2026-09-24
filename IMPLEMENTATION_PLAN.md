@@ -1,6 +1,8 @@
 # MD Palette 현재 진행 계획
 
-갱신일: 2026-09-24. 공개 0.1.10, 브랜치 codex/planning.
+갱신일: 2026-09-24. 공개 0.1.11, 브랜치 codex/planning.
+
+0.1.11: Card·Connections·Folder에서 양방향 하위 링크를 부모별로 펼치고 1~5단계 깊이를 조절합니다. 같은 파일은 각 부모 아래에 표시하며 원본은 하나로 유지합니다. Metadata View의 파일 선택기로 Main 또는 하위 연결 파일 하나의 정보를 보고 편집·재사용합니다. 검증·재시작 통과, 사용자 BRAT 확인 대기. LINK_EXPLORER_VALIDATION.md 참고.
 
 0.1.10: Canvas 삽입 안내·겹침 알림과 취소/마지막 삽입 되돌리기를 상단 왼쪽에 고정합니다. 오른쪽 기본 도구막대에 여백을 두며 하단 도구막대를 가리지 않습니다. 드래그·클릭 배치 방식은 유지합니다. CANVAS_TOOLBAR_VALIDATION.md 참고. 빌드·Sandbox UI·재시작 통과. BRAT 사용자 확인 대기.
 

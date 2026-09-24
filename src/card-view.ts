@@ -3,6 +3,7 @@ import type MDPalettePlugin from './main';
 import { classify, deleteLabel, fileTypes, toggleType, typeSelected, pruneLabels, reorder, type Label } from './cards-state';
 import { Thumbnails } from './thumbnails';
 import { CardReorder } from './card-reorder';
+import { LinkExplorer } from './link-explorer';
 import { NewLinkedNoteModal } from './new-linked-note';
 
 const typeNames = ['전체', 'MD', 'Canvas', 'PDF', '이미지', '영상', '기타'];
@@ -124,6 +125,8 @@ export class CardView {
       this.chip(labelSection, '라벨 관리…', false, () => new LabelEditor(this.plugin).open());
     }
     const controls = root.createDiv({ cls: 'mdp-card-controls' });
+    const explorer = new LinkExplorer(this.plugin, undefined, LinkExplorer.cardFilter(this.plugin));
+    explorer.controls(root, () => this.plugin.cardsChanged());
     state.display = 'list';
     this.select(controls, '텍스트 크기', ['small', 'normal', 'large'], ['작게', '보통', '크게'], state.textSize, value => { state.textSize = value as typeof state.textSize; this.plugin.cardsChanged(); });
     const connected = this.plugin.connectedFiles();
@@ -148,6 +151,7 @@ export class CardView {
       const rank = new Map(next.map((path, index) => [path, index]));
       this.visible.sort((a, b) => rank.get(a.path)! - rank.get(b.path)!);
       this.plugin.saveCardOrder();
+      queueMicrotask(() => this.plugin.cardsChanged());
     });
     for (const file of this.visible) {
       const card = grid.createDiv({ cls: 'mdp-card', attr: { 'data-path': file.path, role: 'option', tabindex: '0', draggable: 'true', title: file.path } });
@@ -177,6 +181,7 @@ export class CardView {
         this.plugin.canvasInsert.startDrag(e, paths);
         this.reorderDrag?.start(paths);
       };
+      explorer.attach(card, file);
     }
     this.paint();
     parent?.insertBefore(root, nextSibling);

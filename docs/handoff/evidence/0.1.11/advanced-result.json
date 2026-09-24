@@ -1,0 +1,14 @@
+{
+  "version": "0.1.11",
+  "passed": true,
+  "checks": [
+    "Native drag reuses selected descendant highlight in Sub and restores target",
+    "External edits refresh selected descendant and stale writes are rejected",
+    "Five-level exploration stops ancestry cycles without losing cross-parent occurrences",
+    "Descendant context menu places the original file on Canvas; Canvas restored",
+    "300-child fanout renders 50 at a time; more button and editor typing work; temporary fixtures removed"
+  ],
+  "fanout": 300,
+  "firstExpandIncluding180msClickWait": 262.53759999999966,
+  "nextAnimationFrameMs": 0.5
+}

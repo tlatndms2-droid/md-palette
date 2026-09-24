@@ -48,7 +48,7 @@ export class SubOpenGuard {
   allowed(path: string): boolean {
     const file = this.plugin.app.vault.getAbstractFileByPath(path);
     // Preserve the existing explicitly supported Main-copy designation.
-    return file instanceof TFile && (file === this.plugin.mainFile || this.plugin.connectedFiles().includes(file));
+    return file instanceof TFile && this.plugin.linkedPaths().has(file.path);
   }
   private block(leaf: WorkspaceLeaf, path: string): boolean {
     const group=groupOf(leaf);

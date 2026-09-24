@@ -1,10 +1,14 @@
 import { Component, MarkdownRenderer, Menu, Notice, TFile, setIcon } from 'obsidian';
 import type MDPalettePlugin from './main';
 import { footnoteReplacement, metadataSections, parseMetadata, type MetadataItem, type MetadataKind, type MetadataResult } from './metadata-model';
+import { LinkExplorer } from './link-explorer';
 
 export class MetadataView {
   private host?: HTMLElement;
   private list?: HTMLElement;
+  private picker?: HTMLElement;
+  private pickerOpen = false;
+  private pickerKey = '';
   private input?: HTMLInputElement;
   private file?: TFile;
   private source = '';
@@ -62,6 +66,7 @@ export class MetadataView {
   render(host: HTMLElement): void {
     this.destroy(); this.host = host; host.className = 'mdp-metadata';
     this.applyFontSize(); host.addEventListener('wheel', this.onWheel, { capture: true, passive: false });
+    this.picker = host.createDiv({ cls: 'mdp-metadata-picker' }); this.pickerKey = '';
     const search = host.createDiv({ cls: 'mdp-metadata-search' }); setIcon(search.createSpan(), 'search');
     this.input = search.createEl('input', { type: 'search', placeholder: '메타데이터 검색…', attr: { 'aria-label': '메타데이터 전체 검색' } });
     this.input.value = this.query;
@@ -72,12 +77,13 @@ export class MetadataView {
     this.list = host.createDiv({ cls: 'mdp-metadata-sections' }); void this.refresh();
   }
   async refresh(): Promise<void> {
-    const file = this.plugin.mainFile;
+    const file = this.plugin.metadataFile;
     if (!this.host || !file) return;
+    this.drawPicker();
     const serial = ++this.serial;
     try {
       const text = await this.plugin.mainText(file);
-      if (serial !== this.serial || this.plugin.mainFile !== file || !this.host) return;
+      if (serial !== this.serial || this.plugin.metadataFile !== file || !this.host) return;
       if (this.file === file && this.draft) return;
       if (this.file === file && this.source === text && this.result) return;
       if (this.file !== file) { this.draft = false; this.limits = {}; this.searchCollapsed.clear(); }
@@ -93,6 +99,31 @@ export class MetadataView {
       });
       this.draw();
     } catch (error) { if (serial === this.serial) new Notice(`메타데이터를 읽지 못했습니다: ${String(error)}`); }
+  }
+  private drawPicker(force = false): void {
+    if (!this.picker) return;
+    const main = this.plugin.mainFile, file = this.plugin.metadataFile;
+    if (!main || !file) return;
+    const key = `${main.path}:${file.path}:${this.plugin.linkRevision}:${this.plugin.explorer.depth}:${this.pickerOpen}`;
+    if (!force && key === this.pickerKey) return;
+    this.pickerKey = key; this.picker.empty();
+    this.picker.createDiv({ cls: 'mdp-metadata-source-label', text: '정보를 볼 파일' });
+    const toggle = this.picker.createEl('button', { cls: 'mdp-source-toggle', text: `${file.name} ▾`, attr: { 'aria-expanded': String(this.pickerOpen), title: file.path } });
+    toggle.onclick = () => { this.pickerOpen = !this.pickerOpen; this.drawPicker(); };
+    this.picker.createDiv({ cls: 'mdp-source-path mdp-muted', text: file === main ? `Main · ${main.path}` : `Main · ${main.basename} / ${file.path}` });
+    if (!this.pickerOpen) return;
+    const explorer = new LinkExplorer(this.plugin, selected => {
+      if (selected.extension !== 'md') { new Notice('메타데이터는 Markdown 파일에서 볼 수 있습니다.'); return; }
+      if (this.draft || this.pending) { new Notice('편집 중인 내용을 저장하거나 취소한 뒤 파일을 선택해주세요.'); return; }
+      this.plugin.explorer.sources[main.path] = selected.path; this.plugin.saveMetadata(); this.pickerOpen = false;
+      this.query = ''; if (this.input) this.input.value = ''; this.result = undefined; this.list?.empty(); void this.refresh();
+    });
+    const previousDepth = this.plugin.explorer.depth;
+    explorer.controls(this.picker, () => {
+      if (this.draft || this.pending) { this.plugin.explorer.depth = previousDepth; this.plugin.saveMetadata(); new Notice('편집을 마친 뒤 연결 깊이를 변경해주세요.'); }
+      this.drawPicker(true); void this.refresh();
+    });
+    explorer.picker(this.picker.createDiv({ cls: 'mdp-source-tree' }));
   }
   private resolve(item: MetadataItem): { file?: TFile; url?: string; subpath: string } {
     let target = item.target ?? ''; try { target = decodeURI(target); } catch {}
@@ -158,7 +189,7 @@ export class MetadataView {
     if (item.kind === 'links') {
       const target = this.resolve(item);
       this.markdownText(content, item.text, event => {
-        if (this.plugin.mainFile !== file) return;
+        if (this.plugin.metadataFile !== file) return;
         if (target.url) {
           const menu = new Menu();
           menu.addItem(i => i.setTitle('옵시디언 웹뷰어로 열기').setIcon('globe').onClick(() => this.plugin.run(() => this.plugin.openMetadataWeb(target.url!, false))));

@@ -1,0 +1,46 @@
+{
+  "version": "0.1.11",
+  "passed": true,
+  "checks": [
+    "Card shows both link directions with parent connectors and the same file below two parents",
+    "Nested file opens in Sub; Main stays fixed; unrelated files remain blocked",
+    "Depth control hides descendants and restores expanded branches",
+    "Folder shows link descendants independently of saved virtual positions",
+    "Connections retains Backlinks / Outgoing Links / Local Graph with nested rows",
+    "Metadata file picker uses the same nested tree and changes source without changing Main",
+    "Search, task toggle and footnote save affect the selected nested source only",
+    "Unsaved footnote prevents switching source and remains available for save/cancel",
+    "All fixture source contents restored and hash checked; virtual folder positions unchanged",
+    "Narrow sidebar has no horizontal clipping; light and dark screenshots captured"
+  ],
+  "hashes": {
+    "나의 글쓰기.md": "e62c6f39b3a503955a9aef9c2e80cbd399b657a9c461e486d5af649299e9a664",
+    "관찰의 기록.md": "d6b88bb4e0b6638731fcc77a9eaf12de3548fc86242b6ed63e1dce00d4bc0d6c",
+    "문장 수집.md": "40eea61e15a59f5bb286c1abed0d97c14c7b868d13bec01defd26bcb17d27adb",
+    "산책 메모.md": "495c72bbd4a611062626d1e295d23b77700b74d2d24fa65e3a6740175502a01a",
+    "글쓰기 아이디어.md": "011b11c252f4e765ec89ae47b26d6e94b7a1b310446575c6d554fb3833fc8932",
+    "빛과 그림자.md": "5ad9d8d6bac222977c2de44218ea22eca407d9ab48931caddef570bf63f53357",
+    "초안.md": "9ec3d8ba7a4d29648a37fd0c8112c05fbea4ea929c7479e59cfc76fff723aefa",
+    "미연결.md": "f40d7ac31d86c76ffdc4a36da24e5b61ce11c72c9af36733b501a3e6a439829e",
+    "자료.canvas": "a461bf77bc4e4d732f7afc121c70e7f70ed8bf225a082a4e01951d1eb6b5c278"
+  },
+  "bounds": {
+    "width": 300,
+    "overflow": false,
+    "buttons": true
+  },
+  "assets": [
+    {
+      "name": "main.js",
+      "sha256": "bfe007ac8d0adad12204beb61dee5b898b8ef66c640d8bd4622b0946f7d72a69"
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "2fa04786bc2b74040127cb6c410f5645281379c19dc77adeb667ccf7dfecd6d7"
+    },
+    {
+      "name": "styles.css",
+      "sha256": "82a104a5324c1d8a78df7e8f82496d93207979df9349b3ed8562c5b8828c6c01"
+    }
+  ]
+}

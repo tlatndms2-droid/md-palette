@@ -3,6 +3,7 @@ import type MDPalettePlugin from './main';
 import { ConnectionPicker } from './card-view';
 import { NewLinkedNoteModal } from './new-linked-note';
 import { NativeLocalGraph } from './native-local-graph';
+import { LinkExplorer } from './link-explorer';
 import { relations, sectionKeys, type SectionKey } from './connections-state';
 
 export class ConnectionsView {
@@ -13,9 +14,12 @@ export class ConnectionsView {
   private cancelDrag?: () => void;
   private nativeGraph: NativeLocalGraph;
   private relationKey = '';
+  private revision = -1;
+  private depth = -1;
   constructor(private plugin: MDPalettePlugin, leaf: WorkspaceLeaf) { this.nativeGraph = new NativeLocalGraph(plugin, leaf); plugin.register(() => this.destroy()); }
   destroy(): void { this.prepareRender(); this.nativeGraph.destroy(); }
   isCurrent(): boolean {
+    if (this.revision !== this.plugin.linkRevision || this.depth !== this.plugin.explorer.depth) return false;
     const main = this.plugin.mainFile;
     if (!main || main.path !== this.mainPath || !this.root?.isConnected) return false;
     return this.relationKey === JSON.stringify(relations(this.plugin.app.metadataCache.resolvedLinks, main.path, new Set(this.plugin.app.vault.getMarkdownFiles().map(f => f.path))));
@@ -31,6 +35,9 @@ export class ConnectionsView {
   render(root: HTMLElement): void {
     this.root = root;
     const main = this.plugin.mainFile; if (!main) return;
+    this.revision = this.plugin.linkRevision; this.depth = this.plugin.explorer.depth;
+    const explorer = new LinkExplorer(this.plugin);
+    explorer.controls(root, () => this.plugin.cardsChanged());
     if (main.path !== this.mainPath) { this.mainPath = main.path; this.scroll = {}; this.selected = undefined; }
     root.className = 'mdp-connections';
     const actions = root.createDiv({ cls: 'mdp-connection-actions' });
@@ -70,6 +77,7 @@ export class ConnectionsView {
           setIcon(row.createSpan({ cls: 'mdp-connection-file-icon' }), 'file-text');
           row.createSpan({ cls: 'mdp-connection-name', text: file.name });
           this.fileEvents(row, file);
+          explorer.attach(row, file);
         }
         body.scrollTop = this.scroll[key] ?? 0;
       }

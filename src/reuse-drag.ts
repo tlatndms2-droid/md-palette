@@ -188,8 +188,9 @@ export class ReuseDrag {
     if (!text) throw Error('삽입할 본문이 없습니다.');
     const disk = await app.vault.read(target.file);
     if (!this.valid(source, target)) throw Error('문서 또는 Space가 변경되었습니다. 다시 끌어 놓아주세요.');
-    if (source.original !== undefined && (source.main.view as MarkdownView).editor.getValue() !== source.original) throw Error('원문이 변경되었습니다. 최신 항목을 다시 끌어 놓아주세요.');
+    if (source.original !== undefined && await this.fileText(source.file) !== source.original) throw Error('원문이 변경되었습니다. 최신 항목을 다시 끌어 놓아주세요.');
     if (target.editor) {
+      if (!this.valid(source, target)) throw Error('문서 또는 Space가 변경되었습니다. 다시 끌어 놓아주세요.');
       const view = target.leaf.view as MarkdownView, editor = target.editor;
       if (view.editor !== editor || editor.getValue() !== target.original) throw Error('삽입 대상이 변경되었습니다. 다시 끌어 놓아주세요.');
       // Refuse an external-disk conflict instead of overwriting newer content.
@@ -206,6 +207,7 @@ export class ReuseDrag {
         throw Error('삽입 내용을 저장하지 못했습니다. ' + String(error));
       }
     } else if (target.canvas) {
+      if (!this.valid(source, target)) throw Error('문서 또는 Space가 변경되었습니다. 다시 끌어 놓아주세요.');
       const canvas = target.canvas, view = target.leaf.view as unknown as CanvasView;
       if (view.canvas !== canvas || JSON.stringify(canvas.getData()) !== target.original) throw Error('Canvas가 변경되었습니다. 다시 끌어 놓아주세요.');
       if (!sameCanvasData(disk, target.original)) throw Error('Canvas 저장이 끝난 뒤 다시 끌어 놓아주세요.');

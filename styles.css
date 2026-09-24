@@ -1,4 +1,32 @@
 .mdp-sidebar { padding: 12px; min-width: 0; overflow-x: hidden; }
+.mdp-depth-controls { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:6px; padding:6px 0; flex-shrink:0; font-size:var(--font-ui-smaller); }
+.mdp-depth-controls label { display:flex; align-items:center; gap:7px; }
+.mdp-depth-controls select { padding:3px 7px; height:auto; }
+.mdp-depth-controls > span { font-size:var(--font-ui-smaller); }
+.mdp-link-expand { flex:0 0 24px; width:24px; height:24px; padding:3px; background:transparent; box-shadow:none; color:var(--text-muted); }
+.mdp-link-expand:hover { color:var(--interactive-accent); background:var(--background-modifier-hover); }
+.mdp-link-expand svg { width:16px; height:16px; }
+.mdp-card > .mdp-link-expand { order:-2; }
+.mdp-link-branch { grid-column:1 / -1; min-width:0; margin:0 0 7px 14px; padding:3px 0 3px 12px; border-left:1px solid color-mix(in srgb,var(--interactive-accent) 45%,var(--background-modifier-border)); }
+.mdp-link-branch[hidden] { display:none; }
+.mdp-linked-occurrence { position:relative; min-width:0; margin:5px 0; padding:8px 9px 7px 27px; border:1px solid var(--background-modifier-border); border-radius:6px; background:var(--background-secondary); }
+.mdp-linked-occurrence::before { content:''; position:absolute; width:12px; left:-13px; top:20px; border-top:1px solid var(--background-modifier-border); }
+.mdp-linked-occurrence > .mdp-link-expand { position:absolute; left:1px; top:5px; }
+.mdp-linked-occurrence.is-selected { border-color:var(--interactive-accent); background:var(--background-modifier-active-hover); }
+.mdp-linked-row { display:flex; align-items:center; gap:6px; min-width:0; }
+.mdp-linked-icon { display:flex; color:var(--text-muted); flex-shrink:0; }
+.mdp-linked-icon svg { width:15px; height:15px; }
+.mdp-linked-name { background:transparent; box-shadow:none; border:0; height:auto; min-width:0; padding:0; text-align:left; white-space:normal; overflow-wrap:anywhere; font-size:var(--font-ui-small); }
+.mdp-link-direction { color:var(--text-muted); font-size:var(--font-ui-smaller); margin-top:3px; overflow-wrap:anywhere; }
+.mdp-links-more { margin:6px 0; font-size:var(--font-ui-smaller); }
+.mdp-metadata-picker { border:1px solid var(--background-modifier-border); border-radius:8px; padding:9px; margin-bottom:10px; flex-shrink:0; }
+.mdp-metadata-source-label { color:var(--text-muted); font-size:var(--font-ui-smaller); margin-bottom:6px; }
+.mdp-source-toggle { width:100%; text-align:left; height:auto; overflow-wrap:anywhere; white-space:normal; }
+.mdp-source-path { font-size:var(--font-ui-smaller); margin-top:6px; overflow-wrap:anywhere; }
+.mdp-source-tree { max-height:240px; overflow:auto; padding-right:4px; }
+.mdp-source-row { display:flex; align-items:center; gap:4px; padding:4px 0; }
+.mdp-source-file { flex:1; min-width:0; height:auto; text-align:left; white-space:normal; overflow-wrap:anywhere; box-shadow:none; font-size:var(--font-ui-small); }
+.mdp-source-file[aria-pressed=true] { border-color:var(--interactive-accent); background:var(--background-modifier-active-hover); }
 .mdp-heading { display: flex; align-items: center; gap: 8px; font-size: var(--font-ui-medium); font-weight: var(--font-semibold); margin-bottom: 14px; }
 .mdp-heading-icon { color: var(--interactive-accent); display: flex; }
 .mdp-main-context { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; font-size: var(--font-ui-small); }
@@ -220,6 +248,12 @@
 .mdp-canvas-insert-bar [role=status] { flex-basis: 100%; font-size: var(--font-ui-small); }
 
 .mdp-canvas-preview.is-collision .mdp-canvas-ghost { border-color: var(--text-error); color: var(--text-error); }
+.mdp-display-list .mdp-file-card.mdp-has-links, .mdp-display-details .mdp-file-card.mdp-has-links { grid-template-columns:24px 22px minmax(0,1fr); }
+.mdp-display-list .mdp-has-links > .mdp-link-expand, .mdp-display-details .mdp-has-links > .mdp-link-expand { grid-column:1; grid-row:1; }
+.mdp-display-list .mdp-has-links > .mdp-preview, .mdp-display-details .mdp-has-links > .mdp-preview { grid-column:2; }
+.mdp-display-list .mdp-has-links > .mdp-file-title, .mdp-display-details .mdp-has-links > .mdp-file-title,
+.mdp-display-list .mdp-has-links > .mdp-card-info, .mdp-display-details .mdp-has-links > .mdp-card-info { grid-column:3; }
+.mdp-sidebar > .mdp-metadata { flex:1 1 0; min-height:0; overflow-y:auto; padding:0 4px 14px 0; }
 
 /* Capture placement gestures above Obsidian's embedded node documents. */
 .mdp-canvas-preview { pointer-events: auto; cursor: crosshair; }

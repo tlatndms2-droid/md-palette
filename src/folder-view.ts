@@ -4,6 +4,7 @@ import { classify, fileTypes, toggleType, typeSelected } from './cards-state';
 import { ancestors, folderDisplayModes, canMove, deleteFolder, fileKey, folderKey, moveItems, parentOf, type FolderState, type Sort } from './folders-state';
 import { Thumbnails } from './thumbnails';
 import { NewLinkedNoteModal } from './new-linked-note';
+import { LinkExplorer } from './link-explorer';
 
 const sortNames: Record<Sort, string> = { manual: '사용자 지정', name: '이름', type: '유형', mtime: '수정 날짜', size: '크기' };
 const displayNames = ['제목 카드', '큰 아이콘', '중간 아이콘', '작은 아이콘', '목록', '자세히', '타일'];
@@ -74,6 +75,7 @@ export class FolderView {
     this.entries = [...s.folders.map(f => ({ key: folderKey(f.id), name: f.name, parent: f.parent, folder: f.id })), ...files.map(file => ({ key: fileKey(file.path), name: file.name, parent: s.positions[file.path] ?? '', file }))];
     for (const surface of ['tree','folder'] as const) this.selections[surface] = new Set([...this.selections[surface]].filter(k => this.entries.some(e => e.key === k)));
     const toolbar = root.createDiv({ cls: 'mdp-folder-toolbar' });
+    new LinkExplorer(this.plugin).controls(root, () => this.plugin.cardsChanged());
     toolbar.createEl('button', { text: '파일 유형 ▾' }).onclick = e => {
       const menu = new Menu(); fileTypes.forEach((type, i) => menu.addItem(item => item.setTitle(['전체','MD','Canvas','PDF','이미지','영상','기타'][i]).setChecked(typeSelected(this.plugin.cards,type)).onClick(() => { toggleType(this.plugin.cards,type); this.plugin.cardsChanged(); }))); menu.showAtMouseEvent(e);
     };
@@ -209,6 +211,7 @@ export class FolderView {
     el.ondragstart = e => { if (!this.selections[surface].has(item.key)) this.select(item.key, surface, visible, e); this.drag = { keys: visible.filter(x => this.selections[surface].has(x.key)).map(x => x.key), main: this.main!, surface }; e.dataTransfer?.setData('application/x-md-palette-folder', this.main!); if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move'; };
     el.ondragend = () => { this.drag = undefined; this.clearDrop(); };
     this.dropTarget(el, item.folder ?? item.parent, surface, item);
+    if (item.file) new LinkExplorer(this.plugin, undefined, file => this.plugin.cards.selectedTypes.includes(classify(file.extension))).attach(el, item.file);
   }
   private select(key: string, surface: 'tree' | 'folder', visible: Entry[], e: MouseEvent | KeyboardEvent): void {
     const selected = this.selections[surface], anchor = this.anchors[surface];
