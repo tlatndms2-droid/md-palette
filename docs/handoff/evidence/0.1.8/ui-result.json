@@ -1,0 +1,27 @@
+{
+  "version": "0.1.8",
+  "checks": [
+    "unlinked file open, state replacement, inactive-tab click and new tab are blocked without changing tabs or links",
+    "list-only controls and MD + Canvas filter work with existing labels",
+    "collision blocks confirmation and preview leaves Canvas data untouched",
+    "multi-file menu inserts separate original-file nodes at chosen position",
+    "last insertion undo restores existing Canvas without changing sources",
+    "selected folder exports exact descendant files, title nodes and parent-child edges",
+    "original Markdown/image contents and Main links are unchanged"
+  ],
+  "assets": [
+    {
+      "name": "main.js",
+      "sha256": "df97fa0675230d9c106d1a67758547fadf85a134e82814e733694a4207d12fdf"
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "1c302a071a79a5fd9a2d43fa687eba85b63f587389a916430a816eacc2a43d63"
+    },
+    {
+      "name": "styles.css",
+      "sha256": "445f2250335234ac7b26348e6619c0bbbb3fad7f9eeb6732c0452d949be05d91"
+    }
+  ],
+  "passed": true
+}

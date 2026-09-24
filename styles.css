@@ -211,3 +211,10 @@
 .mdp-reuse-caret { position: fixed; z-index: 1000; width: 2px; background: var(--interactive-accent); pointer-events: none; box-shadow: 0 0 0 1px var(--background-primary); }
 .mdp-reuse-line { position: fixed; z-index: 999; background: color-mix(in srgb, var(--interactive-accent) 16%, transparent); border-radius: 2px; pointer-events: none; }
 .mdp-metadata-item[draggable="true"] { cursor: grab; }
+.mdp-canvas-preview { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 25; }
+.mdp-canvas-preview-edges { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.mdp-canvas-preview-edges path { fill: none; stroke: var(--interactive-accent); stroke-width: 2; stroke-dasharray: 7 5; }
+.mdp-canvas-ghost { position: absolute; border: 2px dashed var(--interactive-accent); border-radius: var(--radius-m); background: var(--background-primary); opacity: .85; padding: 12px; overflow: hidden; color: var(--text-normal); overflow-wrap: anywhere; }
+.mdp-canvas-ghost.is-collision { border-color: var(--text-error); color: var(--text-error); }
+.mdp-canvas-insert-bar { position: absolute; bottom: 16px; left: 16px; right: 16px; z-index: 30; border: 1px solid var(--interactive-accent); background: var(--background-primary); box-shadow: var(--shadow-s); border-radius: var(--radius-m); padding: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+.mdp-canvas-insert-bar [role=status] { flex-basis: 100%; font-size: var(--font-ui-small); }

@@ -5,7 +5,7 @@ export type DisplayMode = typeof displayModes[number];
 export interface Label { id: string; name: string; color: string }
 export interface CardState {
   order: string[]; labels: Label[]; assignments: Record<string, string>;
-  fileType: FileType; labelFilter: string[]; typeCollapsed: boolean; labelCollapsed: boolean;
+  fileType: FileType; selectedTypes: FileType[]; labelFilter: string[]; typeCollapsed: boolean; labelCollapsed: boolean;
   display: DisplayMode; textSize: 'small' | 'normal' | 'large';
 }
 export function readCards(raw: unknown): CardState {
@@ -18,10 +18,17 @@ export function readCards(raw: unknown): CardState {
   const assignments: Record<string, string> = Object.create(null);
   if (v.assignments && typeof v.assignments === 'object') for (const [path, id] of Object.entries(v.assignments)) if (labels.some(l => l.id === id)) assignments[path] = id;
   return { order: strings(v.order), labels: labels.filter(l => Object.values(assignments).includes(l.id)), assignments,
-    fileType: fileTypes.includes(v.fileType!) ? v.fileType! : 'all', labelFilter: strings(v.labelFilter).filter(id => Object.values(assignments).includes(id)),
+    fileType: fileTypes.includes(v.fileType!) ? v.fileType! : 'all',
+    selectedTypes: Array.isArray(v.selectedTypes) ? strings(v.selectedTypes).filter((t): t is FileType => t !== 'all' && fileTypes.includes(t as FileType)) : v.fileType && v.fileType !== 'all' && fileTypes.includes(v.fileType) ? [v.fileType] : fileTypes.filter(t => t !== 'all'),
+    labelFilter: strings(v.labelFilter).filter(id => Object.values(assignments).includes(id)),
     typeCollapsed: v.typeCollapsed === true, labelCollapsed: v.labelCollapsed === true,
-    display: displayModes.includes(v.display!) ? v.display! : 'medium', textSize: v.textSize === 'small' || v.textSize === 'large' ? v.textSize : 'normal' };
+    display: 'list', textSize: v.textSize === 'small' || v.textSize === 'large' ? v.textSize : 'normal' };
 }
+export function toggleType(state: CardState, type: FileType): void {
+  state.selectedTypes = type === 'all' ? fileTypes.filter(t => t !== 'all') : state.selectedTypes.includes(type) ? state.selectedTypes.filter(t => t !== type) : [...state.selectedTypes, type];
+  state.fileType = state.selectedTypes.length === 1 ? state.selectedTypes[0] : 'all';
+}
+export function typeSelected(state: CardState, type: FileType): boolean { return type === 'all' ? fileTypes.filter(t => t !== 'all').every(t => state.selectedTypes.includes(t)) : state.selectedTypes.includes(type); }
 export function classify(extension: string): FileType {
   const ext = extension.toLowerCase();
   if (['md', 'canvas', 'pdf'].includes(ext)) return ext as FileType;

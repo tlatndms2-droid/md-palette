@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { transform } from 'esbuild';
 const { code } = await transform(await readFile('src/cards-state.ts', 'utf8'), { loader: 'ts', format: 'esm' });
-const { readCards, reorder, bodyOnly, pruneLabels, classify, deleteLabel } = await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+const { readCards, reorder, bodyOnly, pruneLabels, classify, deleteLabel, toggleType, typeSelected } = await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
 
 test('deleting a label removes all its assignments and filter without changing files or other labels', () => {
   const state = readCards({ order: ['A.md', 'B.md', 'C.md'], labels: [{id:'x',name:'X',color:'#123456'}, {id:'y',name:'Y',color:'#abcdef'}], assignments:{'A.md':'x','B.md':'x','C.md':'y'},labelFilter:['x','y'] });
@@ -34,6 +34,15 @@ test('one-file-one-label replacement prunes unused labels and stale filters only
 });
 test('corrupt view state cannot inject invalid labels or orders', () => {
   const s = readCards({order:['A',42,'A','B'],display:'invalid',labels:[null,{id:'x',name:'x',color:'url(bad)'}],assignments:{A:'x'},labelFilter:['x']});
-  assert.deepEqual(s.order,['A','B']); assert.equal(s.display,'medium'); assert.deepEqual(s.labels,[]); assert.deepEqual(s.labelFilter,[]);
+  assert.deepEqual(s.order,['A','B']); assert.equal(s.display,'list'); assert.deepEqual(s.labels,[]); assert.deepEqual(s.labelFilter,[]);
   assert.equal(classify('PDF'),'pdf'); assert.equal(classify('webm'),'video'); assert.equal(classify('unknown'),'other');
+});
+
+test('multi type filter migrates legacy selection, preserves empty and reconnects all state', () => {
+  const state=readCards({fileType:'md',display:'large',order:['B','A']});
+  assert.deepEqual(state.selectedTypes,['md']);assert.equal(state.display,'list');
+  toggleType(state,'canvas');assert.deepEqual(state.selectedTypes,['md','canvas']);assert.equal(typeSelected(state,'all'),false);
+  toggleType(state,'all');assert.equal(typeSelected(state,'all'),true);toggleType(state,'pdf');assert.equal(typeSelected(state,'all'),false);toggleType(state,'pdf');assert.equal(typeSelected(state,'all'),true);
+  for(const t of [...state.selectedTypes])toggleType(state,t);
+  assert.deepEqual(readCards(state).selectedTypes,[]);assert.deepEqual(state.order,['B','A']);
 });

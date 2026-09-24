@@ -6,6 +6,7 @@
 
 | 시점 | 이전 방식 → 최종 결정 | 기록된 맥락·이유 | 근거 |
 |---|---|---|---|
+| 0.1.8 | 기존 Sub의 미연결 파일 열기 차단, Card 목록 고정·복수 유형, 기존 Canvas 파일/폴더 삽입 | 사용자 HTML 정정 및 열기 차단 선택. 원본 구조·파일 보존, 미리보기 후 확정 | CANVAS_REVISION_VALIDATION.md |
 | 0.1.7 | 여러 Sub·전체 높이 강제 → Sub 하나·지정/해제·자유 분할 | 사용자 명시 승인. Ctrl+Shift는 새 일반 그룹. 미연결 파일은 연결하고 지정 또는 취소 | SUB_RULES_VALIDATION.md |
 | 0.1.6 | 새 링크 파일은 MD만 → Markdown/Canvas 선택 | 사용자 Canvas 추가 요청 및 생성·연결만 하고 자동으로 열지 않는 방식 승인 | NEW_CANVAS_VALIDATION.md |
 | 0.1.5 | 각주 텍스트·실제 각주 → 각주만·본문만·각주와 본문 | 사용자 이미지의 위쪽=본문, 아래쪽=각주. 함께 삽입은 본문에 번호를 붙이고 설명을 문서 아래 연결하도록 명시 승인 | FOOTNOTE_CHOICE_VALIDATION.md |

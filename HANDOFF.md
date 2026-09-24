@@ -1,11 +1,19 @@
 # MD Palette 작업 인계 — 다른 PC 재개 시작점
 
-갱신일: 2026-09-22. 저장소: https://github.com/tlatndms2-droid/md-palette
-기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.7**.
+갱신일: 2026-09-24. 저장소: https://github.com/tlatndms2-droid/md-palette
+기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.8**.
 
 ## 현재 상태
 
-**현재 재개 기준은 공개 0.1.7이다. 단일 Sub 지정·해제, 미연결 파일 연결 팝업, Ctrl+Shift 새 일반 그룹, 자유 분할을 Sandbox UI·업데이트·재시작·공개 자산 SHA-256까지 검증했다. 사용자 BRAT 확인 대기이며 자동으로 시작할 다음 기능은 없다. 과거 여러 Sub·전체 높이 강제 규칙은 최신 사용자 승인으로 폐기됐다.**
+**현재 기준은 0.1.8이다.** 미연결 파일의 Sub 열기를 차단하고 이전 파일·탭을 유지합니다. Card는 목록으로 고정하며 파일 유형을 복수 선택합니다. 파일 목록과 가상 폴더를 기존 Canvas에 위치 지정 → 미리보기 → 겹침 확인 → 확정으로 삽입합니다. 47개 테스트·빌드·격리 Sandbox 실제 UI·프로세스 재시작을 통과했다. [검증 보고서](CANVAS_REVISION_VALIDATION.md), [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.8). 사용자 BRAT 확인 대기이며 다음 작업을 자동으로 시작하지 않는다. 이전 버전의 사용자 확인을 완료 처리한 것은 아니다.
+
+- 현재 Sandbox: `C:\Users\tlatn\AppData\Local\Temp\MDPalette-Canvas-Sandbox-20260924`, 프로필 `MDPalette-Canvas-Profile-20260924`, CDP 19350. 시험 자료와 최종 UI를 유지한다.
+- 미연결 파일을 기존 Sub에서 열 때는 차단한다. 기존 **Sub 지정 시 연결 승인 팝업**은 유지한다. Main 변경은 기존대로 역할을 해제하고 탭을 보존한다.
+- 사용법: Card 파일 우클릭 `현재 Canvas에 삽입…` 또는 드래그. Folder 폴더 우클릭/전체 루트 우클릭으로 폴더 삽입. 마지막 삽입은 명령 팔레트에서 되돌린다.
+
+### 이전 0.1.7 기록
+
+**당시 재개 기준은 공개 0.1.7이었다. 단일 Sub 지정·해제, 미연결 파일 연결 팝업, Ctrl+Shift 새 일반 그룹, 자유 분할을 Sandbox UI·업데이트·재시작·공개 자산 SHA-256까지 검증했다. 사용자 BRAT 확인 대기이며 자동으로 시작할 다음 기능은 없다. 과거 여러 Sub·전체 높이 강제 규칙은 최신 사용자 승인으로 폐기됐다.**
 
 - 0.1.7 소스: `1e61c27`. [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.7), [검증](SUB_RULES_VALIDATION.md), [증거](docs/handoff/evidence/0.1.7). 미연결 지정은 연결하고 지정/취소. 기존 여러 그룹은 마지막 사용 Sub 하나만 남기며 다른 그룹·파일은 보존한다.
 

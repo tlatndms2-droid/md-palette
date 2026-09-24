@@ -1,0 +1,20 @@
+{
+  "version": "0.1.8",
+  "passed": true,
+  "checks": [
+    "linked file double-click replaces Sub normally after unlinked guard",
+    "label filter continues to combine with file-type selections",
+    "native multi-file drag shows preview then inserts and undoes without changing existing nodes",
+    "whole-tree export includes hidden file types, preserves hierarchy and restores on undo",
+    "injected save failure rolls back every added node and edge",
+    "unsupported file rejects the whole selection before insertion",
+    "switching target Canvas cancels the stale preview without inserting in either file",
+    "257-node real preview remains responsive: {\"nodes\":257,\"maxTimerMs\":58.29999999701977,\"averageTimerMs\":52.77999999895692}"
+  ],
+  "perf": {
+    "nodes": 257,
+    "maxTimerMs": 58.29999999701977,
+    "averageTimerMs": 52.77999999895692
+  },
+  "errors": []
+}

@@ -1,6 +1,6 @@
 import { FuzzySuggestModal, Menu, Modal, Notice, TFile, setIcon } from 'obsidian';
 import type MDPalettePlugin from './main';
-import { classify, fileTypes } from './cards-state';
+import { classify, fileTypes, toggleType, typeSelected } from './cards-state';
 import { ancestors, folderDisplayModes, canMove, deleteFolder, fileKey, folderKey, moveItems, parentOf, type FolderState, type Sort } from './folders-state';
 import { Thumbnails } from './thumbnails';
 import { NewLinkedNoteModal } from './new-linked-note';
@@ -70,13 +70,13 @@ export class FolderView {
     let added = false;
     for (const key of [...s.folders.map(f => folderKey(f.id)), ...connected.map(f => fileKey(f.path))]) if (!known.has(key)) { s.order.push(key); known.add(key); added = true; }
     if (added) this.plugin.saveCardOrder();
-    const files = connected.filter(f => this.plugin.cards.fileType === 'all' || classify(f.extension) === this.plugin.cards.fileType);
+    const files = connected.filter(f => this.plugin.cards.selectedTypes.includes(classify(f.extension)));
     this.entries = [...s.folders.map(f => ({ key: folderKey(f.id), name: f.name, parent: f.parent, folder: f.id })), ...files.map(file => ({ key: fileKey(file.path), name: file.name, parent: s.positions[file.path] ?? '', file }))];
     for (const surface of ['tree','folder'] as const) this.selections[surface] = new Set([...this.selections[surface]].filter(k => this.entries.some(e => e.key === k)));
     const toolbar = root.createDiv({ cls: 'mdp-folder-toolbar' });
-    const filter = toolbar.createEl('select', { attr: { 'aria-label': '파일 유형' } });
-    fileTypes.forEach((type, i) => filter.createEl('option', { value: type, text: ['전체 파일 유형','Markdown','Canvas','PDF','이미지','영상','기타'][i] }));
-    filter.value = this.plugin.cards.fileType; filter.onchange = () => { this.plugin.cards.fileType = filter.value as typeof this.plugin.cards.fileType; this.plugin.cardsChanged(); };
+    toolbar.createEl('button', { text: '파일 유형 ▾' }).onclick = e => {
+      const menu = new Menu(); fileTypes.forEach((type, i) => menu.addItem(item => item.setTitle(['전체','MD','Canvas','PDF','이미지','영상','기타'][i]).setChecked(typeSelected(this.plugin.cards,type)).onClick(() => { toggleType(this.plugin.cards,type); this.plugin.cardsChanged(); }))); menu.showAtMouseEvent(e);
+    };
     toolbar.createEl('button', { text: '보기 형식 ▾' }).onclick = e => this.viewMenu(e);
     const panels = root.createDiv({ cls: `mdp-folder-panels mdp-folder-${s.mode} mdp-folder-${s.layout}` });
     let tree: HTMLElement | undefined;
@@ -197,6 +197,7 @@ export class FolderView {
     el.onkeydown = e => { if (e.key === 'Enter') { e.preventDefault(); open(); } else if (e.key === ' ') { e.preventDefault(); this.select(item.key, surface, visible, e); } };
     el.oncontextmenu = e => { e.preventDefault(); e.stopPropagation(); if (!this.selections[surface].has(item.key)) this.select(item.key, surface, visible, e); const menu = new Menu();
       if (item.folder) {
+        menu.addItem(i => i.setTitle('폴더를 현재 Canvas에 삽입…').setIcon('layout-dashboard').onClick(() => this.plugin.canvasInsert.folder(item.folder!)));
         menu.addItem(i => i.setTitle('열기').onClick(open));
         menu.addItem(i => i.setTitle('새 가상 폴더 만들기').onClick(() => new NameModal(this.plugin, item.folder!).open()));
         menu.addItem(i => i.setTitle('이름 변경').onClick(() => new NameModal(this.plugin, item.parent, item.folder).open()));
@@ -234,6 +235,7 @@ export class FolderView {
   }
   private emptyMenu(e: MouseEvent, parent: string): void {
     e.preventDefault(); e.stopPropagation(); const menu = new Menu();
+    menu.addItem(i => i.setTitle(parent ? '이 폴더를 현재 Canvas에 삽입…' : '전체 가상 폴더를 현재 Canvas에 삽입…').setIcon('layout-dashboard').onClick(() => this.plugin.canvasInsert.folder(parent)));
     menu.addItem(i => i.setTitle('새 가상 폴더 만들기').setIcon('folder-plus').onClick(() => new NameModal(this.plugin, parent).open()));
     menu.addItem(i => i.setTitle('연결 파일 추가').setIcon('link').onClick(() => { const main = this.plugin.mainFile; if (!main) { new Notice('메인 스페이스를 먼저 지정해주세요.'); return; } new FolderConnectionPicker(this.plugin, main, parent).open(); }));
     menu.addItem(i => i.setTitle('새 링크 파일 추가').setIcon('file-plus').onClick(() => { const main = this.plugin.mainFile; if (main) new NewLinkedNoteModal(this.plugin, main, parent).open(); }));

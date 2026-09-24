@@ -1,6 +1,6 @@
 import { FuzzySuggestModal, Menu, Modal, Notice, TFile, setIcon } from 'obsidian';
 import type MDPalettePlugin from './main';
-import { classify, deleteLabel, displayModes, fileTypes, pruneLabels, reorder, type Label } from './cards-state';
+import { classify, deleteLabel, fileTypes, toggleType, typeSelected, pruneLabels, reorder, type Label } from './cards-state';
 import { Thumbnails } from './thumbnails';
 import { CardReorder } from './card-reorder';
 import { NewLinkedNoteModal } from './new-linked-note';
@@ -114,7 +114,7 @@ export class CardView {
       const file = this.plugin.mainFile; if (file) new NewLinkedNoteModal(this.plugin, file).open();
     };
     const typeSection = this.section(root, '파일 유형 필터', state.typeCollapsed, () => { state.typeCollapsed = !state.typeCollapsed; this.plugin.cardsChanged(); });
-    if (!state.typeCollapsed) for (let i = 0; i < fileTypes.length; i++) this.chip(typeSection, typeNames[i], state.fileType === fileTypes[i], () => { state.fileType = fileTypes[i]; this.plugin.cardsChanged(); });
+    if (!state.typeCollapsed) for (let i = 0; i < fileTypes.length; i++) this.chip(typeSection, typeNames[i], typeSelected(state, fileTypes[i]), () => { toggleType(state, fileTypes[i]); this.plugin.cardsChanged(); });
     const labelSection = this.section(root, 'Label 필터', state.labelCollapsed, () => { state.labelCollapsed = !state.labelCollapsed; this.plugin.cardsChanged(); });
     if (!state.labelCollapsed) {
       this.chip(labelSection, 'All', !state.labelFilter.length, () => { state.labelFilter = []; this.plugin.cardsChanged(); });
@@ -124,10 +124,10 @@ export class CardView {
       this.chip(labelSection, '라벨 관리…', false, () => new LabelEditor(this.plugin).open());
     }
     const controls = root.createDiv({ cls: 'mdp-card-controls' });
-    this.select(controls, '보기 형식', [...displayModes], modeNames, state.display, value => { state.display = value as typeof state.display; this.plugin.cardsChanged(); });
+    state.display = 'list';
     this.select(controls, '텍스트 크기', ['small', 'normal', 'large'], ['작게', '보통', '크게'], state.textSize, value => { state.textSize = value as typeof state.textSize; this.plugin.cardsChanged(); });
     const connected = this.plugin.connectedFiles();
-    this.visible = connected.filter(f => (state.fileType === 'all' || classify(f.extension) === state.fileType) && (!state.labelFilter.length || state.labelFilter.includes(state.assignments[f.path])));
+    this.visible = connected.filter(f => state.selectedTypes.includes(classify(f.extension)) && (!state.labelFilter.length || state.labelFilter.includes(state.assignments[f.path])));
     const visiblePaths = new Set(this.visible.map(f => f.path));
     this.selected = new Set([...this.selected].filter(p => visiblePaths.has(p)));
     if (this.active && !visiblePaths.has(this.active)) this.active = undefined;
@@ -149,26 +149,16 @@ export class CardView {
       this.visible.sort((a, b) => rank.get(a.path)! - rank.get(b.path)!);
       this.plugin.saveCardOrder();
     });
-    grid.addEventListener('wheel', e => {
-      if (!e.ctrlKey) return; e.preventDefault();
-      const index = displayModes.indexOf(state.display), next = Math.max(0, Math.min(displayModes.length - 1, index + (e.deltaY > 0 ? 1 : -1)));
-      if (next !== index) { state.display = displayModes[next]; this.plugin.cardsChanged(); }
-    }, { passive: false });
     for (const file of this.visible) {
       const card = grid.createDiv({ cls: 'mdp-card', attr: { 'data-path': file.path, role: 'option', tabindex: '0', draggable: 'true', title: file.path } });
       card.classList.add('mdp-file-card');
       this.plugin.bindFilePreview(card, file);
       card.createDiv({ cls: 'mdp-card-name mdp-file-title', text: file.name });
       const preview = card.createDiv({ cls: 'mdp-preview', attr: { 'aria-hidden': 'true' } });
-      if (state.display !== 'list' && state.display !== 'details') this.thumbnails.observe(preview, file);
-      else setIcon(preview, classify(file.extension) === 'image' ? 'image' : 'file-text');
+      setIcon(preview, classify(file.extension) === 'image' ? 'image' : 'file-text');
       const info = card.createDiv({ cls: 'mdp-card-info' });
       const label = state.labels.find(l => l.id === state.assignments[file.path]);
       if (label) { const badge = info.createSpan({ cls: 'mdp-label-badge', text: label.name }); badge.style.setProperty('--mdp-label-color', label.color); }
-      if (state.display === 'details' || state.display === 'tiles') {
-        info.createDiv({ cls: 'mdp-card-detail', text: `${file.parent?.path || '/'} · ${file.extension.toUpperCase()}` });
-        info.createDiv({ cls: 'mdp-card-detail', text: `${new Date(file.stat.mtime).toLocaleDateString()} · ${Math.ceil(file.stat.size / 1024)} KB` });
-      }
       const more = card.createEl('button', { cls: 'mdp-card-more', attr: { 'aria-label': `${file.name} 메뉴` } }); setIcon(more, 'more-vertical');
       more.onclick = e => { e.stopPropagation(); this.context(e, file); };
       card.onclick = e => { this.selection(e, file); };
@@ -184,6 +174,7 @@ export class CardView {
         e.dataTransfer?.setData('application/x-md-palette-reorder', this.mainPath!);
         if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
         if (paths.length === 1) this.plugin.reuseDrag.startFile(e, file);
+        this.plugin.canvasInsert.startDrag(e, paths);
         this.reorderDrag?.start(paths);
       };
     }
@@ -211,6 +202,7 @@ export class CardView {
     if (!this.selected.has(file.path)) { this.selected = new Set([file.path]); this.active = this.anchor = file.path; this.paint(); }
     const paths = [...this.selected], multi = paths.length > 1, state = this.plugin.cards;
     const menu = new Menu();
+    menu.addItem(item => item.setTitle('현재 Canvas에 삽입…').setIcon('layout-dashboard').onClick(() => this.plugin.canvasInsert.files(paths)));
     if (!multi) {
       menu.addItem(item => item.setTitle('Sub Space에서 열기').setIcon('link').onClick(() => this.open(file)));
     }

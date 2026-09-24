@@ -1,6 +1,8 @@
 # MD Palette 현재 진행 계획
 
-갱신일: 2026-09-22. 공개 0.1.7, 브랜치 codex/planning.
+갱신일: 2026-09-24. 공개 0.1.8, 브랜치 codex/planning.
+
+0.1.8: 미연결 파일의 Sub 열기를 차단하고 이전 파일·탭을 유지합니다. Card는 목록으로 고정하며 파일 유형을 복수 선택합니다. 파일 목록과 가상 폴더를 기존 Canvas에 위치 지정 → 미리보기 → 겹침 확인 → 확정으로 삽입합니다. 47개 테스트·빌드·격리 Sandbox UI·재시작 검증 통과. CANVAS_REVISION_VALIDATION.md 참고. 사용자 BRAT 확인 대기.
 
 0.1.7: 단일 Sub·파일 전환 유지·지정/해제·미연결 파일 연결 승인·Ctrl+Shift 새 일반 그룹·Sub 아래 분할. 44개 테스트·빌드·격리 Sandbox UI·업데이트·재시작·공개 자산 검증 통과. 사용자 BRAT 확인 대기. SUB_RULES_VALIDATION.md 참고. 과거 다중 Sub/전체 높이 강제 규칙을 재적용하지 않는다.
 

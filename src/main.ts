@@ -8,6 +8,8 @@ import { readFolders, readDocumentFolders, fileKey, type FolderState } from './f
 import { ReuseDrag } from './reuse-drag';
 import { newNoteName, type NewNoteFormat } from './new-note-name';
 import { SubDesignationModal } from './sub-designation-modal';
+import { SubOpenGuard } from './sub-open-guard';
+import { CanvasInsert } from './canvas-insert';
 
 type Role = 'sub';
 class SpaceFilePicker extends FuzzySuggestModal<TFile> {
@@ -19,6 +21,8 @@ class SpaceFilePicker extends FuzzySuggestModal<TFile> {
 
 export default class MDPalettePlugin extends Plugin {
   reuseDrag!: ReuseDrag;
+  subOpenGuard!: SubOpenGuard;
+  canvasInsert!: CanvasInsert;
   mainGroup?: Group;
   mainLeaf?: WorkspaceLeaf;
   private pinnedMain?: TFile;
@@ -82,6 +86,9 @@ export default class MDPalettePlugin extends Plugin {
     this.registerView(VIEW_TYPE, leaf => new PaletteView(leaf, this));
     this.registerHoverLinkSource('md-palette', { display: 'MD Palette 파일', defaultMod: true });
     this.routeMainLinks();
+    this.subOpenGuard = new SubOpenGuard(this);
+    this.canvasInsert = new CanvasInsert(this);
+    this.register(() => this.canvasInsert.destroy());
     this.reuseDrag = new ReuseDrag(this);
     this.register(() => this.reuseDrag.destroy());
     this.addRibbonIcon('panels-top-left', 'MD Palette 열기', () => this.run(() => this.openSidebar()));
@@ -236,6 +243,7 @@ export default class MDPalettePlugin extends Plugin {
 
   async openIn(_role: Role, file: TFile, subpath = '', mode: SubOpenMode = 'replace'): Promise<void> {
     if (!this.mainFile || !this.mainGroup) { new Notice('메인 스페이스를 먼저 지정해주세요.'); return; }
+    if (mode !== 'normal-group' && !this.subOpenGuard.allowed(file.path)) { this.subOpenGuard.notify(); return; }
     if (this.app.vault.getAbstractFileByPath(file.path) !== file) return;
     const previous = this.app.workspace.getMostRecentLeaf();
     let group = this.subGroup;
