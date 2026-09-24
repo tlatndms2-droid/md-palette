@@ -15,3 +15,5 @@
 - 승인 HTML과 비교: 직접 드롭 즉시 삽입, 메뉴 이동 미리보기·클릭 확정·Esc 취소, 확정 버튼 제거, 입력 방식별 겹침 정책 확인. 최종 화면은 evidence/0.1.9/folder-preview-final.png.
 
 BRAT 사용자 업데이트·체감 확인은 별도이며 아직 완료로 간주하지 않습니다.
+
+공개 Release: https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.9 · 소스 0506fb1. main.js·manifest.json·styles.css의 공개 다운로드 SHA-256이 로컬/설치 검증 빌드와 모두 일치합니다.
