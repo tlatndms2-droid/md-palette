@@ -1,6 +1,8 @@
-# 현재 확정 사양 — MD Palette 0.1.14
+# 현재 확정 사양 — MD Palette 0.1.15
 
-갱신 기준: 2026-10-06, 버전 `0.1.14`. 기존 사용자 결정과 구현 상태의 정리다. 세부 근거는 [변경 이력](DECISIONS.md), 사용자 사용법은 [README](../../README.md)를 함께 읽는다.
+갱신 기준: 2026-10-06, 버전 `0.1.15`. 기존 사용자 결정과 구현 상태의 정리다. 세부 근거는 [변경 이력](DECISIONS.md), 사용자 사용법은 [README](../../README.md)를 함께 읽는다.
+
+0.1.15: Canvas Main A에서 새 Canvas B를 만들면 A에서 B 파일 카드의 배치 미리보기를 표시합니다. 원하는 위치를 클릭하면 A→B 연결을 저장합니다. Esc 또는 취소는 카드 배치만 취소하며 빈 B는 남깁니다. Folder 위치는 배치 성공 후 저장합니다. Markdown 생성과 기존 연결 파일 추가는 이전 방식을 유지합니다. 64개 자동 테스트·최종 빌드·Sandbox 실제 생성/배치/취소/저장 실패/되돌리기/Main 변경·재시작·250개 연결 시험 통과. [검증](../../CANVAS_NEW_PLACEMENT_VALIDATION.md). 아래 0.1.14의 Canvas 카드 미생성 설명은 Markdown 연결에만 적용합니다.
 
 0.1.14: Canvas도 Main으로 지정하고 Markdown과 역할 교환한다. Canvas Main에서 새 연결은 선택한 Markdown 노트의 `link note`에 Canvas 링크를 저장하는 방식이다. Canvas에 카드를 자동 생성하지 않는다. Canvas별 가상 폴더를 보존하고 Metadata는 연결된 Markdown 노트를 선택한다. 아래 Markdown Main 기준 설명은 이 차이를 적용한다. [검증](../../CANVAS_MAIN_VALIDATION.md).
 

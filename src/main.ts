@@ -439,7 +439,6 @@ export default class MDPalettePlugin extends Plugin {
   }
   async createLinkedNote(main: TFile, input: string, folder?: string, format: NewNoteFormat = 'md'): Promise<TFile> {
     if (this.creatingNote) throw Error('새 파일을 만드는 중입니다. 잠시 기다려주세요.');
-    if (main.extension === 'canvas' && format !== 'md') throw Error('Canvas Main에는 Markdown 노트에 Canvas 링크를 저장하는 방식으로 연결합니다.');
     if (this.mainFile !== main || this.app.vault.getAbstractFileByPath(main.path) !== main) throw Error('Main이 변경되었습니다. 창을 다시 열어주세요.');
     if (folder !== undefined && folder && !this.folders.folders.some(f => f.id === folder)) throw Error('대상 가상 폴더가 없습니다.');
     const path = this.newLinkedNotePath(main, input, format);
@@ -449,6 +448,12 @@ export default class MDPalettePlugin extends Plugin {
     let created: TFile | undefined;
     try {
       created = await this.app.vault.create(path, initialContent);
+      if (main.extension === 'canvas' && format === 'canvas') {
+        // Creation is complete; cancellation only abandons the unsaved placement.
+        try { this.canvasInsert.newCanvas(main, created, folder); }
+        catch (error) { new Notice(`빈 Canvas는 만들었습니다. 카드 배치를 시작하지 못했습니다: ${String(error)}`); }
+        return created;
+      }
       if (folder === undefined) await this.addConnection(main, created, true);
       else await this.addFolderConnection(main, created, folder);
       return created;

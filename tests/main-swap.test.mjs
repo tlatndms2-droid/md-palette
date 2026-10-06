@@ -142,13 +142,33 @@ test('Canvas reverse-link rejects unsupported targets, invalid properties and st
   const { p, a, normal } = setup(), { frontmatter, writes } = connections(p);
   await p.setMain(normal.children[1]); const canvas = p.mainFile, note = a.children[0].file;
   await assert.rejects(p.addConnection(canvas, normal.children[2].file, true), /Markdown/);
-  await assert.rejects(p.createLinkedNote(canvas, 'Other', undefined, 'canvas'), /Markdown/);
   frontmatter.set(note.path, { 'link note': 42 });
   await assert.rejects(p.addConnection(canvas, note, true), /link note/);
   assert.deepEqual(frontmatter.get(note.path), { 'link note': 42 });
   frontmatter.set(note.path, {});
   await assert.rejects(p.addConnection(canvas, note, true, () => false), /변경/);
   assert.deepEqual(writes, []);
+});
+
+test('Canvas creation starts placement on captured Main and keeps the empty file when placement is cancelled or unavailable', async () => {
+  const { p, normal } = setup();
+  await p.setMain(normal.children[1]); const main = p.mainFile;
+  p.newLinkedNotePath = (_main, name) => name + '.canvas';
+  p.app.vault.getAllLoadedFiles = () => [...files.values()];
+  const bodies = new Map(), placements = [];
+  p.app.vault.create = async (path, body) => { const f = new TFile(path); files.set(path, f); bodies.set(path, body); return f; };
+  p.addConnection = () => { throw Error('must use placement, not Markdown properties'); };
+  p.canvasInsert = { newCanvas: (...args) => placements.push(args) };
+  const file = await p.createLinkedNote(main, 'New', undefined, 'canvas');
+  assert.deepEqual(placements, [[main, file, undefined]]);
+  assert.deepEqual(JSON.parse(bodies.get(file.path)), { nodes: [], edges: [] });
+  assert.equal(files.get(file.path), file);
+  await assert.rejects(p.createLinkedNote(main, 'New', undefined, 'canvas'), /같은 이름/);
+  p.canvasInsert.newCanvas = () => { throw Error('Main changed'); };
+  const retained = await p.createLinkedNote(main, 'Retained', undefined, 'canvas');
+  assert.equal(files.get(retained.path), retained);
+  assert.deepEqual(JSON.parse(bodies.get(retained.path)), { nodes: [], edges: [] });
+  assert.match(notices.at(-1), /빈 Canvas는 만들었습니다/);
 });
 
 test('stale Sub designation rolls the newly added reverse link back out of the note, never Canvas', async () => {

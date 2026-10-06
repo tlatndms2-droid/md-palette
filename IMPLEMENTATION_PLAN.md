@@ -1,6 +1,8 @@
 # MD Palette 현재 진행 계획
 
-갱신일: 2026-10-06. 공개 0.1.14, 브랜치 codex/planning.
+갱신일: 2026-10-06. 검증 0.1.15, 브랜치 codex/planning.
+
+0.1.15: Canvas Main A에서 새 Canvas B를 만들면 A에서 B 파일 카드의 배치 미리보기를 표시합니다. 원하는 위치를 클릭하면 A→B 연결을 저장합니다. Esc 또는 취소는 카드 배치만 취소하며 빈 B는 남깁니다. Folder 위치는 배치 성공 후 저장합니다. Markdown 생성과 기존 연결 파일 추가는 이전 방식을 유지합니다. 64개 자동 테스트·최종 빌드·Sandbox 실제 생성/배치/취소/저장 실패/되돌리기/Main 변경·재시작·250개 연결 시험 통과. [검증](CANVAS_NEW_PLACEMENT_VALIDATION.md). 공개 Release와 BRAT 확인은 진행 중입니다.
 
 0.1.14: Canvas Main 지정 누락을 수정했습니다. 역할 교환·탭 보존, 대상 Markdown의 link note에 Canvas 링크 저장, Canvas별 Folder 복원, 연결된 Markdown Metadata 선택을 구현했습니다. 63개 테스트·빌드·실제 Sandbox 동작·취소/실패 보호·재시작·250개 연결 노트 시험·Release 자산 확인·BRAT 0.1.13→0.1.14 업데이트 통과. [검증](CANVAS_MAIN_VALIDATION.md). 아래 0.1.13의 Canvas 제외 내용은 현재 요청으로 대체됐습니다. 사용자 직접 확인 대기이며 다음 기능은 자동 진행하지 않습니다.
 

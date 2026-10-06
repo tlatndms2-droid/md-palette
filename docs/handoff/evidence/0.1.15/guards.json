@@ -1,0 +1,1 @@
+{"passed":true,"version":"0.1.15","checks":["save failure restores Main, preview remains retryable; Cancel button abandons placement","folder persistence failure rolls card back and preserves folder state","existing undo command removes only placed B card, preserving empty B file","changing Main cancels pending placement instead of writing to a different Canvas"],"errors":[]}

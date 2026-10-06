@@ -1,0 +1,1 @@
+{"passed":true,"version":"0.1.15","checks":["Canvas option, moving preview, Esc leaves empty B and no Main changes or link","click places B card at chosen position inside Main A; native link and palette update","Folder creation commits virtual position only after placement","Markdown creation retains reverse link and adds no Canvas card"],"errors":[]}

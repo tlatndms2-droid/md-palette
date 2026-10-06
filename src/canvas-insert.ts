@@ -11,7 +11,7 @@ interface Canvas {
   domFromPos(point:{x:number;y:number}): {x:number;y:number};
 }
 interface View { file:TFile; canvas:Canvas; save():Promise<void> }
-interface Source { main:TFile; signature:string; paths:string[]; folder?:string; layout:Placement }
+interface Source { main:TFile; signature:string; paths:string[]; folder?:string; layout:Placement; validate?:()=>boolean; inserted?:()=>Promise<void> }
 interface Session { leaf:WorkspaceLeaf; view:View; file:TFile; source:Source; overlay:HTMLElement; panel:HTMLElement; status:HTMLElement; avoidOverlap:boolean; placement?:Placement; frame?:number; clean:()=>void }
 class CanvasPicker extends FuzzySuggestModal<WorkspaceLeaf> {
   constructor(private leaves:WorkspaceLeaf[], private choose:(leaf:WorkspaceLeaf)=>void, plugin:MDPalettePlugin) { super(plugin.app); this.setPlaceholder('삽입할 열려 있는 Canvas 선택'); }
@@ -42,6 +42,18 @@ export class CanvasInsert {
     event.dataTransfer.setData(MIME,this.drag.token); event.dataTransfer.effectAllowed='copyMove';
   }
   files(paths:string[]):void { this.begin(paths); }
+  newCanvas(main:TFile,file:TFile,folder?:string):void {
+    if(this.locked)throw Error('Canvas 저장이 끝난 뒤 다시 시도해주세요.');
+    const leaf=this.plugin.mainLeaf;
+    if(this.plugin.mainFile!==main||main.extension!=='canvas'||!leaf||this.view(leaf)?.file!==main)throw Error('Main Canvas가 변경되어 배치를 취소했습니다.');
+    const source=this.source([file.path]);
+    source.validate=()=>folder===undefined||!folder||this.plugin.folders.folders.some(f=>f.id===folder);
+    if(folder!==undefined)source.inserted=()=>this.plugin.changeFolders(next=>{
+      next.positions[file.path]=folder;
+      if(!next.order.includes('f:'+file.path))next.order.push('f:'+file.path);
+    },main);
+    this.preview(leaf,source);
+  }
   folder(folder:string):void { this.begin(this.plugin.connectedFiles().map(f=>f.path),folder); }
   private folderSignature():string { return JSON.stringify([this.plugin.folders,this.plugin.explorer.depth,this.plugin.linkRevision]); }
   private source(paths:string[],folder?:string):Source {
@@ -78,7 +90,7 @@ export class CanvasInsert {
   private valid(s:Session):boolean {
     return this.plugin.mainFile===s.source.main && this.view(s.leaf)===s.view && s.view.file===s.file && this.plugin.app.workspace.getLeavesOfType('canvas').includes(s.leaf)
       && s.source.paths.every(p=>this.plugin.app.vault.getAbstractFileByPath(p) instanceof TFile)
-      && (s.source.folder===undefined||this.folderSignature()===s.source.signature);
+      && (s.source.folder===undefined||this.folderSignature()===s.source.signature) && (s.source.validate?.()??true);
   }
   private preview(leaf:WorkspaceLeaf,source:Source,event?:MouseEvent):void {
     if(this.locked)return; this.cancel();
@@ -97,6 +109,8 @@ export class CanvasInsert {
       s.placement=translate(source.layout,point);void this.commit(s);return;
     }
     host.append(overlay,panel);
+    const rect=host.getBoundingClientRect();
+    s.placement=translate(source.layout,view.canvas.posFromEvt(new MouseEvent('pointermove',{clientX:rect.x+rect.width/2,clientY:rect.y+rect.height/2})));
     panel.createEl('button',{text:'취소'}).onclick=()=>this.cancel();
     const undo=panel.createEl('button',{text:'마지막 삽입 되돌리기'});undo.disabled=!this.last;undo.onclick=()=>{this.cancel();void this.undo();};
     const move=(e:MouseEvent)=>{if(panel.contains(e.target as Node)||this.locked)return;const point=view.canvas.posFromEvt(e);if(Number.isFinite(point.x)&&Number.isFinite(point.y))s.placement=translate(source.layout,point);};
@@ -142,6 +156,8 @@ export class CanvasInsert {
       await s.view.save();
       if(this.session!==s||!this.valid(s)||JSON.stringify(s.view.canvas.getData())!==JSON.stringify(before))throw Error('Canvas 또는 삽입 상태가 변경되었습니다. 다시 삽입해주세요.');
       await this.write(s.view,{...before,nodes:[...before.nodes,...p.nodes],edges:[...before.edges,...p.edges]},before);
+      try { if(s.source.validate&&!this.valid(s))throw Error('Main 또는 대상이 변경되어 배치를 취소했습니다.'); await s.source.inserted?.(); }
+      catch(error){await this.write(s.view,before,s.view.canvas.getData());throw error;}
       this.last={leaf:s.leaf,view:s.view,file:s.file,placement:structuredClone(p)};this.cancel();
       new Notice('Canvas에 삽입했습니다. 명령 팔레트의 ‘마지막 Canvas 삽입 되돌리기’로 취소할 수 있습니다.');
     }catch(error){if(!s.panel.isConnected)this.cancel();new Notice(String(error instanceof Error?error.message:error));}finally{this.locked=false;}

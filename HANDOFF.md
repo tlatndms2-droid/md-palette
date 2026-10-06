@@ -1,9 +1,11 @@
 # MD Palette 작업 인계 — 다른 PC 재개 시작점
 
 갱신일: 2026-10-06. 저장소: https://github.com/tlatndms2-droid/md-palette
-기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.14**.
+기본·작업 브랜치: `codex/planning`. 검증 버전: **0.1.15** (배포 확인 진행 중).
 
 ## 현재 상태
+
+0.1.15: Canvas Main A에서 새 Canvas B를 만들면 A에서 B 파일 카드의 배치 미리보기를 표시합니다. 원하는 위치를 클릭하면 A→B 연결을 저장합니다. Esc 또는 취소는 카드 배치만 취소하며 빈 B는 남깁니다. Folder 위치는 배치 성공 후 저장합니다. Markdown 생성과 기존 연결 파일 추가는 이전 방식을 유지합니다. 64개 자동 테스트·최종 빌드·Sandbox 실제 생성/배치/취소/저장 실패/되돌리기/Main 변경·재시작·250개 연결 시험 통과. [검증](CANVAS_NEW_PLACEMENT_VALIDATION.md). 공개 Release와 BRAT 확인은 진행 중입니다.
 
 0.1.14: 누락된 Canvas Main 지정을 구현했습니다. Canvas↔Markdown 역할 교환과 열린 탭 보존을 지원합니다. 사용자가 선택한 연결 방식은 **선택한 Markdown 노트의 link note에 Canvas 링크를 추가**하는 것입니다. Canvas에 카드를 자동 생성하지 않습니다. Canvas별 가상 폴더 저장과 연결된 Markdown Metadata 선택을 지원합니다. 63개 테스트·빌드·Sandbox 실제 메뉴/연결/취소/예외 처리·프로세스 재시작·250개 연결 시험·공개 자산 SHA-256·BRAT 0.1.13→0.1.14 업데이트 통과. [검증](CANVAS_MAIN_VALIDATION.md). 사용자 본인의 확인 대기이며 새 기능을 자동 진행하지 않습니다.
 

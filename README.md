@@ -4,7 +4,13 @@ Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 �
 
 다른 PC에서 개발을 이어가려면 [HANDOFF.md](HANDOFF.md)부터 읽으세요. [현재 확정 사양](docs/handoff/CURRENT_SPEC.md) · [기획 변경 이력](docs/handoff/DECISIONS.md) · [새 PC 준비](docs/handoff/NEW_PC.md).
 
-## 공개 버전: 0.1.14
+## 버전 0.1.15
+
+Canvas Main에서도 `+ 새 링크 파일 추가 → Canvas → 이름 입력 → 만들고 위치 선택`을 사용할 수 있습니다. 새 B Canvas는 빈 파일로 만들고, Main A에서 B 카드 미리보기를 움직여 원하는 곳을 클릭합니다. 배치가 끝나면 A→B 연결이 생깁니다. Esc/취소는 배치만 취소하며 빈 B 파일은 남습니다.
+
+[0.1.15 Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.15) · [검증 결과](CANVAS_NEW_PLACEMENT_VALIDATION.md).
+
+### 이전 Canvas Main 지원 (0.1.14)
 
 **Canvas도 Main으로 지정할 수 있습니다.** Canvas가 Sub일 때 Main으로 지정하면 기존 Main과 역할을 교환하고 열린 탭과 화면 위치를 유지합니다. Canvas Main에서 `+ 연결 파일 추가`로 Markdown 노트를 고르면 그 노트의 `link note`에 Canvas 링크가 생기고 팔레트에 백링크로 표시됩니다. Canvas에는 카드를 추가하지 않습니다. [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.14) · [검증 결과](CANVAS_MAIN_VALIDATION.md).
 
