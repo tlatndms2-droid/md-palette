@@ -4,7 +4,11 @@ Obsidian의 Main 노트를 중심으로 연결 자료를 탐색·정리하는 �
 
 다른 PC에서 개발을 이어가려면 [HANDOFF.md](HANDOFF.md)부터 읽으세요. [현재 확정 사양](docs/handoff/CURRENT_SPEC.md) · [기획 변경 이력](docs/handoff/DECISIONS.md) · [새 PC 준비](docs/handoff/NEW_PC.md).
 
-## 공개 버전: 0.1.11
+## 공개 버전: 0.1.13
+
+Sub의 Markdown 탭을 우클릭해 `메인 스페이스로 지정`을 누르면 기존 Main과 역할을 교환합니다. 화면 위치와 열린 탭은 유지되며, 기존 탭은 새 Main과 연결되지 않아도 계속 볼 수 있습니다. [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.13) · [검증 결과](MAIN_SWAP_VALIDATION.md).
+
+0.1.12부터 Main의 직접 연결은 양방향, 펼친 하위 목록은 아웃고잉만 표시합니다. 아래는 이전 변경 소개입니다.
 
 Card·Connections·Folder에서 양방향 하위 링크를 부모별로 펼치고 1~5단계 깊이를 조절합니다. 같은 파일은 각 부모 아래에 표시하며 원본은 하나로 유지합니다. Metadata View의 파일 선택기로 Main 또는 하위 연결 파일 하나의 정보를 보고 편집·재사용합니다. [Release](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.11) · [검증 결과](LINK_EXPLORER_VALIDATION.md).
 
@@ -40,7 +44,7 @@ Main과 다른 그룹의 파일 탭 제목 우클릭 → `서브 스페이스로
 
 명령 `메인 스페이스 지정/해제`는 같은 Main에서 실행하면 해제하고, 다른 지정 가능한 Markdown 문서에서 실행하면 그 문서를 새 Main으로 지정합니다. 기존 지정 명령에 연결한 단축키는 유지됩니다. Sub·이미지·Canvas에서는 Main을 변경하지 않습니다.
 
-다른 그룹을 새 Main으로 지정하면 기존 Main·Sub의 탭은 그대로 남고 일반 그룹으로 돌아갑니다. 새 Main에서 파일을 열면 새 Sub가 생깁니다. Reference Space와 Main/Sub 교환 메뉴·명령은 제거했습니다.
+현재 Sub를 새 Main으로 지정하면 기존 Main이 Sub로 바뀝니다. 화면 위치와 열린 탭은 그대로입니다. 일반 그룹을 새 Main으로 지정할 때는 기존 Main·Sub의 탭을 보존하고 이전 역할을 해제하며, 새 Main에서 파일을 열면 새 Sub가 생깁니다. Reference Space는 사용하지 않습니다.
 
 지정된 Main 문서의 본문·속성에서 다른 내부 파일 링크를 열어도 Sub를 사용합니다. 읽기 모드에서는 클릭, 편집 모드에서는 Obsidian의 링크 열기 동작(Ctrl+클릭)을 사용합니다. Main 파일과 역할은 유지하며 이미 열린 Sub 탭을 재사용합니다. 일반 문서의 링크 동작은 그대로입니다.
 

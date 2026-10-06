@@ -28,3 +28,12 @@
 `MD_PALETTE_CDP_PORT`와 `MD_PALETTE_SANDBOX_TITLE`을 현재 대상에 맞춘 뒤 `scripts/main-swap-validation.mjs`의 `install`, `ui`, 프로세스 재시작 후 `restart`를 사용한다. 스크립트는 전용 `MDPalette-Swap-Sandbox-20261006` Vault만 허용한다.
 
 시험 자료·설정 백업과 원시 증거: `.artifacts/main-swap/`. 공개 배포 및 BRAT 결과는 해당 JSON 증거와 후속 배포 기록을 기준으로 한다. 사용자 본인의 BRAT 확인은 자동 검증과 별개다.
+
+## 배포 및 복원 확인
+
+- 공개 [Release 0.1.13](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.13), 코드 커밋 `b5a2937`.
+- 공개 자산 `main.js`·`manifest.json`·`styles.css`를 다시 다운로드해 검증 빌드와 SHA-256 일치 확인.
+- 격리 Sandbox의 BRAT 2.2.0으로 0.1.12→0.1.13 공개 다운로드·활성화 확인. 기존 탐색·카드·연결·가상 폴더 설정 보존.
+- BRAT 설치본의 main.js/styles.css는 공개 자산과 해시 일치. manifest는 BRAT가 JSON 공백을 다시 작성하여 바이트 해시는 다르지만 모든 필드가 일치한다.
+- 시험 후 플러그인 설정과 workspace.json을 시험 전 백업으로 복원하고 복원 시점의 SHA-256 일치를 확인했다. Markdown/Canvas는 원본 바이트가 유지됐다. 복원 후 Sandbox를 다시 열어 0.1.13, A Main, 기존 오른쪽 Sub 및 BRAT 로드를 확인했다.
+- 증거: `docs/handoff/evidence/0.1.13/`. 사용자 직접 확인은 대기 중이다.

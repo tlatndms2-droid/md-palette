@@ -1,9 +1,15 @@
 # MD Palette 작업 인계 — 다른 PC 재개 시작점
 
-갱신일: 2026-09-24. 저장소: https://github.com/tlatndms2-droid/md-palette
-기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.12**.
+갱신일: 2026-10-06. 저장소: https://github.com/tlatndms2-droid/md-palette
+기본·작업 브랜치: `codex/planning`. 공개 버전: **0.1.13**.
 
 ## 현재 상태
+
+0.1.13: Sub의 Markdown 탭을 Main으로 지정하면 기존 Main과 역할을 교환합니다. 화면 위치·열린 탭·파일 내용·Main별 가상 폴더를 보존하며 이미 열린 미연결 탭도 계속 선택할 수 있습니다. 57개 테스트·빌드·Sandbox 메뉴/명령/왕복 교환·프로세스 재시작·공개 자산 확인·Sandbox BRAT 0.1.12→0.1.13 업데이트 통과. [검증](MAIN_SWAP_VALIDATION.md). 사용자 본인의 BRAT 확인 대기. Canvas Main 지정은 이번 범위에서 제외됐으며 자동으로 이어서 구현하지 않습니다.
+
+Sandbox: `C:\Users\tlatn\AppData\Local\Temp\MDPalette-Swap-Sandbox-20261006`, 프로필 `MDPalette-Swap-Profile-20261006`, CDP 19410, Obsidian 1.14.4. 시험 후 설정과 작업 공간은 시험 전 백업으로 복원하고 SHA-256을 대조했습니다. 검증한 0.1.13 및 시험 자료는 유지하며 A Main / 오른쪽 Sub 상태로 열어 두었습니다. 실행 여부와 CDP 대상은 재사용 전 새로 확인합니다.
+
+아래 버전별 내용은 당시 기록입니다. 현재 사용자 요청과 이 0.1.13 상태가 우선합니다.
 
 0.1.12: 하위 목록은 아웃고잉 링크만 표시합니다. Folder에서 Canvas로 내보내면 선택한 연결 깊이까지 부모 파일·하위 파일·연결선을 함께 배치합니다. 접힌 항목도 포함하며, 같은 파일은 부모별 카드로 표시하고 원본은 하나로 유지합니다. 53개 테스트·빌드·Sandbox UI·프로세스 재시작 통과. 공개 Release 자산 확인 및 Sandbox BRAT 0.1.11→0.1.12 업데이트 통과. 사용자 본인의 0.1.12 BRAT 확인 대기. 사용자 0.1.11 화면 확인 및 수정 시안 승인에 따라 진행. [검증](OUTGOING_EXPORT_VALIDATION.md).
 
@@ -79,7 +85,7 @@
 
 ## 기능을 되돌리지 않기 위한 핵심
 
-- Main/Sub만 사용. Reference와 활성 파일 교환 없음. Main 변경·해제는 탭 보존·역할 해제.
+- Main/Sub만 사용. Reference와 활성 파일 교환 없음. 0.1.13의 Sub→Main 지정은 파일·탭을 이동하지 않고 그룹 역할만 교환. 일반 그룹에서 Main 변경·해제는 탭 보존·역할 해제.
 - 지정 Main 문서 고정. 기본 더블클릭은 단일 Sub 현재 탭 교체, Ctrl은 Sub 새 탭, Ctrl+Shift는 새 일반 그룹.
 - Sub는 그룹에 지정하며 파일 종류·로딩 중 빈 탭과 무관하게 유지한다. Sub 아래 일반 그룹 분할을 허용하고 배치를 강제하지 않는다. 탭 우클릭/명령으로 지정·해제하며 미연결 파일은 연결 승인 또는 취소.
 - 가상 폴더는 Main 문서별. 0.0.8의 테스트용 전역 데이터 초기화는 일회성 승인이다.

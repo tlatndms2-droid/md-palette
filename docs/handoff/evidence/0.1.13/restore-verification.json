@@ -1,0 +1,12 @@
+[
+  {
+    "restored": true,
+    "sha256": "CB8C934808A08ED3BFEA86ECE1DCBE9849F967B29E5DB3C9DB3F880D90025B32",
+    "file": "workspace.json"
+  },
+  {
+    "restored": true,
+    "sha256": "5A00581E445B07FFFC743AF4DBCAE3A0B487EBFD765D34F060145377693A9941",
+    "file": "plugins\\md-palette\\data.json"
+  }
+]
