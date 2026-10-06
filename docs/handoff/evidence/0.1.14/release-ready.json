@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "version": "0.1.14",
+  "assets": [
+    {
+      "name": "main.js",
+      "sha256": "d9a52744b63087d6df0e015b709ac61bb730a0c7a7239b862623e0ebd00ad565"
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "ed2fb6e3a3d40747641732b717e26776f972fa3217b611984c89cd7fbb64804f"
+    },
+    {
+      "name": "styles.css",
+      "sha256": "82a104a5324c1d8a78df7e8f82496d93207979df9349b3ed8562c5b8828c6c01"
+    }
+  ]
+}

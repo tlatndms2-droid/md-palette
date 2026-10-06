@@ -76,7 +76,11 @@ export default class MDPalettePlugin extends Plugin {
   private lastRenderKey = '';
   private lastContentKey = '';
   private decorated: HTMLElement[] = [];
-  get mainFile(): TFile | null { return this.mainLeaf && this.pinnedMain && fileIn(this.app, this.mainLeaf) === this.pinnedMain && this.mainLeaf.getViewState().type === 'markdown' ? this.pinnedMain : null; }
+  private supportsMain(leaf?: WorkspaceLeaf | null): boolean {
+    const file = fileIn(this.app, leaf ?? undefined), type = leaf?.getViewState().type;
+    return (file?.extension === 'md' && type === 'markdown') || (file?.extension === 'canvas' && type === 'canvas');
+  }
+  get mainFile(): TFile | null { return this.mainLeaf && this.pinnedMain && fileIn(this.app, this.mainLeaf) === this.pinnedMain && this.supportsMain(this.mainLeaf) ? this.pinnedMain : null; }
 
   async onload(): Promise<void> {
     try {
@@ -120,7 +124,7 @@ export default class MDPalettePlugin extends Plugin {
     this.registerEvent(this.app.workspace.on('file-menu', (menu, file, source, leaf) => {
       if (!(file instanceof TFile)) return;
       if (source === 'tab-header' && leaf) {
-        if (file.extension === 'md' && leaf !== this.mainLeaf) menu.addItem(item => item.setTitle('메인 스페이스로 지정').setIcon('book-open').onClick(() => this.run(() => this.setMain(leaf))));
+        if ((file.extension === 'md' || file.extension === 'canvas') && leaf !== this.mainLeaf) menu.addItem(item => item.setTitle('메인 스페이스로 지정').setIcon('book-open').onClick(() => this.run(() => this.setMain(leaf))));
         if (leaf === this.mainLeaf) menu.addItem(item => item.setTitle('메인 스페이스 지정 해제').setIcon('book-open').onClick(() => this.run(() => this.unsetMain())));
         const group = groupOf(leaf);
         if (this.mainFile && group && group !== this.mainGroup && isCentral(this.app, group)) menu.addItem(item => item
@@ -208,7 +212,7 @@ export default class MDPalettePlugin extends Plugin {
   async setMain(leaf: WorkspaceLeaf | null): Promise<void> {
     const group = groupOf(leaf);
     const file = fileIn(this.app, leaf ?? undefined);
-    if (!leaf || !group || !isCentral(this.app, group) || file?.extension !== 'md' || leaf.getViewState().type !== 'markdown') { new Notice('메인 스페이스는 Markdown 파일만 지정할 수 있습니다.'); return; }
+    if (!leaf || !group || !file || !isCentral(this.app, group) || !this.supportsMain(leaf)) { new Notice('메인 스페이스는 Markdown 또는 Canvas 파일을 지정할 수 있습니다.'); return; }
     if (leaf === this.mainLeaf) { await this.openSidebar(); return; }
     const swapping = this.isSub(group);
     const previousMain = this.mainGroup;
@@ -245,14 +249,15 @@ export default class MDPalettePlugin extends Plugin {
       && groupOf(leaf) === group && groupsIn(this.app).includes(group) && group !== this.mainGroup && isCentral(this.app, group) && fileIn(this.app, leaf) === file;
     const assign = async (connect: boolean) => {
       if (!valid()) throw Error('Main 또는 대상 탭이 변경되었습니다. 다시 지정해주세요.');
-      const link = `[[${file.path}]]`;
+      const owner = main.extension === 'canvas' ? file : main;
+      const link = `[[${main.extension === 'canvas' ? main.path : file.path}]]`;
       let added = false;
       if (connect) {
         // Re-check at the actual frontmatter transaction, before any link is written.
         added = await this.addConnection(main, file, true, valid);
       }
       if (!valid()) {
-        if (added && this.app.vault.getAbstractFileByPath(main.path) === main) await this.app.fileManager.processFrontMatter(main, frontmatter => {
+        if (added && owner.extension === 'md' && this.app.vault.getAbstractFileByPath(owner.path) === owner) await this.app.fileManager.processFrontMatter(owner, frontmatter => {
           const values: unknown = frontmatter['link note'];
           if (Array.isArray(values)) {
             const remaining = values.filter(v => v !== link);
@@ -264,6 +269,7 @@ export default class MDPalettePlugin extends Plugin {
       this.assignSub(group);
     };
     if (file === main || this.connectedFiles(main).includes(file)) await assign(false);
+    else if (main.extension === 'canvas' && file.extension !== 'md') new Notice('Canvas Main에 새로 연결할 때는 Canvas 링크를 저장할 Markdown 노트를 선택해주세요.');
     else new SubDesignationModal(this, main, file, () => assign(true)).open();
   }
 
@@ -334,13 +340,14 @@ export default class MDPalettePlugin extends Plugin {
   saveConnections(): void { this.persist(); }
   saveMetadata(): void { this.persist(); }
   async mainText(file: TFile): Promise<string> {
+    if (file.extension !== 'md') throw Error('메타데이터는 Markdown 파일에서 볼 수 있습니다.');
     const view = this.mainFile === file ? this.mainLeaf?.view : this.app.workspace.getLeavesOfType('markdown').map(l => l.view).find(v => v instanceof MarkdownView && v.file === file);
     return view instanceof MarkdownView ? view.editor.getValue() : this.app.vault.read(file);
   }
   async patchMain(file: TFile, original: string, from: number, to: number, replacement: string): Promise<void> {
     const main = this.mainFile;
     const valid = () => !!main && this.mainFile === main && this.metadataFile === file && this.app.vault.getAbstractFileByPath(file.path) === file;
-    if (!valid()) throw Error('선택한 파일이 변경되었습니다. 다시 확인해주세요.');
+    if (file.extension !== 'md' || !valid()) throw Error('선택한 Markdown 파일을 다시 확인해주세요.');
     const view = this.mainFile === file ? this.mainLeaf?.view : this.app.workspace.getLeavesOfType('markdown').map(l => l.view).find(v => v instanceof MarkdownView && v.file === file);
     if (view instanceof MarkdownView) {
       if (view.editor.getValue() !== original || await this.app.vault.read(file) !== original || !valid()) throw Error('원문이 변경되었습니다. 최신 내용을 확인한 뒤 다시 편집해주세요.');
@@ -360,7 +367,7 @@ export default class MDPalettePlugin extends Plugin {
     this.render();
   }
   async navigateMain(file: TFile, offset: number): Promise<void> {
-    if (this.metadataFile !== file || !this.mainLeaf) return;
+    if (file.extension !== 'md' || this.metadataFile !== file || !this.mainLeaf) return;
     if (this.mainFile !== file) await this.openIn('sub', file);
     const leaf = this.mainFile === file ? this.mainLeaf : this.subGroup?.children.find(l => fileIn(this.app, l) === file);
     if (!leaf) return;
@@ -432,6 +439,7 @@ export default class MDPalettePlugin extends Plugin {
   }
   async createLinkedNote(main: TFile, input: string, folder?: string, format: NewNoteFormat = 'md'): Promise<TFile> {
     if (this.creatingNote) throw Error('새 파일을 만드는 중입니다. 잠시 기다려주세요.');
+    if (main.extension === 'canvas' && format !== 'md') throw Error('Canvas Main에는 Markdown 노트에 Canvas 링크를 저장하는 방식으로 연결합니다.');
     if (this.mainFile !== main || this.app.vault.getAbstractFileByPath(main.path) !== main) throw Error('Main이 변경되었습니다. 창을 다시 열어주세요.');
     if (folder !== undefined && folder && !this.folders.folders.some(f => f.id === folder)) throw Error('대상 가상 폴더가 없습니다.');
     const path = this.newLinkedNotePath(main, input, format);
@@ -474,11 +482,20 @@ export default class MDPalettePlugin extends Plugin {
   async addConnection(main: TFile, file: TFile, strict = false, valid?: () => boolean): Promise<boolean> {
     if (this.mainFile !== main || this.app.vault.getAbstractFileByPath(main.path) !== main || this.app.vault.getAbstractFileByPath(file.path) !== file) { if (strict) throw Error('메인 또는 선택 파일이 변경되었습니다.'); new Notice('메인 또는 선택 파일이 변경되어 연결을 취소했습니다.'); return false; }
     if (main === file || this.connectedFiles(main).some(f => f.path === file.path)) { new Notice('이미 메인 스페이스와 연결된 파일입니다.'); return false; }
+    // Canvas stays untouched: store the reverse link in the selected Markdown note.
+    const owner = main.extension === 'canvas' ? file : main;
+    const target = main.extension === 'canvas' ? main : file;
+    if (owner.extension !== 'md') {
+      const message = 'Canvas Main에 연결할 Markdown 노트를 선택해주세요.';
+      if (strict) throw Error(message);
+      new Notice(message); return false;
+    }
     // Properties resolve wikilinks independently of the editor's Markdown-link preference.
-    const link = `[[${file.path}]]`;
+    const ownerPath = owner.path, targetPath = target.path;
+    const link = `[[${target.path}]]`;
     let added = false;
-    await this.app.fileManager.processFrontMatter(main, frontmatter => {
-      if (this.mainFile !== main || (valid && !valid())) throw Error('Main 또는 대상 탭이 변경되어 연결을 취소했습니다.');
+    await this.app.fileManager.processFrontMatter(owner, frontmatter => {
+      if (this.mainFile !== main || owner.path !== ownerPath || target.path !== targetPath || this.app.vault.getAbstractFileByPath(owner.path) !== owner || this.app.vault.getAbstractFileByPath(target.path) !== target || (valid && !valid())) throw Error('Main 또는 대상 탭이 변경되어 연결을 취소했습니다.');
       const current: unknown = frontmatter['link note'];
       if (current != null && typeof current !== 'string' && !Array.isArray(current)) throw Error('link note must be text or a list');
       const values: unknown[] = current == null ? [] : Array.isArray(current) ? current : [current];
@@ -488,7 +505,7 @@ export default class MDPalettePlugin extends Plugin {
         const path = text.match(/^!?\[\[([^\]|#]+)(?:[^\]]*)\]\]$/)?.[1] ?? text.match(/^\[[^\]]*\]\(([^)]+)\)$/)?.[1];
         if (!path) return false;
         let decoded = path; try { decoded = decodeURIComponent(path); } catch {}
-        return this.app.metadataCache.getFirstLinkpathDest(decoded, main.path)?.path === file.path;
+        return this.app.metadataCache.getFirstLinkpathDest(decoded, owner.path)?.path === target.path;
       });
       if (!already) { frontmatter['link note'] = [...values, link]; added = true; }
     });
@@ -516,7 +533,7 @@ export default class MDPalettePlugin extends Plugin {
     this.subGroups = this.subGroup ? [this.subGroup] : [];
     const leaf = activeIn(this.mainGroup);
     const invalid = this.mainGroup && !this.mainFile ? `${this.mainGroup.currentTab}:${leaf?.getViewState().type}:${fileIn(this.app, leaf)?.path ?? ''}` : '';
-    if (invalid && invalid !== this.invalidMainKey) new Notice('메인 스페이스에서는 Markdown 파일을 활성화해주세요.');
+    if (invalid && invalid !== this.invalidMainKey) new Notice('메인 스페이스에서는 Markdown 또는 Canvas 파일을 활성화해주세요.');
     this.invalidMainKey = invalid;
     this.updateIcons();
     const key = `${this.mainGroup?.id}:${this.mainFile?.path}:${this.topView}:${this.linkView}`;
@@ -548,7 +565,7 @@ export default class MDPalettePlugin extends Plugin {
     if (!main) return;
     const leaf = saved.main?.leafId ? main.children.find(l => (l as WorkspaceLeaf & { id: string }).id === saved.main!.leafId) : main.children.find(l => fileIn(this.app, l)?.path === saved.main?.activeFile);
     const file = fileIn(this.app, leaf);
-    if (!leaf || file?.extension !== 'md' || file.path !== saved.main?.activeFile || leaf.getViewState().type !== 'markdown') return;
+    if (!leaf || !file || file.path !== saved.main?.activeFile || !this.supportsMain(leaf)) return;
     this.mainGroup = main; this.mainLeaf = leaf; this.pinnedMain = file;
     this.subGroup = subRestoreCandidates(saved).map(s => find(s.groupId)).find(g => g && g !== main);
     this.subGroups = this.subGroup ? [this.subGroup] : [];

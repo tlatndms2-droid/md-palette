@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "version": "0.1.14",
+  "checks": [
+    "failed reverse-link write rolls back folder placement and leaves note and Canvas unchanged",
+    "stale Sub designation removes its own reverse link and preserves original note bytes and existing Sub"
+  ],
+  "errors": []
+}

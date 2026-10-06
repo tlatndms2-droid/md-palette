@@ -81,6 +81,12 @@ export class MetadataView {
     if (!this.host || !file) return;
     this.drawPicker();
     const serial = ++this.serial;
+    if (file.extension !== 'md') {
+      this.clearMarkdown(); this.file = file; this.source = ''; this.result = undefined; this.draft = false;
+      this.list?.empty();
+      this.list?.createDiv({ cls: 'mdp-muted mdp-metadata-empty', text: 'Canvas 자체에는 Markdown 메타데이터가 없습니다. 위에서 연결된 Markdown 파일을 선택해주세요.' });
+      return;
+    }
     try {
       const text = await this.plugin.mainText(file);
       if (serial !== this.serial || this.plugin.metadataFile !== file || !this.host) return;

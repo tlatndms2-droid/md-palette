@@ -30,3 +30,12 @@ test('document folders stay independent across save/load and ignore legacy globa
  assert.deepEqual(Object.keys(readDocumentFolders(fixture())),[]);
  assert.deepEqual(Object.keys(readDocumentFolders(null)),[]);
 });
+
+test('Canvas Main folder state survives reload independently of Markdown Main state',()=>{
+ const docs=readDocumentFolders({'A.md':fixture(),'Board.canvas':fixture(),'Ignore.pdf':fixture()});
+ moveItems(docs['Board.canvas'],['f:one.md'],'c');
+ const saved=readDocumentFolders(JSON.parse(JSON.stringify(docs)));
+ assert.equal(saved['Board.canvas'].positions['one.md'],'c');
+ assert.equal(saved['A.md'].positions['one.md'],'a');
+ assert.equal(saved['Ignore.pdf'],undefined);
+});

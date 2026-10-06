@@ -15,7 +15,7 @@ export const fileKey = (path: string): string => 'f:' + path;
 export function readDocumentFolders(raw: unknown): Record<string, FolderState> {
   const result: Record<string, FolderState> = Object.create(null);
   if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
-    for (const [path, value] of Object.entries(raw)) if (path.endsWith('.md')) result[path] = readFolders(value);
+    for (const [path, value] of Object.entries(raw)) if (path.endsWith('.md') || path.endsWith('.canvas')) result[path] = readFolders(value);
   }
   return result;
 }

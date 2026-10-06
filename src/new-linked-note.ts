@@ -7,12 +7,12 @@ export class NewLinkedNoteModal extends Modal {
   onOpen(): void {
     this.titleEl.setText('새 링크 파일 추가');
     this.contentEl.addClass('mdp-new-note');
-    this.contentEl.createEl('p', { text: '빈 파일을 만들고 현재 Main에 연결합니다. 자동으로 열지는 않습니다.' });
+    this.contentEl.createEl('p', { text: this.main.extension === 'canvas' ? 'Markdown 노트를 만들고 그 노트의 link note 속성에 현재 Canvas 링크를 저장합니다. Canvas에 카드는 추가하지 않으며 노트를 자동으로 열지 않습니다.' : '빈 파일을 만들고 현재 Main에 연결합니다. 자동으로 열지는 않습니다.' });
     this.contentEl.createDiv({ text: `Main: ${this.main.path}`, cls: 'mdp-muted' });
     const formatLabel = this.contentEl.createEl('label', { text: '파일 형식' });
     const format = formatLabel.createEl('select', { attr: { 'aria-label': '새 링크 파일 형식' } });
     format.createEl('option', { value: 'md', text: 'Markdown (.md)' });
-    format.createEl('option', { value: 'canvas', text: 'Canvas (.canvas)' });
+    if (this.main.extension !== 'canvas') format.createEl('option', { value: 'canvas', text: 'Canvas (.canvas)' });
     const label = this.contentEl.createEl('label', { text: '파일 이름' });
     const input = label.createEl('input', { type: 'text', attr: { 'aria-label': '새 링크 파일 이름', placeholder: '새 노트', maxlength: '187' } });
     const path = this.contentEl.createDiv({ cls: 'mdp-new-note-path mdp-muted' });

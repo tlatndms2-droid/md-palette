@@ -1,3 +1,20 @@
+# MD Palette 0.1.14 — Canvas Main 지정과 노트에서 연결하기
+
+Canvas 탭도 `메인 스페이스로 지정`할 수 있습니다. Sub의 Canvas를 Main으로 지정하면 기존 Main은 Sub가 되며, 화면 위치와 열린 탭을 유지합니다.
+
+Canvas Main에서 `+ 연결 파일 추가`로 Markdown 노트를 고르면 **그 노트의 link note 속성에 Canvas 링크**를 저장합니다. 팔레트에는 백링크로 표시되며 Canvas에 카드를 만들거나 기존 Canvas 내용을 변경하지 않습니다. 새 링크 파일은 같은 방식으로 연결된 Markdown 노트를 만듭니다. Markdown Main의 기존 동작은 유지합니다.
+
+Canvas별 Folder 정리를 재시작 후에도 복원합니다. Metadata에서는 Canvas 자체 대신 연결된 Markdown 노트를 선택해 내용을 확인할 수 있습니다.
+
+63개 테스트·빌드·실제 Sandbox 메뉴/연결 추가/역할 교환·취소/저장 실패 보호·프로세스 재시작·250개 연결 노트 시험을 통과했습니다.
+
+- [ ] BRAT에서 0.1.14로 업데이트한 뒤 Canvas 탭 우클릭 → `메인 스페이스로 지정`을 확인합니다.
+- [ ] Canvas가 Sub일 때 Main으로 지정하면 기존 Main이 Sub가 되고 열린 탭이 유지되는지 확인합니다.
+- [ ] Canvas Main에서 `+ 연결 파일 추가` → Markdown 노트 선택 후 노트에 Canvas 링크가 생기고 Canvas에는 카드가 추가되지 않는지 확인합니다.
+- [ ] 재시작 후 Canvas Main과 Folder 정리 상태가 유지되는지 확인합니다.
+
+---
+
 # MD Palette 0.1.13 — Main/Sub 역할 교환
 
 Sub의 Markdown 탭에서 `메인 스페이스로 지정`을 누르면 선택한 Sub가 Main이 되고, 기존 Main은 Sub가 됩니다. 기존 Main 지정/해제 명령으로도 교환할 수 있습니다.

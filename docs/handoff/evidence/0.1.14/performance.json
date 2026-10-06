@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "version": "0.1.14",
+  "notes": 250,
+  "tasksPerNote": 40,
+  "typingFilterPassed": true,
+  "firstPaintMs": 44.79999999701977,
+  "maxFrameGapMs": 27.70000000001164,
+  "linked": 250,
+  "errors": []
+}

@@ -52,9 +52,9 @@ export class PaletteView extends ItemView {
     if (!this.plugin.mainGroup) {
       setIcon(body.createDiv({ cls: 'mdp-empty-icon' }), 'book-open');
       body.createEl('p', { text: '메인 스페이스를 먼저 지정해주세요.' });
-      body.createEl('p', { text: 'Markdown 탭 제목을 우클릭한 뒤 “메인 스페이스로 지정”을 선택하세요.', cls: 'mdp-muted' });
+      body.createEl('p', { text: 'Markdown 또는 Canvas 탭 제목을 우클릭한 뒤 “메인 스페이스로 지정”을 선택하세요.', cls: 'mdp-muted' });
     } else if (!this.plugin.mainFile) {
-      body.createEl('p', { text: '메인 스페이스에서는 Markdown 파일을 활성화해주세요.' });
+      body.createEl('p', { text: '메인 스페이스에서는 Markdown 또는 Canvas 파일을 활성화해주세요.' });
     } else if (this.plugin.topView === 'link' && this.plugin.linkView === 'card') {
       this.cards.render(body);
     } else if (this.plugin.topView === 'link' && this.plugin.linkView === 'connections') {

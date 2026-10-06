@@ -1,0 +1,1 @@
+{"passed":true,"version":"0.1.14","checks":["process restart restores Canvas Main, Sub, tabs and per-Canvas folder state; reverse swapping still works"],"errors":[]}

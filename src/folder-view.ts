@@ -34,8 +34,11 @@ class NameModal extends Modal {
   onClose(): void { this.contentEl.empty(); }
 }
 class FolderConnectionPicker extends FuzzySuggestModal<TFile> {
-  constructor(private plugin: MDPalettePlugin, private main: TFile, private folder: string) { super(plugin.app); this.setPlaceholder('연결할 기존 Vault 파일 선택'); }
-  getItems(): TFile[] { return this.app.vault.getFiles().filter(f => f !== this.main); }
+  constructor(private plugin: MDPalettePlugin, private main: TFile, private folder: string) { super(plugin.app); this.setPlaceholder(main.extension === 'canvas' ? 'Canvas 링크를 link note에 추가할 Markdown 노트 선택' : '연결할 기존 Vault 파일 선택'); }
+  getItems(): TFile[] {
+    const connected = new Set(this.plugin.connectedFiles(this.main));
+    return this.app.vault.getFiles().filter(f => f !== this.main && (this.main.extension !== 'canvas' || f.extension === 'md' || connected.has(f)));
+  }
   getItemText(file: TFile): string { return file.path; }
   onChooseItem(file: TFile): void { this.plugin.run(() => this.plugin.addFolderConnection(this.main, file, this.folder)); }
 }
