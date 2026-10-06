@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "version": "0.1.15",
+  "originalFilesUnchanged": 17,
+  "restored": [
+    {
+      "path": "workspace.json",
+      "sha256": "b48f5bdadf09238d6717754e00cefb3b0db2421c9e203189e2ab6ab8fec20c58"
+    },
+    {
+      "path": "plugins/md-palette/data.json",
+      "sha256": "20dbfdaba96a1708567c5b9032b87a8ea75df61a32ec42d7565f6b2c3508052d"
+    }
+  ],
+  "testResultsBackedUp": true,
+  "initialAFixtureRestored": true
+}

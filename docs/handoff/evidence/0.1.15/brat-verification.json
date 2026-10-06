@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "from": "0.1.14",
+  "version": "0.1.15",
+  "through": "BRAT public release download and activation",
+  "priorSettingsPreserved": true,
+  "assets": [
+    {
+      "name": "main.js",
+      "sha256": "664b012aaae4f44f9bd2cdfe210235a3157d7829cdf7ea1bdecf1760dd786f10",
+      "localSha256": "664b012aaae4f44f9bd2cdfe210235a3157d7829cdf7ea1bdecf1760dd786f10",
+      "contentIdentical": true
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "321cd2b4d6256f7027e13920a14508021a3339b77630fb4b42086135721f8543",
+      "localSha256": "c0d592f5713f24efc897fd32fd93aafb2fa6e26f7ecef510705de2a7ff2439f1",
+      "contentIdentical": true
+    },
+    {
+      "name": "styles.css",
+      "sha256": "82a104a5324c1d8a78df7e8f82496d93207979df9349b3ed8562c5b8828c6c01",
+      "localSha256": "82a104a5324c1d8a78df7e8f82496d93207979df9349b3ed8562c5b8828c6c01",
+      "contentIdentical": true
+    }
+  ],
+  "errors": []
+}

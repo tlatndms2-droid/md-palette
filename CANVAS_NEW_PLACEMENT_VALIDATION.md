@@ -26,6 +26,14 @@
 - 비교 기준은 새 승인 동작과 기존 Canvas 배치 UI다. 별도 새 시안 이미지는 없다.
 - 설정·작업 공간·기존 파일의 백업과 해시 목록은 `.artifacts/canvas-new-placement`에 보관했다.
 
-공개 자산·BRAT 확인과 Sandbox 복원 결과는 완료 후 아래에 기록한다. 사용자 본인의 설치 확인은 자동 검증으로 대신하지 않는다.
+## Release·BRAT·복원 결과
+
+- [공개 0.1.15](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.15), 구현 커밋 30d6f41. 필수 자산 3개를 공개 URL에서 다운로드하고 최종 빌드의 SHA-256과 대조했다.
+- BRAT 2.2.0으로 0.1.14→0.1.15 업데이트·활성화를 확인했다. Main·Folder·Card·탐색 설정을 보존했다.
+- 설치 main.js/styles.css는 바이트가 동일하다. BRAT가 다시 저장한 manifest.json은 공백만 달라 모든 필드를 비교했다.
+- 기존 파일 17개 SHA-256 동일. 시험 전 workspace.json과 data.json을 복원하고 백업 해시와 대조했다.
+- 시험 자료/최종 설정을 별도로 백업한 뒤 일시 생성 파일 22개를 정리하고 새 A 시험 Canvas를 최초 상태로 복원했다. 기존 사용자 시험 자료는 보존했다.
+- 복원 후 Sandbox에서 MD Palette 0.1.15, BRAT 2.2.0, 기존 Swap-Review/A.md Main 로드를 확인했다. Sandbox는 열어 두었다.
+- 사용자 본인의 BRAT 설치·사용 확인은 대기 중이며 자동 검증으로 대신하지 않는다.
 
 [스크린샷과 실행 결과](docs/handoff/evidence/0.1.15).
