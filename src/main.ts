@@ -120,7 +120,7 @@ export default class MDPalettePlugin extends Plugin {
     this.registerEvent(this.app.workspace.on('file-menu', (menu, file, source, leaf) => {
       if (!(file instanceof TFile)) return;
       if (source === 'tab-header' && leaf) {
-        if (file.extension === 'md' && !this.isSub(groupOf(leaf)) && leaf !== this.mainLeaf) menu.addItem(item => item.setTitle('메인 스페이스로 지정').setIcon('book-open').onClick(() => this.run(() => this.setMain(leaf))));
+        if (file.extension === 'md' && leaf !== this.mainLeaf) menu.addItem(item => item.setTitle('메인 스페이스로 지정').setIcon('book-open').onClick(() => this.run(() => this.setMain(leaf))));
         if (leaf === this.mainLeaf) menu.addItem(item => item.setTitle('메인 스페이스 지정 해제').setIcon('book-open').onClick(() => this.run(() => this.unsetMain())));
         const group = groupOf(leaf);
         if (this.mainFile && group && group !== this.mainGroup && isCentral(this.app, group)) menu.addItem(item => item
@@ -209,10 +209,16 @@ export default class MDPalettePlugin extends Plugin {
     const group = groupOf(leaf);
     const file = fileIn(this.app, leaf ?? undefined);
     if (!leaf || !group || !isCentral(this.app, group) || file?.extension !== 'md' || leaf.getViewState().type !== 'markdown') { new Notice('메인 스페이스는 Markdown 파일만 지정할 수 있습니다.'); return; }
-    if (this.isSub(group)) { new Notice('서브 스페이스에서는 메인을 지정할 수 없습니다.'); return; }
     if (leaf === this.mainLeaf) { await this.openSidebar(); return; }
-    this.mainGroup = group; this.mainLeaf = leaf; this.pinnedMain = file; this.subGroup = undefined;
-    this.subGroups = [];
+    const swapping = this.isSub(group);
+    const previousMain = this.mainGroup;
+    if (swapping && (!this.mainFile || !previousMain || groupOf(this.mainLeaf ?? null) !== previousMain || !isCentral(this.app, previousMain) || !groupsIn(this.app).includes(previousMain))) {
+      new Notice('기존 Main 탭이 변경되었습니다. 다시 지정해주세요.'); return;
+    }
+    // Change roles together without reopening files or moving any existing tabs.
+    this.mainGroup = group; this.mainLeaf = leaf; this.pinnedMain = file;
+    this.subGroup = swapping ? previousMain : undefined;
+    this.subGroups = this.subGroup ? [this.subGroup] : [];
     this.clearIcons();
     this.app.workspace.setActiveLeaf(leaf, { focus: true });
     await this.openSidebar();
@@ -263,7 +269,6 @@ export default class MDPalettePlugin extends Plugin {
 
   async openIn(_role: Role, file: TFile, subpath = '', mode: SubOpenMode = 'replace'): Promise<void> {
     if (!this.mainFile || !this.mainGroup) { new Notice('메인 스페이스를 먼저 지정해주세요.'); return; }
-    if (mode !== 'normal-group' && !this.subOpenGuard.allowed(file.path)) { this.subOpenGuard.notify(); return; }
     if (this.app.vault.getAbstractFileByPath(file.path) !== file) return;
     const previous = this.app.workspace.getMostRecentLeaf();
     let group = this.subGroup;
@@ -273,6 +278,7 @@ export default class MDPalettePlugin extends Plugin {
       if (subpath) await existing.openFile(file, { active: true, eState: { subpath } });
       await this.app.workspace.revealLeaf(existing); this.app.workspace.setActiveLeaf(existing, { focus: true }); return;
     }
+    if (mode !== 'normal-group' && !this.subOpenGuard.allowed(file.path)) { this.subOpenGuard.notify(); return; }
     const anchor = this.mainLeaf;
     if (!anchor) return;
     const replacing = mode === 'replace' && group ? activeIn(group) : undefined;

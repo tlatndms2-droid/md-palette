@@ -52,7 +52,10 @@ export class SubOpenGuard {
   }
   private block(leaf: WorkspaceLeaf, path: string): boolean {
     const group=groupOf(leaf);
-    if (!this.plugin.mainFile || !this.plugin.isSub(group) || this.allowed(path)) { this.known.add(leaf); if(group&&this.plugin.isSub(group))this.lastAllowed.set(group,leaf); return false; }
+    // Selecting or restoring a file already open in this tab is not a new open.
+    // This also preserves access after a Main/Sub role exchange and restart.
+    const alreadyOpen = leaf.getViewState().state?.file === path;
+    if (!this.plugin.mainFile || !this.plugin.isSub(group) || alreadyOpen || this.allowed(path)) { this.known.add(leaf); if(group&&this.plugin.isSub(group))this.lastAllowed.set(group,leaf); return false; }
     this.notify();
     // Only remove an empty leaf created by this rejected open; never an existing tab.
     if (!this.known.has(leaf) && leaf.getViewState().type === 'empty') queueMicrotask(() => {

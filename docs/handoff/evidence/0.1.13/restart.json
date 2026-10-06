@@ -1,0 +1,1 @@
+{"passed":true,"version":"0.1.13","checks":["all Markdown and Canvas source bytes unchanged","process restart restores roles, every tab and folders; existing tabs and reverse swap still work"],"errors":[]}
