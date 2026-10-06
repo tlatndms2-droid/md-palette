@@ -1,0 +1,57 @@
+[
+  {
+    "sha256": "12E27BBBB3878A02697614BE7E46264434C633CDA1029DEB101AE8A595C0E116",
+    "file": "Board.canvas",
+    "restored": true
+  },
+  {
+    "sha256": "A2C93B91E339D5502B91D779F8CA53212923A25A1290ADAA30AAACE7C614E666",
+    "file": "Cancel.md",
+    "restored": true
+  },
+  {
+    "sha256": "D6EC9EA0F6249542474285FB614DFAC60142BED6DDA6DC7D795303246653A7CA",
+    "file": "FolderNote.md",
+    "restored": true
+  },
+  {
+    "sha256": "ACFA9AFC8B6638E9920BD325CA719820CB8E1ED571303EEADAF4BBEB828CBAAE",
+    "file": "Node.md",
+    "restored": true
+  },
+  {
+    "sha256": "7CC140D79AC47E0942776C2EF6441952E7898DE8EE353F233EA05594C5762D9F",
+    "file": "OldMain.md",
+    "restored": true
+  },
+  {
+    "sha256": "A461BF77BC4E4D732F7AFC121C70E7F70ED8BF225A082A4E01951D1EB6B5C278",
+    "file": "Other.canvas",
+    "restored": true
+  },
+  {
+    "sha256": "C5C135D04A87F0DD76F9CAA68C853686D69C542B69ED7F95B8C1D485587574B9",
+    "file": "Reverse.md",
+    "restored": true
+  },
+  {
+    "sha256": "6CD385D05690A58264F016DD56BCE39F584114AB8376552A65F71750F8FB5925",
+    "file": "SubNote.md",
+    "restored": true
+  },
+  {
+    "sha256": "E1A7E13A9AAA30F0A2A8B5C15B6F9D7CB7CA01CA495E0569682CC8C2CBC5FBA7",
+    "file": "Unrelated.md",
+    "restored": true
+  },
+  {
+    "sha256": "B48F5BDADF09238D6717754E00CEFB3B0DB2421C9E203189E2AB6AB8FEC20C58",
+    "file": "workspace.json",
+    "restored": true
+  },
+  {
+    "sha256": "20DBFDABA96A1708567C5B9032B87A8EA75DF61A32EC42D7565F6B2C3508052D",
+    "file": "plugins\\md-palette\\data.json",
+    "restored": true
+  }
+]

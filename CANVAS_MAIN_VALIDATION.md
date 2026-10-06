@@ -25,3 +25,11 @@
 ## 증거 및 재실행
 
 `scripts/canvas-main-validation.mjs`의 install/ui/restart, `canvas-main-guards.mjs`, `canvas-main-performance.mjs`를 사용한다. 각 스크립트는 전용 Sandbox 이름을 확인한다. 원시 백업은 `.artifacts/canvas-main/`, 선별 증거는 `docs/handoff/evidence/0.1.14/`에 있다. 공개 배포와 BRAT 결과는 후속 배포 기록을 따른다. 사용자 본인의 확인은 자동 검증과 별개다.
+
+## 배포 및 복원
+
+- 공개 [Release 0.1.14](https://github.com/tlatndms2-droid/md-palette/releases/tag/0.1.14), 코드 커밋 `61325ab`. 세 자산을 공개 URL에서 다시 다운로드해 검증 빌드의 SHA-256과 일치 확인.
+- 격리 Sandbox BRAT 2.2.0으로 0.1.13→0.1.14 업데이트 및 활성화 확인. 구버전의 실제 Markdown Main 설정을 기준으로 탐색·Card·Connections·Folder 보존을 비교했다. 구버전에 새 Canvas 데이터를 읽히는 다운그레이드 검증으로 대체하지 않았다.
+- BRAT 설치 main.js/styles.css 해시 일치. manifest는 BRAT가 JSON 공백을 다시 작성하므로 파싱한 전체 필드가 일치함을 확인했다. 업데이트 후 Canvas Main 데이터 복원 및 로드 확인.
+- 시험 노트 9개와 시험 전 설정·workspace.json을 복원하고 복원 시점 SHA-256 일치 확인. 기존 Swap-Review 파일 해시도 전부 일치. 새 노트 생성 시험 파일은 내용 확인 및 백업 후 제거했으며 성능 시험 자료도 제거했다.
+- 복원 후 Sandbox를 다시 열어 0.1.14, 기존 A Main, BRAT 2.2.0을 확인했다. 실제 작업 Vault는 변경하지 않았다. 사용자 본인의 BRAT 확인은 대기 중이다.

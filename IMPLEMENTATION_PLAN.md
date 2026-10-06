@@ -1,6 +1,8 @@
 # MD Palette 현재 진행 계획
 
-갱신일: 2026-10-06. 공개 0.1.13, 브랜치 codex/planning.
+갱신일: 2026-10-06. 공개 0.1.14, 브랜치 codex/planning.
+
+0.1.14: Canvas Main 지정 누락을 수정했습니다. 역할 교환·탭 보존, 대상 Markdown의 link note에 Canvas 링크 저장, Canvas별 Folder 복원, 연결된 Markdown Metadata 선택을 구현했습니다. 63개 테스트·빌드·실제 Sandbox 동작·취소/실패 보호·재시작·250개 연결 노트 시험·Release 자산 확인·BRAT 0.1.13→0.1.14 업데이트 통과. [검증](CANVAS_MAIN_VALIDATION.md). 아래 0.1.13의 Canvas 제외 내용은 현재 요청으로 대체됐습니다. 사용자 직접 확인 대기이며 다음 기능은 자동 진행하지 않습니다.
 
 0.1.13: 사용자 승인에 따라 Sub→Main 지정 시 두 그룹의 역할을 교환합니다. 열린 탭·화면 위치와 Main별 정리를 보존하고 기존 미연결 탭 선택을 허용합니다. 57개 테스트·빌드·격리 Sandbox 실제 메뉴/명령·프로세스 재시작·공개 Release 자산·BRAT 0.1.12→0.1.13 업데이트 통과. [검증](MAIN_SWAP_VALIDATION.md). 사용자 본인의 BRAT 확인 대기. Canvas Main 지원은 이번 범위에 포함하지 않으며 다음 기능을 자동 진행하지 않습니다.
 

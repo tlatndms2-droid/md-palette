@@ -1,0 +1,28 @@
+{
+  "passed": true,
+  "from": "0.1.13",
+  "version": "0.1.14",
+  "through": "BRAT public release download and activation",
+  "priorSettingsPreserved": true,
+  "canvasMainLoadedAfterUpdate": true,
+  "assets": [
+    {
+      "name": "main.js",
+      "sha256": "d9a52744b63087d6df0e015b709ac61bb730a0c7a7239b862623e0ebd00ad565",
+      "localSha256": "d9a52744b63087d6df0e015b709ac61bb730a0c7a7239b862623e0ebd00ad565",
+      "contentIdentical": true
+    },
+    {
+      "name": "manifest.json",
+      "sha256": "181f3d4d144bf582d997d26a9334a7317c5b4662994420c2cdd1d94f35c4a519",
+      "localSha256": "ed2fb6e3a3d40747641732b717e26776f972fa3217b611984c89cd7fbb64804f",
+      "contentIdentical": true
+    },
+    {
+      "name": "styles.css",
+      "sha256": "82a104a5324c1d8a78df7e8f82496d93207979df9349b3ed8562c5b8828c6c01",
+      "localSha256": "82a104a5324c1d8a78df7e8f82496d93207979df9349b3ed8562c5b8828c6c01",
+      "contentIdentical": true
+    }
+  ]
+}
